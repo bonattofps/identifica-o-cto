@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identificação Técnica CTO | N2/N3</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #3b82f6;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  h2 {
+    color: #3b82f6;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    border-bottom: 1px solid #1f2933;
+    padding-bottom: 10px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #9ca3af;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid #1f2933;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .full {
+    grid-column: span 2;
+  }
+
+  .output {
+    margin-top: 30px;
+    padding-bottom: 20px;
+  }
+
+  .output label {
+    font-size: 14px;
+    color: #3b82f6;
+  }
+
+  .output textarea {
+    width: 100%;
+    min-height: 150px;
+    margin-top: 8px;
+    background: #020617;
+    border: 1px solid #1f2933;
+    border-radius: 6px;
+    padding: 12px;
+    color: #e5e7eb;
+    white-space: pre-wrap;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  button {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn-copy { background: #22c55e; color: #052e14; }
+  .btn-copy:hover { background: #16a34a; }
+
+  .btn-save { background: #3b82f6; color: #ffffff; }
+  .btn-save:hover { background: #2563eb; }
+  .btn-save:disabled { background: #4b5563; cursor: not-allowed; }
+
+  /* Estilos da Tabela de Histórico */
+  .table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    background: #111827;
+    border-radius: 8px;
+    border: 1px solid #1f2933;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  th {
+    background: #1e293b;
+    color: #3b82f6;
+    padding: 12px;
+    border-bottom: 2px solid #1f2933;
+  }
+
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #1f2933;
+    vertical-align: top;
+  }
+
+  tr:hover { background: #1e293b; }
+
+  footer {
+    margin-top: 35px;
+    text-align: center;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Identificação Técnica de CTO – N2 / N3</h1>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label>OLT</label>
+      <input id="olt" type="text" placeholder="Ex: OLT-01">
+    </div>
+
+    <div class="form-group">
+      <label>Slot / PON</label>
+      <input id="pon" type="text" placeholder="Ex: 0/1/2">
+    </div>
+
+    <div class="form-group">
+      <label>Técnico de Campo</label>
+      <input id="tecnico" type="text" placeholder="Nome do técnico">
+    </div>
+
+    <div class="form-group">
+      <label>Suporte Responsável (N2 / N3)</label>
+      <input id="suporte" type="text" placeholder="Seu nome">
+    </div>
+
+    <div class="form-group full">
+      <label>Observações</label>
+      <textarea id="obs" placeholder="Detalhes técnicos..."></textarea>
+    </div>
+  </div>
+
+  <div class="output">
+    <label>Texto Gerado</label>
+    <textarea id="saida" readonly></textarea>
+    <div class="button-group">
+        <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
+        <button class="btn-save" id="btnSalvar" onclick="salvarNoBanco()">Salvar no Histórico</button>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <h2>Histórico de Registros Recentes</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>OLT</th>
+            <th>Slot/PON</th>
+            <th>Técnico</th>
+            <th>Suporte</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoHistorico">
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>Desenvolvido by Juander</footer>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
+const campos = ["olt","pon","tecnico","suporte","obs"];
+
+// Escuta as mudanças nos campos para gerar o texto em tempo real
+campos.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
+
+function gerarTexto() {
+  const olt = document.getElementById("olt").value;
+  const pon = document.getElementById("pon").value;
+  const tecnico = document.getElementById("tecnico").value;
+  const suporte = document.getElementById("suporte").value;
+  const obs = document.getElementById("obs").value;
+
+  document.getElementById("saida").value =
+`Identificação Técnica
+
+OLT: ${olt}
+SLOT / PON: ${pon}
+TÉCNICO DE CAMPO: ${tecnico}
+SUPORTE RESPONSÁVEL (N2/N3): ${suporte}
+OBSERVAÇÕES: ${obs}`;
+}
+
+function copiar() {
+  const texto = document.getElementById("saida").value;
+  if(!texto.trim()) return;
+  navigator.clipboard.writeText(texto);
+  alert("Texto copiado com sucesso!");
+}
+
+// SALVAR NO GOOGLE SHEETS
+async function salvarNoBanco() {
+  const btn = document.getElementById("btnSalvar");
+  
+  const dados = {
+    data: new Date().toLocaleString('pt-BR'),
+    olt: document.getElementById("olt").value,
+    pon: document.getElementById("pon").value,
+    tecnico: document.getElementById("tecnico").value,
+    suporte: document.getElementById("suporte").value,
+    obs: document.getElementById("obs").value
+  };
+
+  if(!dados.olt || !dados.tecnico) {
+    alert("Por favor, preencha ao menos a OLT e o Técnico.");
+    return;
+  }
+
+  btn.innerText = "Enviando...";
+  btn.disabled = true;
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Necessário para evitar erros de CORS com o Google Script
+      cache: 'no-cache',
+      body: JSON.stringify(dados)
+    });
+
+    alert("Salvo com sucesso!");
+    
+    // Adiciona na tabela visualmente sem precisar recarregar
+    adicionarLinhaTabela(dados, true);
+    
+    // Limpa campos
+    campos.forEach(id => document.getElementById(id).value = "");
+    document.getElementById("saida").value = "";
+    
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao salvar dados.");
+  } finally {
+    btn.innerText = "Salvar no Histórico";
+    btn.disabled = false;
+  }
+}
+
+// CARREGAR HISTÓRICO AO ABRIR O SITE
+async function carregarHistorico() {
+  const corpo = document.getElementById("corpoHistorico");
+  corpo.innerHTML = "<tr><td colspan='6' style='text-align:center'>Carregando histórico...</td></tr>";
+
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const registros = await response.json();
+    
+    corpo.innerHTML = ""; // Limpa o "Carregando"
+    
+    // Inverte a ordem para mostrar os mais recentes primeiro
+    registros.reverse().forEach(reg => {
+      const d = {
+        data: reg[0],
+        olt: reg[1],
+        pon: reg[2],
+        tecnico: reg[3],
+        suporte: reg[4],
+        obs: reg[5]
+      };
+      adicionarLinhaTabela(d, false);
+    });
+  } catch (error) {
+    corpo.innerHTML = "<tr><td colspan='6' style='text-align:center'>Nenhum registro encontrado.</td></tr>";
+  }
+}
+
+function adicionarLinhaTabela(d, noTopo) {
+  const corpo = document.getElementById("corpoHistorico");
+  const row = `<tr>
+    <td>${d.data}</td>
+    <td>${d.olt}</td>
+    <td>${d.pon}</td>
+    <td>${d.tecnico}</td>
+    <td>${d.suporte}</td>
+    <td>${d.obs}</td>
+  </tr>`;
+  
+  if(noTopo) {
+    corpo.innerHTML = row + corpo.innerHTML;
+  } else {
+    corpo.innerHTML += row;
+  }
+}
+
+// Inicia a carga de dados ao abrir a página
+window.onload = carregarHistorico;
+</script>
+
+</body>
+</html>
