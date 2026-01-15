@@ -121,7 +121,6 @@
   .btn-save:hover { background: #2563eb; }
   .btn-save:disabled { background: #4b5563; cursor: not-allowed; }
 
-  /* Estilos da Tabela de Histórico */
   .table-container {
     overflow-x: auto;
     margin-top: 20px;
@@ -217,7 +216,8 @@
           </tr>
         </thead>
         <tbody id="corpoHistorico">
-          </tbody>
+          <tr><td colspan='6' style='text-align:center'>Carregando histórico...</td></tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -229,7 +229,6 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs"];
 
-// Escuta as mudanças nos campos para gerar o texto em tempo real
 campos.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
 
 function gerarTexto() {
@@ -256,12 +255,11 @@ function copiar() {
   alert("Texto copiado com sucesso!");
 }
 
-// SALVAR NO GOOGLE SHEETS
 async function salvarNoBanco() {
   const btn = document.getElementById("btnSalvar");
   
   const dados = {
-    data: new Date().toLocaleString('pt-BR'),
+    data: new Date().toISOString(), // Enviando formato padrão
     olt: document.getElementById("olt").value,
     pon: document.getElementById("pon").value,
     tecnico: document.getElementById("tecnico").value,
@@ -280,22 +278,17 @@ async function salvarNoBanco() {
   try {
     await fetch(SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors', // Necessário para evitar erros de CORS com o Google Script
+      mode: 'no-cors',
       cache: 'no-cache',
       body: JSON.stringify(dados)
     });
 
     alert("Salvo com sucesso!");
-    
-    // Adiciona na tabela visualmente sem precisar recarregar
     adicionarLinhaTabela(dados, true);
-    
-    // Limpa campos
     campos.forEach(id => document.getElementById(id).value = "");
     document.getElementById("saida").value = "";
     
   } catch (error) {
-    console.error(error);
     alert("Erro ao salvar dados.");
   } finally {
     btn.innerText = "Salvar no Histórico";
@@ -303,18 +296,13 @@ async function salvarNoBanco() {
   }
 }
 
-// CARREGAR HISTÓRICO AO ABRIR O SITE
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
-  corpo.innerHTML = "<tr><td colspan='6' style='text-align:center'>Carregando histórico...</td></tr>";
-
   try {
     const response = await fetch(SCRIPT_URL);
     const registros = await response.json();
+    corpo.innerHTML = ""; 
     
-    corpo.innerHTML = ""; // Limpa o "Carregando"
-    
-    // Inverte a ordem para mostrar os mais recentes primeiro
     registros.reverse().forEach(reg => {
       const d = {
         data: reg[0],
@@ -333,8 +321,19 @@ async function carregarHistorico() {
 
 function adicionarLinhaTabela(d, noTopo) {
   const corpo = document.getElementById("corpoHistorico");
+  
+  // FORMATAÇÃO DA DATA
+  let dataExibicao = d.data;
+  try {
+      const dataObj = new Date(d.data);
+      if(!isNaN(dataObj)){
+          dataExibicao = dataObj.toLocaleDateString('pt-BR') + ' ' + 
+                         dataObj.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+      }
+  } catch(e) {}
+
   const row = `<tr>
-    <td>${d.data}</td>
+    <td>${dataExibicao}</td>
     <td>${d.olt}</td>
     <td>${d.pon}</td>
     <td>${d.tecnico}</td>
@@ -349,7 +348,6 @@ function adicionarLinhaTabela(d, noTopo) {
   }
 }
 
-// Inicia a carga de dados ao abrir a página
 window.onload = carregarHistorico;
 </script>
 
