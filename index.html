@@ -44,8 +44,10 @@
   table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; background: var(--card-color); }
   th { background: #020617; color: var(--accent-color); padding: 15px; text-align: left; border-bottom: 2px solid var(--border-color); }
   td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; }
+  
   .thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #475569; cursor: pointer; background: #000; }
-  .thumb:hover { transform: scale(3.5); position: relative; z-index: 50; border-color: var(--accent-color); }
+  .link-texto { color: #38bdf8; text-decoration: none; font-weight: bold; font-size: 11px; border: 1px solid #38bdf8; padding: 4px 8px; border-radius: 4px; }
+  .link-texto:hover { background: rgba(56, 189, 248, 0.1); }
   
   @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } .btn-group { flex-direction: column; } }
 </style>
@@ -93,6 +95,7 @@
 </div>
 
 <script>
+// --- CONFERIR SE O LINK ABAIXO ESTÁ CERTO ---
 const API_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 let imagemBase64 = "";
 
@@ -118,7 +121,7 @@ function comprimirImagem() {
     img.src = event.target.result;
     img.onload = function() {
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 800; // Reduz largura para 800px (Suficiente para registro)
+      const MAX_WIDTH = 800; 
       const scaleSize = MAX_WIDTH / img.width;
       canvas.width = MAX_WIDTH;
       canvas.height = img.height * scaleSize;
@@ -126,7 +129,6 @@ function comprimirImagem() {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       
-      // Converte para JPG com qualidade 0.7 (Leve e Rápido)
       imagemBase64 = canvas.toDataURL('image/jpeg', 0.7);
       document.getElementById('statusFoto').innerText = "✅ Foto pronta (Comprimida)";
     }
@@ -158,39 +160,5 @@ async function salvar() {
   try {
     await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
     alert("Salvo com sucesso!");
+    // Força o recarregamento da página para limpar campos e atualizar tabela
     location.reload();
-  } catch (e) {
-    alert("Erro: " + e);
-    btn.disabled = false;
-    btn.innerText = "Salvar no Histórico";
-  }
-}
-
-async function carregar() {
-  const tbody = document.getElementById("listaHistorico");
-  try {
-    const res = await fetch(API_URL);
-    const dados = await res.json();
-    tbody.innerHTML = "";
-    
-    dados.reverse().forEach(row => {
-      // Remove o ' de proteção
-      const dataF = row[0].toString().replace(/^'/, "");
-      const ponF = row[2].toString().replace(/^'/, "");
-      const link = row[6];
-      
-      let imgHtml = '<span style="color:#64748b">-</span>';
-      // Verifica se é um link válido do Google
-      if(link && link.includes("http")) {
-        imgHtml = `<a href="${link}" target="_blank"><img src="${link}" class="thumb" title="Ver foto"></a>`;
-      }
-
-      tbody.innerHTML += `<tr><td>${dataF}</td><td>${row[1]}</td><td>${ponF}</td><td>${row[3]}</td><td>${row[4]}</td><td style="text-align:center">${imgHtml}</td><td style="white-space:normal; max-width:250px; font-size:12px;">${row[5]}</td></tr>`;
-    });
-  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Erro ao carregar.</td></tr>`; }
-}
-
-window.onload = carregar;
-</script>
-</body>
-</html>
