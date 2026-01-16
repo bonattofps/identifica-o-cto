@@ -6,38 +6,49 @@
 <title>Identificação Técnica CTO | N2/N3</title>
 
 <style>
+  /* --- ESTÉTICA GERAL --- */
   body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #0f172a;
-    color: #e5e7eb;
+    font-family: "Segoe UI", "Roboto", Helvetica, Arial, sans-serif;
+    background: #0f172a; /* Fundo Escuro Moderno */
+    color: #e2e8f0;
+    line-height: 1.6;
   }
 
   .container {
-    max-width: 1100px;
+    max-width: 900px;
     margin: 40px auto;
-    padding: 20px;
+    padding: 30px;
+    background: #1e293b; /* Cartão do formulário */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+    border: 1px solid #334155;
   }
 
   h1 {
     text-align: center;
-    color: #3b82f6;
-    margin-bottom: 30px;
+    color: #60a5fa;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+  }
+  
+  h2 {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin-top: 40px;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 10px;
     font-weight: 600;
   }
 
-  h2 {
-    color: #3b82f6;
-    font-size: 1.2rem;
-    margin-top: 40px;
-    border-bottom: 1px solid #1f2933;
-    padding-bottom: 10px;
-  }
-
+  /* --- FORMULÁRIO --- */
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 20px;
+    margin-top: 30px;
   }
 
   .form-group {
@@ -47,77 +58,103 @@
 
   .form-group label {
     font-size: 13px;
-    margin-bottom: 6px;
-    color: #9ca3af;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .form-group input,
   .form-group textarea {
-    background: #111827;
-    color: #e5e7eb;
-    border: 1px solid #1f2933;
-    border-radius: 6px;
-    padding: 10px;
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 15px;
     font-size: 14px;
-  }
-
-  #linkFoto {
-    background: #172033;
-    border: 1px solid #3b82f6;
+    transition: all 0.2s ease;
   }
 
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
     border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background: #172033;
   }
 
   .form-group textarea {
     resize: vertical;
-    min-height: 90px;
+    min-height: 100px;
   }
 
   .full {
     grid-column: span 2;
   }
 
-  .required {
-    color: #ef4444;
-    font-size: 11px;
-    margin-left: 5px;
+  /* Destaque para o campo obrigatório do Link */
+  #linkFoto {
+    background: #1e1b4b; /* Tom azulado bem escuro */
+    border: 1px solid #4f46e5;
+  }
+  #linkFoto:focus {
+    border-color: #818cf8;
+    background: #1e1b4b;
   }
 
-  /* Área do Botão Salvar - Centralizado e Grande */
+  .required {
+    color: #f87171;
+    font-size: 11px;
+    margin-left: 5px;
+    font-weight: 700;
+  }
+
+  /* --- BOTÃO --- */
   .action-area {
-    margin-top: 30px;
+    margin-top: 35px;
     display: flex;
     justify-content: center;
   }
 
   button {
-    padding: 12px 40px;
+    padding: 14px 50px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
-    background: #3b82f6; 
+    transition: transform 0.1s, background 0.3s, box-shadow 0.3s;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
   }
 
-  button:hover { background: #2563eb; }
-  button:disabled { background: #4b5563; cursor: not-allowed; }
+  button:hover { 
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  button:active {
+    transform: translateY(0);
+  }
 
-  /* Tabela */
+  button:disabled { 
+    background: #475569; 
+    cursor: not-allowed; 
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* --- TABELA --- */
   .table-container {
     overflow-x: auto;
     margin-top: 20px;
-    background: #111827;
     border-radius: 8px;
-    border: 1px solid #1f2933;
+    border: 1px solid #334155;
   }
 
   table {
@@ -128,41 +165,53 @@
   }
 
   th {
-    background: #1e293b;
-    color: #3b82f6;
-    padding: 12px;
-    border-bottom: 2px solid #1f2933;
+    background: #334155;
+    color: #e2e8f0;
+    padding: 14px;
+    font-weight: 600;
     white-space: nowrap;
   }
 
   td {
-    padding: 12px;
-    border-bottom: 1px solid #1f2933;
+    padding: 14px;
+    border-bottom: 1px solid #334155;
     vertical-align: top;
-    color: #d1d5db;
+    color: #cbd5e1;
+    background: #1e293b;
   }
 
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td { 
+    background: #2a384d; 
+  }
+
+  /* Link estilizado na tabela */
   td a.link-foto {
-    color: #60a5fa;
+    display: inline-block;
+    color: #ffffff;
     text-decoration: none;
-    background: #1e293b;
-    padding: 4px 8px;
+    background: #0ea5e9;
+    padding: 6px 12px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: background 0.2s;
   }
   
   td a.link-foto:hover {
-    background: #3b82f6;
-    color: white;
+    background: #0284c7;
   }
 
-  tr:hover { background: #1e293b; }
-
   footer {
-    margin-top: 35px;
+    margin-top: 40px;
     text-align: center;
     font-size: 12px;
-    color: #9ca3af;
+    color: #64748b;
+    border-top: 1px solid #334155;
+    padding-top: 20px;
   }
 </style>
 </head>
@@ -170,7 +219,7 @@
 <body>
 
 <div class="container">
-  <h1>Identificação Técnica de CTO – N2 / N3</h1>
+  <h1>Identificação Técnica</h1>
 
   <div class="form-grid">
     <div class="form-group">
@@ -194,33 +243,33 @@
     </div>
     
     <div class="form-group full">
-      <label>Link da Foto <span class="required">* Obrigatório</span></label>
-      <input id="linkFoto" type="url" placeholder="Cole o link da imagem aqui">
+      <label>Observações</label>
+      <textarea id="obs" placeholder="Detalhes técnicos, sinal, problemas encontrados..."></textarea>
     </div>
 
     <div class="form-group full">
-      <label>Observações</label>
-      <textarea id="obs" placeholder="Detalhes técnicos..."></textarea>
+      <label>Link da Foto da Identificação <span class="required">* OBRIGATÓRIO</span></label>
+      <input id="linkFoto" type="url" placeholder="Cole aqui o link (Drive, Imgur, Sistema...)">
     </div>
   </div>
 
   <div class="action-area">
-      <button id="btnSalvar" onclick="salvarNoBanco()">Salvar no Histórico</button>
+      <button id="btnSalvar" onclick="salvarNoBanco()">SALVAR REGISTRO</button>
   </div>
 
   <div class="history-section">
-    <h2>Histórico de Registros Recentes</h2>
+    <h2>Últimos Registros</h2>
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>Data/Hora (RO)</th>
+            <th>Horário</th>
             <th>OLT</th>
             <th>Slot/PON</th>
             <th>Técnico</th>
             <th>Suporte</th>
-            <th>Foto</th>
-            <th>Observações</th>
+            <th>Evidência</th>
+            <th>Obs</th>
           </tr>
         </thead>
         <tbody id="corpoHistorico">
@@ -229,11 +278,11 @@
     </div>
   </div>
 
-  <footer>Desenvolvido by Juander</footer>
+  <footer>Desenvolvido por Juander</footer>
 </div>
 
 <script>
-// URL DO SEU SCRIPT (Certifique-se de que é a versão 'exec' atualizada)
+// URL DO SEU SCRIPT (Mantenha a mesma que já funciona)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
@@ -244,15 +293,18 @@ async function salvarNoBanco() {
   const tecnico = document.getElementById("tecnico").value;
   const linkFoto = document.getElementById("linkFoto").value;
 
-  // Validação simples
+  // Validação
   if(!olt || !tecnico || !linkFoto) {
-    alert("ERRO: Preencha a OLT, o Técnico e o Link da Foto!");
+    alert("ATENÇÃO: Preencha a OLT, o Técnico e o Link da Foto!");
+    if(!linkFoto) document.getElementById("linkFoto").focus();
     return;
   }
 
-  // Monta os dados
+  // Captura a data e hora exata do sistema do usuário
+  const dataHoraSistema = new Date().toLocaleString('pt-BR');
+
   const dados = {
-    data: new Date().toLocaleString('pt-BR', { timeZone: 'America/Porto_Velho' }),
+    data: dataHoraSistema, // Usa o horário do seu PC/Celular
     olt: olt,
     pon: document.getElementById("pon").value,
     tecnico: tecnico,
@@ -261,37 +313,36 @@ async function salvarNoBanco() {
     obs: document.getElementById("obs").value
   };
 
-  btn.innerText = "Enviando...";
+  btn.innerText = "Salvando...";
   btn.disabled = true;
 
   try {
-    // Envia para o Google Sheets
     await fetch(SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify(dados)
     });
 
-    alert("Salvo com sucesso!");
+    alert("Registro salvo com sucesso!");
     
     // Adiciona na tabela visualmente
     adicionarLinhaTabela(dados, true);
     
-    // Limpa os campos
+    // Limpa campos
     campos.forEach(id => document.getElementById(id).value = "");
     
   } catch (error) {
-    console.error("Erro no fetch:", error);
-    alert("Houve um erro ao tentar salvar. Verifique o console.");
+    console.error("Erro:", error);
+    alert("Erro de conexão.");
   } finally {
-    btn.innerText = "Salvar no Histórico";
+    btn.innerText = "SALVAR REGISTRO";
     btn.disabled = false;
   }
 }
 
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
-  corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>Carregando...</td></tr>";
+  corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#94a3b8'>Carregando histórico...</td></tr>";
 
   try {
     const response = await fetch(SCRIPT_URL);
@@ -313,7 +364,7 @@ async function carregarHistorico() {
       adicionarLinhaTabela(d, false);
     });
   } catch (error) {
-    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>Sem registros ou erro de conexão.</td></tr>";
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#f87171'>Erro ao carregar histórico.</td></tr>";
   }
 }
 
@@ -321,17 +372,17 @@ function adicionarLinhaTabela(d, noTopo) {
   const corpo = document.getElementById("corpoHistorico");
   
   const linkDisplay = d.linkFoto && d.linkFoto.startsWith('http') 
-    ? `<a href="${d.linkFoto}" target="_blank" class="link-foto">Abrir Foto</a>` 
-    : '-';
+    ? `<a href="${d.linkFoto}" target="_blank" class="link-foto">ABRIR FOTO</a>` 
+    : '<span style="color:#64748b">-</span>';
 
   const row = `<tr>
-    <td>${d.data}</td>
+    <td style="white-space:nowrap; font-size:12px;">${d.data}</td>
     <td>${d.olt}</td>
     <td>${d.pon}</td>
     <td>${d.tecnico}</td>
     <td>${d.suporte}</td>
     <td>${linkDisplay}</td>
-    <td>${d.obs}</td>
+    <td style="font-size:12px; color:#94a3b8">${d.obs}</td>
   </tr>`;
   
   if(noTopo) {
