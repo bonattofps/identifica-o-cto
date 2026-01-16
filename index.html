@@ -3,52 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Identificação Técnica CTO | N2/N3</title>
+<title>Painel Técnico CTO | Uni Internet</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  /* --- ESTÉTICA GERAL --- */
-  body {
-    margin: 0;
-    font-family: "Segoe UI", "Roboto", Helvetica, Arial, sans-serif;
-    background: #0f172a; /* Fundo Escuro Moderno */
-    color: #e2e8f0;
-    line-height: 1.6;
+  :root {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    --danger-color: #ef4444;
   }
 
-  .container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #1e293b; /* Cartão do formulário */
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Sombra elegante */
-    border: 1px solid #334155;
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 40px;
+  }
+
+  /* Cabeçalho Superior */
+  header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   h1 {
-    text-align: center;
-    color: #60a5fa;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
     font-weight: 700;
-    font-size: 1.8rem;
-    letter-spacing: -0.5px;
-  }
-  
-  h2 {
-    color: #94a3b8;
-    font-size: 1.1rem;
-    margin-top: 40px;
-    border-bottom: 2px solid #334155;
-    padding-bottom: 10px;
-    font-weight: 600;
+    color: var(--accent-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* --- FORMULÁRIO --- */
+  /* Container Principal - Mais largo para monitores */
+  .main-wrapper {
+    max-width: 1200px; /* Bem mais largo que antes */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* Cards (Blocos de conteúdo) */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Grid do Formulário */
   .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr); /* 4 Colunas em telas grandes */
     gap: 20px;
-    margin-top: 30px;
   }
 
   .form-group {
@@ -56,220 +98,217 @@
     flex-direction: column;
   }
 
-  .form-group label {
-    font-size: 13px;
-    font-weight: 600;
+  /* Classes para ocupar colunas */
+  .col-1 { grid-column: span 1; }
+  .col-2 { grid-column: span 2; }
+  .col-4 { grid-column: span 4; }
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
     margin-bottom: 8px;
-    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input, textarea, select {
+    background: #020617;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Input de Link com destaque */
+  #linkFoto {
+    background: #0f172a;
+    border-left: 4px solid var(--accent-color);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* Botão */
+  .btn-save {
+    background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    width: 100%;
+    margin-top: 10px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
-  .form-group input,
-  .form-group textarea {
-    background: #0f172a;
-    color: #f8fafc;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    background: #172033;
-  }
-
-  .form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-
-  .full {
-    grid-column: span 2;
-  }
-
-  /* Destaque para o campo obrigatório do Link */
-  #linkFoto {
-    background: #1e1b4b; /* Tom azulado bem escuro */
-    border: 1px solid #4f46e5;
-  }
-  #linkFoto:focus {
-    border-color: #818cf8;
-    background: #1e1b4b;
-  }
-
-  .required {
-    color: #f87171;
-    font-size: 11px;
-    margin-left: 5px;
-    font-weight: 700;
-  }
-
-  /* --- BOTÃO --- */
-  .action-area {
-    margin-top: 35px;
-    display: flex;
-    justify-content: center;
-  }
-
-  button {
-    padding: 14px 50px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.1s, background 0.3s, box-shadow 0.3s;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    width: 100%;
-    max-width: 320px;
-  }
-
-  button:hover { 
-    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+  .btn-save:hover {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
     transform: translateY(-2px);
   }
-  
-  button:active {
-    transform: translateY(0);
-  }
 
-  button:disabled { 
-    background: #475569; 
-    cursor: not-allowed; 
-    transform: none;
-    box-shadow: none;
-  }
+  .btn-save:active { transform: translateY(0); }
+  .btn-save:disabled { background: var(--border-color); cursor: not-allowed; transform: none; box-shadow: none;}
 
-  /* --- TABELA --- */
-  .table-container {
+  /* Tabela Moderna */
+  .table-responsive {
     overflow-x: auto;
-    margin-top: 20px;
     border-radius: 8px;
-    border: 1px solid #334155;
+    border: 1px solid var(--border-color);
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
-    text-align: left;
+    font-size: 0.9rem;
   }
 
   th {
-    background: #334155;
-    color: #e2e8f0;
-    padding: 14px;
+    background: #0f172a;
+    color: var(--accent-color);
     font-weight: 600;
+    text-align: left;
+    padding: 16px;
     white-space: nowrap;
+    border-bottom: 2px solid var(--border-color);
   }
 
   td {
-    padding: 14px;
-    border-bottom: 1px solid #334155;
-    vertical-align: top;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
     color: #cbd5e1;
-    background: #1e293b;
+    vertical-align: middle;
   }
 
-  tr:last-child td {
-    border-bottom: none;
-  }
+  /* Efeito Zebra e Hover */
+  tbody tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
+  tbody tr:hover { background-color: rgba(59, 130, 246, 0.05); }
 
-  tr:hover td { 
-    background: #2a384d; 
-  }
-
-  /* Link estilizado na tabela */
-  td a.link-foto {
-    display: inline-block;
-    color: #ffffff;
-    text-decoration: none;
-    background: #0ea5e9;
+  /* Tags e Badges na tabela */
+  .badge-link {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
     padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
     transition: background 0.2s;
   }
-  
-  td a.link-foto:hover {
-    background: #0284c7;
+  .badge-link:hover { background: rgba(59, 130, 246, 0.3); color: white; }
+
+  .text-muted { color: var(--text-secondary); font-style: italic; }
+  .required-star { color: var(--danger-color); }
+
+  /* Rodapé */
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    opacity: 0.6;
   }
 
-  footer {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 12px;
-    color: #64748b;
-    border-top: 1px solid #334155;
-    padding-top: 20px;
+  /* Responsividade para telas menores */
+  @media (max-width: 768px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .col-1, .col-2, .col-4 { grid-column: span 1; }
+    .header-content { flex-direction: column; gap: 10px; }
   }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>Identificação Técnica</h1>
+<header>
+  <div class="header-content">
+    <h1>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
+      Identificação Técnica
+    </h1>
+    <span style="font-size: 0.9rem; color: #64748b;">N2 / N3 / Field Service</span>
+  </div>
+</header>
 
-  <div class="form-grid">
-    <div class="form-group">
-      <label>OLT</label>
-      <input id="olt" type="text" placeholder="Ex: OLT-01">
+<div class="main-wrapper">
+
+  <div class="card">
+    <div class="card-header">Novo Registro</div>
+    
+    <div class="form-grid">
+      <div class="form-group col-1">
+        <label>OLT</label>
+        <input id="olt" type="text" placeholder="Ex: OLT-01">
+      </div>
+
+      <div class="form-group col-1">
+        <label>Slot / PON</label>
+        <input id="pon" type="text" placeholder="Ex: 0/1/2">
+      </div>
+
+      <div class="form-group col-2">
+        <label>Técnico de Campo</label>
+        <input id="tecnico" type="text" placeholder="Nome do técnico">
+      </div>
+
+      <div class="form-group col-2">
+        <label>Suporte Responsável</label>
+        <input id="suporte" type="text" placeholder="Seu nome">
+      </div>
+
+      <div class="form-group col-2">
+        </div>
+
+      <div class="form-group col-4">
+        <label>Observações Técnicas</label>
+        <textarea id="obs" placeholder="Descreva os detalhes do atendimento, sinal óptico, etc..."></textarea>
+      </div>
+
+      <div class="form-group col-4">
+        <label>Link da Evidência (Foto) <span class="required-star">*</span></label>
+        <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem (Drive, Imgur, Sistema...)">
+      </div>
+
+      <div class="form-group col-4">
+        <button id="btnSalvar" class="btn-save" onclick="salvarNoBanco()">Salvar Registro</button>
+      </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label>Slot / PON</label>
-      <input id="pon" type="text" placeholder="Ex: 0/1/2">
-    </div>
-
-    <div class="form-group">
-      <label>Técnico de Campo</label>
-      <input id="tecnico" type="text" placeholder="Nome do técnico">
-    </div>
-
-    <div class="form-group">
-      <label>Suporte Responsável (N2 / N3)</label>
-      <input id="suporte" type="text" placeholder="Seu nome">
+  <div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+      <span>Últimos Registros</span>
+      <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Mostrando recentes</span>
     </div>
     
-    <div class="form-group full">
-      <label>Observações</label>
-      <textarea id="obs" placeholder="Detalhes técnicos, sinal, problemas encontrados..."></textarea>
-    </div>
-
-    <div class="form-group full">
-      <label>Link da Foto da Identificação <span class="required">* OBRIGATÓRIO</span></label>
-      <input id="linkFoto" type="url" placeholder="Cole aqui o link (Drive, Imgur, Sistema...)">
-    </div>
-  </div>
-
-  <div class="action-area">
-      <button id="btnSalvar" onclick="salvarNoBanco()">SALVAR REGISTRO</button>
-  </div>
-
-  <div class="history-section">
-    <h2>Últimos Registros</h2>
-    <div class="table-container">
+    <div class="table-responsive">
       <table>
         <thead>
           <tr>
-            <th>Horário</th>
-            <th>OLT</th>
-            <th>Slot/PON</th>
-            <th>Técnico</th>
-            <th>Suporte</th>
-            <th>Evidência</th>
-            <th>Obs</th>
+            <th width="15%">Horário</th>
+            <th width="10%">OLT</th>
+            <th width="10%">PON</th>
+            <th width="15%">Técnico</th>
+            <th width="15%">Suporte</th>
+            <th width="10%" style="text-align:center;">Foto</th>
+            <th width="25%">Obs</th>
           </tr>
         </thead>
         <tbody id="corpoHistorico">
@@ -278,14 +317,18 @@
     </div>
   </div>
 
-  <footer>Desenvolvido por Juander</footer>
+  <footer>
+    Desenvolvido by Juander &copy; 2026
+  </footer>
+
 </div>
 
 <script>
-// URL DO SEU SCRIPT (Mantenha a mesma que já funciona)
+// --- CONFIGURAÇÃO ---
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
+// --- FUNÇÃO SALVAR ---
 async function salvarNoBanco() {
   const btn = document.getElementById("btnSalvar");
   
@@ -295,16 +338,16 @@ async function salvarNoBanco() {
 
   // Validação
   if(!olt || !tecnico || !linkFoto) {
-    alert("ATENÇÃO: Preencha a OLT, o Técnico e o Link da Foto!");
+    alert("⚠️ Faltam dados!\nPor favor, preencha a OLT, o Técnico e o Link da Foto.");
     if(!linkFoto) document.getElementById("linkFoto").focus();
     return;
   }
 
-  // Captura a data e hora exata do sistema do usuário
+  // Data do Sistema
   const dataHoraSistema = new Date().toLocaleString('pt-BR');
 
   const dados = {
-    data: dataHoraSistema, // Usa o horário do seu PC/Celular
+    data: dataHoraSistema,
     olt: olt,
     pon: document.getElementById("pon").value,
     tecnico: tecnico,
@@ -313,8 +356,11 @@ async function salvarNoBanco() {
     obs: document.getElementById("obs").value
   };
 
-  btn.innerText = "Salvando...";
+  // Feedback Visual
+  const textoOriginal = btn.innerText;
+  btn.innerText = "Enviando...";
   btn.disabled = true;
+  btn.style.opacity = "0.7";
 
   try {
     await fetch(SCRIPT_URL, {
@@ -323,9 +369,10 @@ async function salvarNoBanco() {
       body: JSON.stringify(dados)
     });
 
-    alert("Registro salvo com sucesso!");
+    // Sucesso
+    // alert("✅ Registro salvo com sucesso!"); -> Opcional, removi para ficar mais fluido
     
-    // Adiciona na tabela visualmente
+    // Adiciona na tabela instantaneamente
     adicionarLinhaTabela(dados, true);
     
     // Limpa campos
@@ -333,16 +380,18 @@ async function salvarNoBanco() {
     
   } catch (error) {
     console.error("Erro:", error);
-    alert("Erro de conexão.");
+    alert("❌ Erro de conexão ao salvar.");
   } finally {
-    btn.innerText = "SALVAR REGISTRO";
+    btn.innerText = textoOriginal;
     btn.disabled = false;
+    btn.style.opacity = "1";
   }
 }
 
+// --- FUNÇÃO CARREGAR ---
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
-  corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#94a3b8'>Carregando histórico...</td></tr>";
+  corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px; color:#94a3b8'>Carregando dados...</td></tr>";
 
   try {
     const response = await fetch(SCRIPT_URL);
@@ -350,43 +399,61 @@ async function carregarHistorico() {
     
     corpo.innerHTML = "";
     
-    // Inverte a ordem para ver os mais novos primeiro
+    if(registros.length === 0) {
+      corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Nenhum registro encontrado.</td></tr>";
+      return;
+    }
+
     registros.reverse().forEach(reg => {
-      const d = {
-        data: reg[0],
-        olt: reg[1],
-        pon: reg[2],
-        tecnico: reg[3],
-        suporte: reg[4],
-        obs: reg[5],
-        linkFoto: reg[6]
-      };
-      adicionarLinhaTabela(d, false);
+      // Proteção contra linhas vazias ou incompletas na planilha
+      if(reg.length > 0) {
+        const d = {
+          data: reg[0],
+          olt: reg[1],
+          pon: reg[2],
+          tecnico: reg[3],
+          suporte: reg[4],
+          obs: reg[5],
+          linkFoto: reg[6]
+        };
+        adicionarLinhaTabela(d, false);
+      }
     });
   } catch (error) {
-    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#f87171'>Erro ao carregar histórico.</td></tr>";
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#ef4444'>Erro ao conectar com o banco de dados.</td></tr>";
   }
 }
 
 function adicionarLinhaTabela(d, noTopo) {
   const corpo = document.getElementById("corpoHistorico");
   
-  const linkDisplay = d.linkFoto && d.linkFoto.startsWith('http') 
-    ? `<a href="${d.linkFoto}" target="_blank" class="link-foto">ABRIR FOTO</a>` 
-    : '<span style="color:#64748b">-</span>';
+  // Ícone de link ou traço
+  const linkDisplay = d.linkFoto && d.linkFoto.toString().startsWith('http') 
+    ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` 
+    : '<span class="text-muted">-</span>';
+
+  // Formatação de texto vazio
+  const obsDisplay = d.obs ? d.obs : '<span class="text-muted">Sem obs</span>';
 
   const row = `<tr>
-    <td style="white-space:nowrap; font-size:12px;">${d.data}</td>
-    <td>${d.olt}</td>
+    <td style="color:#94a3b8; font-size:0.85rem;">${d.data}</td>
+    <td style="font-weight:500; color:#e2e8f0;">${d.olt}</td>
     <td>${d.pon}</td>
     <td>${d.tecnico}</td>
     <td>${d.suporte}</td>
-    <td>${linkDisplay}</td>
-    <td style="font-size:12px; color:#94a3b8">${d.obs}</td>
+    <td style="text-align:center;">${linkDisplay}</td>
+    <td style="font-size:0.85rem; color:#cbd5e1;">${obsDisplay}</td>
   </tr>`;
   
   if(noTopo) {
-    corpo.innerHTML = row + corpo.innerHTML;
+    // Animação simples para nova linha
+    const tempDiv = document.createElement('tr');
+    tempDiv.innerHTML = row; // Truque para criar elemento
+    tempDiv.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
+    corpo.insertBefore(tempDiv, corpo.firstChild);
+    
+    // Remove o destaque após 1 segundo
+    setTimeout(() => { tempDiv.style.backgroundColor = "transparent"; }, 1000);
   } else {
     corpo.innerHTML += row;
   }
