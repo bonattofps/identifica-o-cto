@@ -4,201 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Identificação Técnica CTO</title>
-
 <style>
-  /* --- TEMA AZUL PROFISSIONAL (CIANO/CELESTE) --- */
+  /* TEMA AZUL (Igual ao anterior) */
   :root {
-    --bg-color: #020617;       /* Fundo escuro */
-    --card-color: #0f172a;     /* Card Azul Profundo */
-    --input-bg: #1e293b;       /* Fundo Inputs */
-    --text-color: #f8fafc;     /* Texto Branco */
-    
-    /* CORES DE DESTAQUE ATUALIZADAS */
-    --accent-color: #06b6d4;   /* Azul Ciano Vibrante */
-    --accent-hover: #0891b2;   /* Ciano Escuro */
-    --accent-gradient: linear-gradient(135deg, #06b6d4, #3b82f6); /* Degradê Ciano para Azul */
-    
+    --bg-color: #020617; --card-color: #0f172a; --input-bg: #1e293b; --text-color: #f8fafc;
+    --accent-color: #06b6d4; --accent-hover: #0891b2; 
+    --accent-gradient: linear-gradient(135deg, #06b6d4, #3b82f6);
     --border-color: #334155;
   }
-
-  body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-color); color: var(--text-color); }
-  
+  body { margin: 0; font-family: "Segoe UI", sans-serif; background: var(--bg-color); color: var(--text-color); }
   .container { max-width: 1000px; margin: 30px auto; padding: 20px; }
-
-  /* CABEÇALHO */
-  h1 { 
-    text-align: center; 
-    color: white; 
-    margin-bottom: 30px; 
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 1px;
-    border-bottom: 3px solid var(--accent-color);
-    display: inline-block;
-    padding-bottom: 10px;
-  }
-  .header-container { text-align: center; width: 100%; }
-
-  /* FORMULÁRIO */
-  .form-card {
-    background: var(--card-color);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--border-color);
-  }
-
+  
+  h1 { text-align: center; color: white; margin-bottom: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-bottom: 3px solid var(--accent-color); display: inline-block; padding-bottom: 10px; }
+  
+  .form-card { background: var(--card-color); padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .full-width { grid-column: span 2; }
   
   label { font-size: 13px; margin-bottom: 8px; color: #94a3b8; font-weight: 600; display: block; }
+  input, textarea { width: 100%; background: var(--input-bg); color: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 15px; outline: none; box-sizing: border-box; }
+  input:focus, textarea:focus { border-color: var(--accent-color); }
   
-  input, textarea { 
-    width: 100%;
-    background: var(--input-bg); 
-    color: white; 
-    border: 1px solid var(--border-color); 
-    border-radius: 8px; 
-    padding: 12px; 
-    font-size: 15px; 
-    outline: none; 
-    transition: 0.3s; 
-    box-sizing: border-box;
-  }
-  
-  input:focus, textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
-  textarea { resize: vertical; min-height: 100px; }
-
-  /* BOTÃO DE FOTO */
+  /* Botão Foto */
   .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
-  .btn-upload {
-    border: 2px dashed #475569;
-    color: #cbd5e1;
-    background-color: rgba(255,255,255,0.03);
-    padding: 20px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: bold;
-    width: 100%;
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
-    box-sizing: border-box;
-  }
-  .upload-btn-wrapper input[type=file] {
-    font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%;
-  }
-  .btn-upload:hover { border-color: var(--accent-color); color: var(--accent-color); background-color: rgba(6, 182, 212, 0.1); }
-  #statusFoto { text-align: center; color: var(--accent-color); font-weight: bold; margin-top: 10px; font-size: 13px; min-height: 20px;}
-
-  /* ÁREA DE TEXTO GERADO */
-  .output-area { margin-top: 30px; }
-  .output-box {
-    background: #020617;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    width: 100%;
-    min-height: 120px;
-    color: #e2e8f0;
-    font-family: monospace;
-    box-sizing: border-box;
-  }
-
-  /* BOTÕES DE AÇÃO */
+  .btn-upload { border: 2px dashed #475569; color: #cbd5e1; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; width: 100%; cursor: pointer; text-align: center; font-weight: bold; }
+  .btn-upload:hover { border-color: var(--accent-color); color: var(--accent-color); }
+  #statusFoto { text-align: center; color: var(--accent-color); font-weight: bold; margin-top: 10px; font-size: 13px; }
+  
+  .output-box { background: #020617; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; width: 100%; min-height: 120px; color: #e2e8f0; font-family: monospace; box-sizing: border-box; margin-top: 20px; }
+  
   .btn-group { display: flex; gap: 15px; margin-top: 20px; }
-  
-  button {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
+  button { flex: 1; padding: 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
   .btn-copy { background: #10b981; color: #022c22; }
-  .btn-copy:hover { background: #059669; color: white; }
-
   .btn-save { background: var(--accent-gradient); color: white; }
-  .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4); }
-  .btn-save:disabled { background: #475569; cursor: not-allowed; transform: none; filter: grayscale(1); box-shadow: none; }
-
-  /* TABELA */
-  h2 { color: var(--accent-color); margin-top: 50px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 1.2rem; }
+  .btn-save:disabled { background: #475569; cursor: not-allowed; opacity: 0.5; }
   
+  h2 { color: var(--accent-color); margin-top: 50px; border-bottom: 1px solid var(--border-color); }
   .table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 20px; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; background: var(--card-color); }
-  
   th { background: #020617; color: var(--accent-color); padding: 15px; text-align: left; border-bottom: 2px solid var(--border-color); }
   td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; }
-  tr:hover { background: rgba(6, 182, 212, 0.05); }
-
-  .thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #475569; cursor: pointer; transition: 0.2s; background: #000; }
-  .thumb:hover { transform: scale(3.5); border-color: var(--accent-color); position: relative; z-index: 50; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-
-  footer { margin-top: 50px; text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
-
-  @media (max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .full-width { grid-column: span 1; }
-    .btn-group { flex-direction: column; }
-  }
+  .thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #475569; cursor: pointer; background: #000; }
+  .thumb:hover { transform: scale(3.5); position: relative; z-index: 50; border-color: var(--accent-color); }
+  
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } .btn-group { flex-direction: column; } }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header-container">
-    <h1>Identificação Técnica CTO</h1>
-  </div>
-
+  <h1>Identificação Técnica CTO</h1>
   <div class="form-card">
     <div class="form-grid">
-      <div class="form-group">
-        <label>OLT</label>
-        <input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA">
-      </div>
-      <div class="form-group">
-        <label>Slot / PON</label>
-        <input id="pon" type="text" placeholder="Ex: 0-0-13-6">
-      </div>
-      <div class="form-group">
-        <label>Técnico de Campo</label>
-        <input id="tecnico" type="text" placeholder="Nome do Técnico">
-      </div>
-      <div class="form-group">
-        <label>Suporte Responsável</label>
-        <input id="suporte" type="text" placeholder="Seu Nome (Suporte)">
-      </div>
-
+      <div class="form-group"><label>OLT</label><input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA"></div>
+      <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0-0-13-6"></div>
+      <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do Técnico"></div>
+      <div class="form-group"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu Nome"></div>
+      
       <div class="full-width">
         <label>Foto do Serviço (Opcional)</label>
         <div class="upload-btn-wrapper">
           <button class="btn-upload">📸 Toque para escolher a foto</button>
-          <input type="file" id="inputFoto" accept="image/*" onchange="processarFoto()">
+          <input type="file" id="inputFoto" accept="image/*" style="font-size:100px; position:absolute; left:0; top:0; opacity:0; cursor:pointer; height:100%; width:100%;" onchange="comprimirImagem()">
         </div>
         <div id="statusFoto"></div>
       </div>
 
-      <div class="full-width">
-        <label>Observações</label>
-        <textarea id="obs" placeholder="Descreva sinal, cliente offline, portas..."></textarea>
-      </div>
+      <div class="full-width"><label>Observações</label><textarea id="obs" placeholder="Descreva o serviço..."></textarea></div>
     </div>
 
-    <div class="output-area">
-      <label>Texto para Copiar (WhatsApp/Sistema)</label>
-      <textarea id="saida" class="output-box" readonly></textarea>
-      
-      <div class="btn-group">
-        <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
-        <button class="btn-save" id="btnSalvar" onclick="salvar()">Salvar no Histórico</button>
-      </div>
+    <textarea id="saida" class="output-box" readonly></textarea>
+    <div class="btn-group">
+      <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
+      <button class="btn-save" id="btnSalvar" onclick="salvar()">Salvar no Histórico</button>
     </div>
   </div>
 
@@ -206,56 +84,52 @@
   <div class="table-responsive">
     <table>
       <thead>
-        <tr>
-          <th>Data/Hora</th>
-          <th>OLT</th>
-          <th>PON</th>
-          <th>Técnico</th>
-          <th>Suporte</th>
-          <th>Foto</th>
-          <th>Obs</th>
-        </tr>
+        <tr><th>Data/Hora</th><th>OLT</th><th>PON</th><th>Técnico</th><th>Suporte</th><th>Foto</th><th>Obs</th></tr>
       </thead>
-      <tbody id="listaHistorico">
-        <tr><td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">Carregando dados...</td></tr>
-      </tbody>
+      <tbody id="listaHistorico"><tr><td colspan="7" style="text-align:center; padding:20px;">Carregando...</td></tr></tbody>
     </table>
   </div>
-  
   <footer>Desenvolvido by Juander</footer>
 </div>
 
 <script>
-// SEU LINK FIXO - NUNCA MUDA
 const API_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 let imagemBase64 = "";
 
-// GERA O TEXTO AUTOMATICAMENTE
 const ids = ["olt","pon","tecnico","suporte","obs"];
 ids.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
 
 function gerarTexto() {
   const v = (i) => document.getElementById(i).value || "...";
-  document.getElementById("saida").value = 
-`Identificação Técnica
-
-OLT: ${v('olt').toUpperCase()}
-SLOT/PON: ${v('pon')}
-TÉCNICO: ${v('tecnico')}
-SUPORTE: ${v('suporte')}
-OBS: ${v('obs')}`;
+  document.getElementById("saida").value = `Identificação Técnica\n\nOLT: ${v('olt').toUpperCase()}\nSLOT/PON: ${v('pon')}\nTÉCNICO: ${v('tecnico')}\nSUPORTE: ${v('suporte')}\nOBS: ${v('obs')}`;
 }
 
-// PROCESSA A FOTO
-function processarFoto() {
+// --- FUNÇÃO DE COMPRESSÃO DE IMAGEM ---
+function comprimirImagem() {
   const file = document.getElementById('inputFoto').files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      imagemBase64 = e.target.result; 
-      document.getElementById('statusFoto').innerText = "✅ Foto pronta: " + file.name;
-    };
-    reader.readAsDataURL(file);
+  if (!file) return;
+
+  document.getElementById('statusFoto').innerText = "⏳ Processando imagem...";
+  
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(event) {
+    const img = new Image();
+    img.src = event.target.result;
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 800; // Reduz largura para 800px (Suficiente para registro)
+      const scaleSize = MAX_WIDTH / img.width;
+      canvas.width = MAX_WIDTH;
+      canvas.height = img.height * scaleSize;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      // Converte para JPG com qualidade 0.7 (Leve e Rápido)
+      imagemBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      document.getElementById('statusFoto').innerText = "✅ Foto pronta (Comprimida)";
+    }
   }
 }
 
@@ -276,21 +150,17 @@ async function salvar() {
     imagem: imagemBase64
   };
 
-  if(!dados.olt || !dados.tecnico) return alert("Preencha pelo menos OLT e Técnico!");
+  if(!dados.olt || !dados.tecnico) return alert("Preencha OLT e Técnico!");
 
   btn.innerText = "ENVIANDO...";
   btn.disabled = true;
 
   try {
-    await fetch(API_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(dados)
-    });
+    await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
     alert("Salvo com sucesso!");
     location.reload();
   } catch (e) {
-    alert("Erro ao salvar. Verifique se autorizou o script.");
+    alert("Erro: " + e);
     btn.disabled = false;
     btn.innerText = "Salvar no Histórico";
   }
@@ -304,31 +174,20 @@ async function carregar() {
     tbody.innerHTML = "";
     
     dados.reverse().forEach(row => {
-      // Remove o ' das datas e PONs
-      const dataF = row[0].toString().replace(/^'/, ""); 
+      // Remove o ' de proteção
+      const dataF = row[0].toString().replace(/^'/, "");
       const ponF = row[2].toString().replace(/^'/, "");
       const link = row[6];
       
-      let imgHtml = '<span style="color:#64748b; font-size:10px;">-</span>';
+      let imgHtml = '<span style="color:#64748b">-</span>';
+      // Verifica se é um link válido do Google
       if(link && link.includes("http")) {
         imgHtml = `<a href="${link}" target="_blank"><img src="${link}" class="thumb" title="Ver foto"></a>`;
       }
 
-      tbody.innerHTML += `
-        <tr>
-          <td>${dataF}</td>
-          <td>${row[1]}</td>
-          <td>${ponF}</td>
-          <td>${row[3]}</td>
-          <td>${row[4]}</td>
-          <td style="text-align:center">${imgHtml}</td>
-          <td style="white-space:normal; max-width:250px; font-size:12px;">${row[5]}</td>
-        </tr>
-      `;
+      tbody.innerHTML += `<tr><td>${dataF}</td><td>${row[1]}</td><td>${ponF}</td><td>${row[3]}</td><td>${row[4]}</td><td style="text-align:center">${imgHtml}</td><td style="white-space:normal; max-width:250px; font-size:12px;">${row[5]}</td></tr>`;
     });
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ef4444;">Erro ao carregar histórico.</td></tr>`;
-  }
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Erro ao carregar.</td></tr>`; }
 }
 
 window.onload = carregar;
