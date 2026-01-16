@@ -3,261 +3,268 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Identificação Técnica CTO</title>
+<title>Identificação Técnica CTO | N2/N3</title>
+
 <style>
-  /* --- VISUAL BASEADO NOS SEUS PRINTS --- */
-  :root {
-    --bg-main: #0b1120;   /* Fundo quase preto */
-    --bg-card: #111827;   /* Fundo do card/inputs */
-    --border: #1f2937;    /* Bordas sutis */
-    --text-main: #ffffff;
-    --text-muted: #9ca3af;
-    --accent: #3b82f6;    /* Azul padrão */
-    --success: #10b981;   /* Verde do botão copiar */
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
   }
 
-  body { margin: 0; font-family: "Segoe UI", Roboto, sans-serif; background: var(--bg-main); color: var(--text-main); }
-  .container { max-width: 1000px; margin: 40px auto; padding: 20px; }
-
-  /* Título */
-  h1 { 
-    text-align: center; color: var(--accent); margin-bottom: 40px; 
-    font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-    border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 10px;
+  .container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
   }
-  .header-wrapper { text-align: center; }
 
-  /* Inputs Escuros */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .form-group { display: flex; flex-direction: column; }
-  .full { grid-column: span 2; }
+  h1 {
+    text-align: center;
+    color: #3b82f6;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  h2 {
+    color: #3b82f6;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    border-bottom: 1px solid #1f2933;
+    padding-bottom: 10px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #9ca3af;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid #1f2933;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+  }
   
-  label { font-size: 13px; margin-bottom: 8px; color: var(--text-muted); font-weight: 600; }
+  /* Destaque para o campo de link obrigatório */
+  #linkFoto {
+    border-color: #3b82f6;
+    background: #1e293b;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .full {
+    grid-column: span 2;
+  }
   
-  input, textarea {
-    background: #1f2937; /* Cinza bem escuro */
-    color: white; 
-    border: 1px solid #374151;
-    border-radius: 6px; padding: 12px; font-size: 14px; outline: none; transition: 0.2s;
-  }
-  input:focus, textarea:focus { border-color: var(--accent); }
-  textarea { resize: vertical; min-height: 100px; }
-  
-  /* Placeholder mais claro */
-  ::placeholder { color: #4b5563; }
-
-  /* Botão de Upload Tracejado */
-  .upload-area {
-    border: 2px dashed #4b5563; background: rgba(31, 41, 55, 0.5);
-    padding: 25px; text-align: center; border-radius: 6px; cursor: pointer;
-    transition: 0.2s; position: relative;
-  }
-  .upload-area:hover { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
-  .upload-text { font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;}
-  .upload-icon { margin-right: 8px; }
-  #inputFoto { display: none; }
-  #statusFoto { text-align: center; color: var(--success); font-weight: bold; margin-top: 8px; font-size: 13px; }
-
-  /* Área de Texto Gerado */
-  .output-box {
-    margin-top: 30px; background: #0f172a; border: 1px solid #1e293b;
-    border-radius: 8px; padding: 20px;
-  }
-  .output-label { color: var(--accent); font-size: 13px; font-weight: bold; margin-bottom: 10px; display: block; }
-  .output-textarea {
-    width: 100%; min-height: 100px; background: transparent; border: none;
-    color: #e5e7eb; font-family: monospace; resize: none; outline: none;
+  .required-asterisk {
+    color: #ef4444;
+    font-weight: bold;
+    margin-left: 5px;
   }
 
-  /* Botões Largos */
-  .btn-row { display: flex; gap: 15px; margin-top: 20px; }
+  .output {
+    margin-top: 30px;
+    padding-bottom: 20px;
+  }
+
+  .output label {
+    font-size: 14px;
+    color: #3b82f6;
+  }
+
+  .output textarea {
+    width: 100%;
+    min-height: 160px;
+    margin-top: 8px;
+    background: #020617;
+    border: 1px solid #1f2933;
+    border-radius: 6px;
+    padding: 12px;
+    color: #e5e7eb;
+    white-space: pre-wrap;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
   button {
-    padding: 14px; border: none; border-radius: 6px; font-weight: 700; 
-    cursor: pointer; flex: 1; color: white; text-transform: uppercase; font-size: 14px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
   }
-  .btn-copy { background: var(--success); }
-  .btn-copy:hover { background: #059669; }
-  
-  .btn-save { background: var(--accent); }
+
+  .btn-copy { background: #22c55e; color: #052e14; }
+  .btn-copy:hover { background: #16a34a; }
+
+  .btn-save { background: #3b82f6; color: #ffffff; }
   .btn-save:hover { background: #2563eb; }
-  .btn-save:disabled { background: #4b5563; cursor: not-allowed; opacity: 0.7; }
+  .btn-save:disabled { background: #4b5563; cursor: not-allowed; }
 
-  /* Tabela */
-  h2 { color: var(--accent); margin-top: 50px; font-size: 16px; border-bottom: 1px solid #374151; padding-bottom: 10px; }
-  .table-responsive { overflow-x: auto; margin-top: 20px; border-radius: 8px; border: 1px solid #374151; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; background: #111827; }
-  th { text-align: left; color: var(--accent); padding: 15px; border-bottom: 2px solid #374151; background: #0f172a; white-space: nowrap; }
-  td { padding: 12px 15px; border-bottom: 1px solid #374151; color: #d1d5db; }
-  tr:hover { background: #1f2937; }
+  .table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    background: #111827;
+    border-radius: 8px;
+    border: 1px solid #1f2933;
+  }
 
-  .thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #4b5563; background: black; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  th {
+    background: #1e293b;
+    color: #3b82f6;
+    padding: 12px;
+    border-bottom: 2px solid #1f2933;
+  }
+
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #1f2933;
+    vertical-align: top;
+  }
   
-  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full { grid-column: span 1; } .btn-row { flex-direction: column; } }
+  td a { color: #3b82f6; text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  tr:hover { background: #1e293b; }
+
+  footer {
+    margin-top: 35px;
+    text-align: center;
+    font-size: 12px;
+    color: #9ca3af;
+  }
 </style>
 </head>
+
 <body>
 
 <div class="container">
-  <div class="header-wrapper"><h1>IDENTIFICAÇÃO TÉCNICA CTO</h1></div>
+  <h1>Identificação Técnica de CTO – N2 / N3</h1>
 
   <div class="form-grid">
-    <div class="form-group"><label>OLT</label><input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA"></div>
-    <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0-0-13-6"></div>
-    <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do Técnico"></div>
-    <div class="form-group"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu Nome"></div>
-
-    <div class="full">
-      <label>Foto do Serviço (Opcional)</label>
-      <label class="upload-area">
-        <span class="upload-icon">📷</span>
-        <span class="upload-text">TOQUE PARA ESCOLHER A FOTO</span>
-        <input type="file" id="inputFoto" accept="image/*" onchange="processarFoto()">
-      </label>
-      <div id="statusFoto"></div>
+    <div class="form-group">
+      <label>OLT</label>
+      <input id="olt" type="text" placeholder="Ex: OLT-01">
     </div>
 
-    <div class="full"><label>Observações</label><textarea id="obs" placeholder="Descreva o serviço realizado..."></textarea></div>
+    <div class="form-group">
+      <label>Slot / PON</label>
+      <input id="pon" type="text" placeholder="Ex: 0/1/2">
+    </div>
+
+    <div class="form-group">
+      <label>Técnico de Campo</label>
+      <input id="tecnico" type="text" placeholder="Nome do técnico">
+    </div>
+
+    <div class="form-group">
+      <label>Suporte Responsável (N2 / N3)</label>
+      <input id="suporte" type="text" placeholder="Seu nome">
+    </div>
+    
+    <div class="form-group full">
+      <label>Link da Foto da Identificação <span class="required-asterisk">* Obrigatório</span></label>
+      <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem (Drive, Imgur, Sistema Interno...)">
+    </div>
+
+    <div class="form-group full">
+      <label>Observações</label>
+      <textarea id="obs" placeholder="Detalhes técnicos..."></textarea>
+    </div>
   </div>
 
-  <div class="output-box">
-    <label class="output-label">Texto Gerado</label>
-    <textarea id="saida" class="output-textarea" readonly></textarea>
+  <div class="output">
+    <label>Texto Gerado</label>
+    <textarea id="saida" readonly></textarea>
+    <div class="button-group">
+        <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
+        <button class="btn-save" id="btnSalvar" onclick="salvarNoBanco()">Salvar no Histórico</button>
+    </div>
   </div>
 
-  <div class="btn-row">
-    <button class="btn-copy" onclick="copiar()">COPIAR TEXTO</button>
-    <button class="btn-save" id="btnSalvar" onclick="salvar()">SALVAR NO HISTÓRICO</button>
+  <div class="history-section">
+    <h2>Histórico de Registros Recentes</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Data/Hora (RO)</th>
+            <th>OLT</th>
+            <th>Slot/PON</th>
+            <th>Técnico</th>
+            <th>Suporte</th>
+            <th>Foto</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoHistorico">
+          </tbody>
+      </table>
+    </div>
   </div>
 
-  <h2>Histórico de Atendimentos (Rondônia GMT-4)</h2>
-  <div class="table-responsive">
-    <table id="tabelaHistorico">
-      <thead><tr><th>Data/Hora</th><th>OLT</th><th>PON</th><th>Técnico</th><th>Suporte</th><th>Foto</th><th>Obs</th></tr></thead>
-      <tbody id="listaHistorico"><tr><td colspan="7" style="text-align:center; padding:20px;">Carregando histórico...</td></tr></tbody>
-    </table>
-  </div>
-  
-  <div style="text-align:center; margin-top:40px; color:#6b7280; font-size:12px;">Desenvolvido by Juander</div>
+  <footer>Desenvolvido by Juander</footer>
 </div>
 
 <script>
-// ==============================================================
-// COLE SUA URL AQUI DENTRO DAS ASPAS:
-const API_URL = "COLE_A_URL_DO_APP_DA_WEB_AQUI";
-// ==============================================================
+// MANTENHA A URL DO SEU SCRIPT AQUI
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
+const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
-let imagemBase64 = "";
-
-const ids = ["olt","pon","tecnico","suporte","obs"];
-ids.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
+// Gera o texto automaticamente ao digitar
+campos.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
 
 function gerarTexto() {
-  const v = (id) => document.getElementById(id).value || "...";
-  document.getElementById("saida").value = 
+  const olt = document.getElementById("olt").value;
+  const pon = document.getElementById("pon").value;
+  const tecnico = document.getElementById("tecnico").value;
+  const suporte = document.getElementById("suporte").value;
+  const linkFoto = document.getElementById("linkFoto").value;
+  const obs = document.getElementById("obs").value;
+
+  // Inclui o link da foto no texto gerado também
+  document.getElementById("saida").value =
 `Identificação Técnica
 
-OLT: ${v('olt').toUpperCase()}
-SLOT/PON: ${v('pon')}
-TÉCNICO: ${v('tecnico')}
-SUPORTE: ${v('suporte')}
-OBS: ${v('obs')}`;
-}
-
-function processarFoto() {
-  const file = document.getElementById('inputFoto').files[0];
-  if(!file) return;
-  document.getElementById('statusFoto').innerText = "⏳ Processando...";
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function(event) {
-    const img = new Image();
-    img.src = event.target.result;
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 800; 
-      const scaleSize = MAX_WIDTH / img.width;
-      canvas.width = MAX_WIDTH;
-      canvas.height = img.height * scaleSize;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      imagemBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      document.getElementById('statusFoto').innerText = "✅ Foto pronta: " + file.name;
-    }
-  }
-}
-
-function copiar() {
-  document.getElementById("saida").select();
-  document.execCommand("copy");
-  alert("Texto copiado!");
-}
-
-async function salvar() {
-  const btn = document.getElementById("btnSalvar");
-  const olt = document.getElementById("olt").value;
-  const tecnico = document.getElementById("tecnico").value;
-
-  if(!olt || !tecnico) return alert("Erro: Preencha OLT e Técnico!");
-  
-  btn.innerText = "ENVIANDO...";
-  btn.disabled = true;
-
-  const dados = {
-    olt: olt,
-    pon: document.getElementById("pon").value,
-    tecnico: tecnico,
-    suporte: document.getElementById("suporte").value,
-    obs: document.getElementById("obs").value,
-    imagem: imagemBase64
-  };
-
-  try {
-    await fetch(API_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(dados) });
-    alert("Salvo com sucesso!");
-    location.reload();
-  } catch (error) {
-    alert("Erro ao salvar: " + error);
-    btn.disabled = false;
-    btn.innerText = "SALVAR NO HISTÓRICO";
-  }
-}
-
-async function carregar() {
-  const tbody = document.getElementById("listaHistorico");
-  try {
-    const response = await fetch(API_URL + "?t=" + new Date().getTime());
-    const dados = await response.json();
-    tbody.innerHTML = "";
-
-    if (dados.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='7' style='text-align:center'>Nenhum registro.</td></tr>";
-      return;
-    }
-
-    dados.reverse().forEach(row => {
-      // Limpeza de ' e correção visual
-      let dataF = row[0] ? row[0].toString().replace(/^'/, "") : "-";
-      let ponF = row[2] ? row[2].toString().replace(/^'/, "") : "-";
-      let linkHtml = (row[5] && row[5].includes("http")) ? 
-        `<a href="${row[5]}" target="_blank"><img src="${row[5]}" class="thumb"></a>` : "-";
-
-      tbody.innerHTML += `<tr>
-        <td>${dataF}</td>
-        <td>${row[1]}</td>
-        <td>${ponF}</td>
-        <td>${row[3]}</td>
-        <td>${row[4]}</td>
-        <td style="text-align:center">${linkHtml}</td>
-        <td style="white-space:normal; max-width:200px;">${row[6]}</td>
-      </tr>`;
-    });
-  } catch (e) {
-    tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:#ef4444'>Erro ao carregar tabela.</td></tr>";
-  }
-}
-
-window.onload = carregar;
-</script>
-</body>
-</html>
+OLT: ${olt}
+SLOT / PON: ${pon}
+TÉCNICO DE CAMPO: ${
