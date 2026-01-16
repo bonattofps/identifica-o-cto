@@ -4,41 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Identificação Técnica CTO | N2/N3</title>
-
 <style>
   body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #0f172a; color: #e5e7eb; }
   .container { max-width: 1100px; margin: 40px auto; padding: 20px; }
-  h1 { text-align: center; color: #3b82f6; margin-bottom: 30px; font-weight: 600; }
-  h2 { color: #3b82f6; font-size: 1.2rem; margin-top: 40px; border-bottom: 1px solid #1f2933; padding-bottom: 10px; }
-  
+  h1 { text-align: center; color: #3b82f6; margin-bottom: 30px; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .form-group { display: flex; flex-direction: column; }
   .form-group label { font-size: 13px; margin-bottom: 6px; color: #9ca3af; }
-  .form-group input, .form-group textarea { background: #111827; color: #e5e7eb; border: 1px solid #1f2933; border-radius: 6px; padding: 10px; font-size: 14px; }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; }
+  .form-group input, .form-group textarea { background: #111827; color: #e5e7eb; border: 1px solid #1f2933; border-radius: 6px; padding: 10px; }
   .full { grid-column: span 2; }
-  
-  .output { margin-top: 30px; padding-bottom: 20px; }
-  .output label { font-size: 14px; color: #3b82f6; }
-  .output textarea { width: 100%; min-height: 150px; background: #020617; border: 1px solid #1f2933; border-radius: 6px; padding: 12px; color: #e5e7eb; resize: none; }
-  
-  .button-group { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-  button { padding: 10px 22px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .output textarea { width: 100%; min-height: 150px; background: #020617; border: 1px solid #1f2933; color: #e5e7eb; border-radius: 6px; padding: 12px; }
+  .button-group { display: flex; gap: 10px; margin-top: 14px; }
+  button { padding: 10px 22px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
   .btn-copy { background: #22c55e; color: #052e14; }
-  .btn-save { background: #3b82f6; color: #ffffff; }
-  .btn-foto { background: #64748b; color: white; display: flex; align-items: center; gap: 8px; }
-  button:disabled { background: #4b5563; cursor: not-allowed; opacity: 0.7; }
-  
-  #nomeArquivo { font-size: 12px; color: #22c55e; margin-top: 5px; font-weight: bold; }
-  
-  .table-container { overflow-x: auto; margin-top: 20px; background: #111827; border-radius: 8px; border: 1px solid #1f2933; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-  th { background: #1e293b; color: #3b82f6; padding: 12px; border-bottom: 2px solid #1f2933; white-space: nowrap; }
-  td { padding: 12px; border-bottom: 1px solid #1f2933; vertical-align: middle; }
-  .preview-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #3b82f6; cursor: pointer; transition: 0.3s; }
-  .preview-img:hover { transform: scale(1.1); }
-  
-  footer { margin-top: 35px; text-align: center; font-size: 12px; color: #9ca3af; }
+  .btn-save { background: #3b82f6; color: white; }
+  .btn-foto { background: #64748b; color: white; margin-top: 8px; }
+  .table-container { overflow-x: auto; margin-top: 30px; background: #111827; border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #1e293b; color: #3b82f6; padding: 12px; border-bottom: 2px solid #1f2933; }
+  td { padding: 12px; border-bottom: 1px solid #1f2933; text-align: center; }
+  .preview-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #3b82f6; }
 </style>
 </head>
 <body>
@@ -51,19 +36,17 @@
     <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0/1/2"></div>
     <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do técnico"></div>
     <div class="form-group"><label>Suporte Responsável (N2 / N3)</label><input id="suporte" type="text" placeholder="Seu nome"></div>
+    <div class="form-group full"><label>Observações</label><textarea id="obs" placeholder="Detalhes do serviço..."></textarea></div>
     
     <div class="form-group full">
       <label>Anexar Foto (Opcional)</label>
       <input type="file" id="inputFoto" accept="image/*" style="display:none" onchange="processarFoto()">
       <button class="btn-foto" onclick="document.getElementById('inputFoto').click()">📸 Selecionar Foto do Serviço</button>
-      <div id="nomeArquivo">Nenhuma foto selecionada</div>
+      <div id="nomeArquivo" style="color: #22c55e; font-size: 12px; margin-top: 5px; font-weight: bold;"></div>
     </div>
-
-    <div class="form-group full"><label>Observações</label><textarea id="obs" placeholder="Detalhes técnicos do atendimento..."></textarea></div>
   </div>
 
-  <div class="output">
-    <label>Texto Gerado para Copiar</label>
+  <div class="output" style="margin-top:20px;">
     <textarea id="saida" readonly></textarea>
     <div class="button-group">
         <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
@@ -71,28 +54,25 @@
     </div>
   </div>
 
-  <div class="history-section">
-    <h2>Histórico de Registros (Rondônia - RO)</h2>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Data/Hora</th>
-            <th>OLT</th>
-            <th>Slot/PON</th>
-            <th>Técnico</th>
-            <th>Foto</th>
-            <th>Observações</th>
-          </tr>
-        </thead>
-        <tbody id="corpoHistorico">
-          <tr><td colspan='6' style='text-align:center'>Carregando histórico compartilhado...</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <h2 style="color:#3b82f6; margin-top:40px;">Histórico de Registros (Rondônia - RO)</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Data/Hora</th>
+          <th>OLT</th>
+          <th>Slot/PON</th>
+          <th>Técnico</th>
+          <th>Suporte</th>
+          <th>Foto</th>
+          <th>Observações</th>
+        </tr>
+      </thead>
+      <tbody id="corpoHistorico">
+        <tr><td colspan='7' style='text-align:center'>Carregando histórico...</td></tr>
+      </tbody>
+    </table>
   </div>
-
-  <footer>Desenvolvido by Juander</footer>
 </div>
 
 <script>
@@ -100,55 +80,51 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqh
 let imagemBase64 = "";
 
 const campos = ["olt","pon","tecnico","suporte","obs"];
-campos.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
-
-function gerarTexto() {
-  const v = (id) => document.getElementById(id).value;
-  document.getElementById("saida").value = `Identificação Técnica\n\nOLT: ${v('olt')}\nSLOT / PON: ${v('pon')}\nTÉCNICO DE CAMPO: ${v('tecnico')}\nSUPORTE: ${v('suporte')}\nOBS: ${v('obs')}`;
-}
+campos.forEach(id => document.getElementById(id).addEventListener("input", () => {
+  const v = (i) => document.getElementById(i).value;
+  document.getElementById("saida").value = `Identificação Técnica\n\nOLT: ${v('olt')}\nSLOT/PON: ${v('pon')}\nTÉCNICO: ${v('tecnico')}\nSUPORTE: ${v('suporte')}\nOBS: ${v('obs')}`;
+}));
 
 function processarFoto() {
   const file = document.getElementById('inputFoto').files[0];
   const reader = new FileReader();
-  reader.onloadend = () => {
-    imagemBase64 = reader.result;
-    document.getElementById('nomeArquivo').innerText = "✅ Foto pronta: " + file.name;
+  reader.onloadend = () => { 
+    imagemBase64 = reader.result; 
+    document.getElementById('nomeArquivo').innerText = "✅ Foto pronta: " + file.name; 
   };
   if (file) reader.readAsDataURL(file);
 }
 
-function copiar() {
-  const areaTexto = document.getElementById("saida");
-  areaTexto.select();
+function copiar() { 
+  const area = document.getElementById("saida");
+  area.select();
   document.execCommand("copy");
-  alert("Texto copiado para a área de transferência!");
+  alert("Texto copiado!"); 
 }
 
 async function salvarNoBanco() {
   const btn = document.getElementById("btnSalvar");
-  const dados = {
-    olt: document.getElementById("olt").value,
-    pon: document.getElementById("pon").value,
-    tecnico: document.getElementById("tecnico").value,
-    suporte: document.getElementById("suporte").value,
-    obs: document.getElementById("obs").value,
-    imagem: imagemBase64
+  const dados = { 
+    olt: document.getElementById("olt").value, 
+    pon: document.getElementById("pon").value, 
+    tecnico: document.getElementById("tecnico").value, 
+    suporte: document.getElementById("suporte").value, 
+    obs: document.getElementById("obs").value, 
+    imagem: imagemBase64 
   };
-
+  
   if(!dados.olt || !dados.tecnico) return alert("Erro: Preencha pelo menos a OLT e o Técnico!");
-
-  btn.innerText = "Enviando Dados e Foto...";
+  
+  btn.innerText = "Enviando..."; 
   btn.disabled = true;
-
+  
   try {
-    // Usamos mode: 'no-cors' para envios simples ao Google Script
     await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
-    alert("Registro salvo com sucesso!");
-    location.reload(); 
-  } catch (error) {
-    console.error(error);
-    alert("Erro ao salvar. Tente novamente.");
-    btn.disabled = false;
+    alert("Registro salvo com sucesso!"); 
+    location.reload();
+  } catch (e) { 
+    alert("Erro ao salvar!"); 
+    btn.disabled = false; 
     btn.innerText = "Salvar no Histórico Global";
   }
 }
@@ -156,24 +132,25 @@ async function salvarNoBanco() {
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
   try {
-    const response = await fetch(SCRIPT_URL);
-    const registros = await response.json();
-    corpo.innerHTML = ""; 
+    const resp = await fetch(SCRIPT_URL);
+    const registros = await response = await resp.json();
+    corpo.innerHTML = "";
     
-    // Mostra os registros (os mais novos primeiro)
     registros.reverse().forEach(reg => {
+      // Ordem Planilha: [0]Data, [1]OLT, [2]PON, [3]Técnico, [4]Suporte, [5]Obs, [6]Foto
       const row = `<tr>
         <td>${reg[0]}</td>
         <td>${reg[1]}</td>
         <td>${reg[2]}</td>
         <td>${reg[3]}</td>
-        <td>${reg[6] && reg[6].includes("http") ? `<a href="${reg[6]}" target="_blank"><img src="${reg[6]}" class="preview-img" title="Clique para ampliar"></a>` : "Sem foto"}</td>
+        <td>${reg[4] || "N/A"}</td>
+        <td>${reg[6] && reg[6].includes("http") ? `<a href="${reg[6]}" target="_blank"><img src="${reg[6]}" class="preview-img"></a>` : "Sem foto"}</td>
         <td>${reg[5]}</td>
       </tr>`;
       corpo.innerHTML += row;
     });
   } catch (e) { 
-    corpo.innerHTML = "<tr><td colspan='6' style='text-align:center'>Nenhum registro encontrado ou erro na carga.</td></tr>"; 
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center'>Nenhum registro encontrado.</td></tr>"; 
   }
 }
 
