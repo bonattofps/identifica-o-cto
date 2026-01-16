@@ -6,15 +6,19 @@
 <title>Identificação Técnica CTO</title>
 
 <style>
-  /* --- TEMA UNI (Azul Navy e Laranja) --- */
+  /* --- TEMA AZUL PROFISSIONAL (CIANO/CELESTE) --- */
   :root {
-    --bg-color: #001233;       /* Azul muito escuro de fundo */
-    --card-color: #001f54;     /* Azul navy para os blocos */
-    --input-bg: #032b6e;       /* Azul para inputs */
-    --text-color: #e2e8f0;     /* Texto claro */
-    --accent-orange: #ff6600;  /* Laranja Uni */
-    --accent-gradient: linear-gradient(135deg, #ff8800, #ff5500);
-    --border-color: #1e3a8a;
+    --bg-color: #020617;       /* Fundo escuro */
+    --card-color: #0f172a;     /* Card Azul Profundo */
+    --input-bg: #1e293b;       /* Fundo Inputs */
+    --text-color: #f8fafc;     /* Texto Branco */
+    
+    /* CORES DE DESTAQUE ATUALIZADAS */
+    --accent-color: #06b6d4;   /* Azul Ciano Vibrante */
+    --accent-hover: #0891b2;   /* Ciano Escuro */
+    --accent-gradient: linear-gradient(135deg, #06b6d4, #3b82f6); /* Degradê Ciano para Azul */
+    
+    --border-color: #334155;
   }
 
   body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-color); color: var(--text-color); }
@@ -29,7 +33,7 @@
     font-weight: 800; 
     text-transform: uppercase; 
     letter-spacing: 1px;
-    border-bottom: 3px solid var(--accent-orange);
+    border-bottom: 3px solid var(--accent-color);
     display: inline-block;
     padding-bottom: 10px;
   }
@@ -40,14 +44,14 @@
     background: var(--card-color);
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-color);
   }
 
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .full-width { grid-column: span 2; }
   
-  label { font-size: 13px; margin-bottom: 8px; color: #93c5fd; font-weight: 600; display: block; }
+  label { font-size: 13px; margin-bottom: 8px; color: #94a3b8; font-weight: 600; display: block; }
   
   input, textarea { 
     width: 100%;
@@ -59,18 +63,18 @@
     font-size: 15px; 
     outline: none; 
     transition: 0.3s; 
-    box-sizing: border-box; /* Garante que não estoure a tela */
+    box-sizing: border-box;
   }
   
-  input:focus, textarea:focus { border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.2); }
+  input:focus, textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
   textarea { resize: vertical; min-height: 100px; }
 
   /* BOTÃO DE FOTO */
   .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
   .btn-upload {
-    border: 2px dashed #4b5563;
+    border: 2px dashed #475569;
     color: #cbd5e1;
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255,255,255,0.03);
     padding: 20px;
     border-radius: 8px;
     font-size: 15px;
@@ -84,14 +88,14 @@
   .upload-btn-wrapper input[type=file] {
     font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%;
   }
-  .btn-upload:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
-  #statusFoto { text-align: center; color: #4ade80; font-weight: bold; margin-top: 10px; font-size: 13px; min-height: 20px;}
+  .btn-upload:hover { border-color: var(--accent-color); color: var(--accent-color); background-color: rgba(6, 182, 212, 0.1); }
+  #statusFoto { text-align: center; color: var(--accent-color); font-weight: bold; margin-top: 10px; font-size: 13px; min-height: 20px;}
 
   /* ÁREA DE TEXTO GERADO */
   .output-area { margin-top: 30px; }
   .output-box {
     background: #020617;
-    border: 1px solid #334155;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 15px;
     width: 100%;
@@ -114,31 +118,31 @@
     cursor: pointer;
     transition: 0.2s;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
-  .btn-copy { background: #10b981; color: #064e3b; } /* Verde */
+  .btn-copy { background: #10b981; color: #022c22; }
   .btn-copy:hover { background: #059669; color: white; }
 
-  .btn-save { background: var(--accent-gradient); color: white; } /* Laranja Uni */
-  .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); }
-  .btn-save:disabled { background: #475569; cursor: not-allowed; transform: none; filter: grayscale(1); }
+  .btn-save { background: var(--accent-gradient); color: white; }
+  .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4); }
+  .btn-save:disabled { background: #475569; cursor: not-allowed; transform: none; filter: grayscale(1); box-shadow: none; }
 
   /* TABELA */
-  h2 { color: var(--accent-orange); margin-top: 50px; border-bottom: 1px solid #1e3a8a; padding-bottom: 10px; font-size: 1.2rem; }
+  h2 { color: var(--accent-color); margin-top: 50px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 1.2rem; }
   
   .table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 20px; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; background: var(--card-color); }
   
-  th { background: #00102b; color: var(--accent-orange); padding: 15px; text-align: left; border-bottom: 2px solid var(--border-color); }
-  td { padding: 12px 15px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
-  tr:hover { background: #032b6e; }
+  th { background: #020617; color: var(--accent-color); padding: 15px; text-align: left; border-bottom: 2px solid var(--border-color); }
+  td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; }
+  tr:hover { background: rgba(6, 182, 212, 0.05); }
 
-  .thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #fff; cursor: pointer; transition: 0.2s; background: #000; }
-  .thumb:hover { transform: scale(3); border-color: var(--accent-orange); position: relative; z-index: 10; }
+  .thumb { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #475569; cursor: pointer; transition: 0.2s; background: #000; }
+  .thumb:hover { transform: scale(3.5); border-color: var(--accent-color); position: relative; z-index: 50; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 
   footer { margin-top: 50px; text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
 
-  /* MOBILE */
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .full-width { grid-column: span 1; }
@@ -173,12 +177,12 @@
       </div>
 
       <div class="full-width">
-        <label>Foto do Serviço (Obrigatório / Opcional)</label>
+        <label>Foto do Serviço (Opcional)</label>
         <div class="upload-btn-wrapper">
           <button class="btn-upload">📸 Toque para escolher a foto</button>
           <input type="file" id="inputFoto" accept="image/*" onchange="processarFoto()">
         </div>
-        <div id="statusFoto">Nenhuma foto selecionada</div>
+        <div id="statusFoto"></div>
       </div>
 
       <div class="full-width">
@@ -213,7 +217,7 @@
         </tr>
       </thead>
       <tbody id="listaHistorico">
-        <tr><td colspan="7" style="text-align:center; padding:20px;">Carregando dados...</td></tr>
+        <tr><td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">Carregando dados...</td></tr>
       </tbody>
     </table>
   </div>
@@ -222,11 +226,11 @@
 </div>
 
 <script>
-// LINK DO SEU SCRIPT
+// SEU LINK FIXO - NUNCA MUDA
 const API_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 let imagemBase64 = "";
 
-// GERA O TEXTO AUTOMATICAMENTE AO DIGITAR
+// GERA O TEXTO AUTOMATICAMENTE
 const ids = ["olt","pon","tecnico","suporte","obs"];
 ids.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
 
@@ -248,8 +252,8 @@ function processarFoto() {
   if (file) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      imagemBase64 = e.target.result; // Isso pega a string completa da imagem
-      document.getElementById('statusFoto').innerText = "✅ Foto carregada: " + file.name;
+      imagemBase64 = e.target.result; 
+      document.getElementById('statusFoto').innerText = "✅ Foto pronta: " + file.name;
     };
     reader.readAsDataURL(file);
   }
@@ -269,7 +273,7 @@ async function salvar() {
     tecnico: document.getElementById("tecnico").value,
     suporte: document.getElementById("suporte").value,
     obs: document.getElementById("obs").value,
-    imagem: imagemBase64 // Envia a foto processada
+    imagem: imagemBase64
   };
 
   if(!dados.olt || !dados.tecnico) return alert("Preencha pelo menos OLT e Técnico!");
@@ -286,7 +290,7 @@ async function salvar() {
     alert("Salvo com sucesso!");
     location.reload();
   } catch (e) {
-    alert("Erro ao salvar: " + e);
+    alert("Erro ao salvar. Verifique se autorizou o script.");
     btn.disabled = false;
     btn.innerText = "Salvar no Histórico";
   }
@@ -300,7 +304,7 @@ async function carregar() {
     tbody.innerHTML = "";
     
     dados.reverse().forEach(row => {
-      // Remove o ' das datas e PONs para exibir limpo
+      // Remove o ' das datas e PONs
       const dataF = row[0].toString().replace(/^'/, ""); 
       const ponF = row[2].toString().replace(/^'/, "");
       const link = row[6];
@@ -323,7 +327,7 @@ async function carregar() {
       `;
     });
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Erro ao carregar histórico.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ef4444;">Erro ao carregar histórico.</td></tr>`;
   }
 }
 
