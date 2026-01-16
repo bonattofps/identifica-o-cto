@@ -6,127 +6,92 @@
 <title>Identificação Técnica CTO | N2/N3</title>
 
 <style>
-  /* --- ESTILO GERAL (Tema Escuro Profissional) --- */
+  /* --- ESTILO DARK MODE --- */
   body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #0f172a; color: #e5e7eb; }
   .container { max-width: 1200px; margin: 40px auto; padding: 20px; }
+  h1 { text-align: center; color: #3b82f6; margin-bottom: 30px; font-weight: 700; letter-spacing: 1px; }
   
-  h1 { text-align: center; color: #3b82f6; margin-bottom: 30px; font-weight: 700; letter-spacing: 0.5px; }
-  h2 { color: #3b82f6; font-size: 1.1rem; margin-top: 50px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
-
-  /* --- FORMULÁRIO --- */
+  /* Layout */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .form-group { display: flex; flex-direction: column; }
   .full-width { grid-column: span 2; }
-
-  label { font-size: 13px; margin-bottom: 8px; color: #94a3b8; font-weight: 500; }
   
-  input, textarea { 
-    background: #1e293b; color: #f8fafc; border: 1px solid #334155; 
-    border-radius: 6px; padding: 12px; font-size: 14px; transition: 0.2s; 
-  }
-  input:focus, textarea:focus { outline: none; border-color: #3b82f6; background: #252f42; }
-  textarea { resize: vertical; min-height: 80px; }
+  /* Inputs */
+  label { font-size: 13px; margin-bottom: 8px; color: #94a3b8; font-weight: 600; }
+  input, textarea { background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-size: 14px; outline: none; transition: 0.3s; }
+  input:focus, textarea:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+  textarea { resize: vertical; min-height: 100px; }
 
-  /* --- BOTÃO DE FOTO --- */
-  .btn-foto { 
-    background: #334155; color: #e2e8f0; display: flex; align-items: center; justify-content: center; 
-    gap: 10px; width: 100%; padding: 15px; border-radius: 6px; cursor: pointer; border: 2px dashed #475569;
-    transition: 0.2s;
-  }
-  .btn-foto:hover { background: #1e293b; border-color: #3b82f6; color: #3b82f6; }
-  #statusFoto { font-size: 13px; color: #22c55e; margin-top: 8px; font-weight: bold; text-align: center; min-height: 20px;}
+  /* Botão de Foto */
+  .file-upload-wrapper { position: relative; width: 100%; height: 50px; border: 2px dashed #475569; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; background: #1e293b; }
+  .file-upload-wrapper:hover { border-color: #3b82f6; background: #263345; }
+  .file-upload-text { color: #94a3b8; font-size: 14px; font-weight: 500; }
+  #inputFoto { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  #statusFoto { text-align: center; font-size: 13px; margin-top: 8px; font-weight: bold; min-height: 20px; color: #22c55e; }
 
-  /* --- ÁREA DE SAÍDA E AÇÕES --- */
-  .output-area { margin-top: 30px; background: #1e293b; padding: 25px; border-radius: 8px; border: 1px solid #334155; }
-  .output-area textarea { width: 100%; background: #0f172a; border: none; min-height: 120px; box-sizing: border-box; font-family: monospace; }
-
+  /* Área de Saída */
+  .output-area { margin-top: 40px; background: #1e293b; padding: 20px; border-radius: 8px; border: 1px solid #334155; }
+  .output-area textarea { background: #0f172a; border: none; font-family: monospace; }
+  
+  /* Botões */
   .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
-  button { padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 14px; flex: 1; }
-  
+  button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 15px; }
   .btn-copy { background: #22c55e; color: #022c22; }
   .btn-copy:hover { background: #16a34a; }
-  
   .btn-save { background: #3b82f6; color: white; }
   .btn-save:hover { background: #2563eb; }
-  .btn-save:disabled { background: #64748b; cursor: not-allowed; opacity: 0.7; }
+  .btn-save:disabled { background: #64748b; opacity: 0.7; cursor: not-allowed; }
 
-  /* --- TABELA DE HISTÓRICO --- */
-  .table-wrapper { overflow-x: auto; margin-top: 20px; border-radius: 8px; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; background: #1e293b; }
-  
-  th { background: #0f172a; color: #3b82f6; padding: 16px; border-bottom: 2px solid #334155; white-space: nowrap; font-weight: 600; }
-  td { padding: 12px 16px; border-bottom: 1px solid #334155; vertical-align: middle; color: #cbd5e1; }
-  tr:last-child td { border-bottom: none; }
+  /* Tabela */
+  h2 { color: #3b82f6; font-size: 1.1rem; margin-top: 50px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+  .table-wrapper { overflow-x: auto; margin-top: 20px; border-radius: 8px; border: 1px solid #334155; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: #1e293b; white-space: nowrap; }
+  th { background: #0f172a; color: #3b82f6; padding: 15px; text-align: left; border-bottom: 2px solid #334155; }
+  td { padding: 12px 15px; border-bottom: 1px solid #334155; color: #cbd5e1; vertical-align: middle; }
   tr:hover { background: #263345; }
-
-  .thumb-img { 
-    width: 45px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #475569; 
-    transition: transform 0.2s; cursor: pointer; background: #0f172a;
-  }
-  .thumb-img:hover { transform: scale(3.5); border-color: #3b82f6; z-index: 50; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
-
-  footer { margin-top: 60px; text-align: center; font-size: 12px; color: #64748b; padding-bottom: 20px; }
-
-  /* Responsivo para celular */
-  @media (max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .full-width { grid-column: span 1; }
-  }
+  
+  /* Miniatura */
+  .thumb-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #475569; transition: 0.2s; cursor: pointer; background: #000; }
+  .thumb-img:hover { transform: scale(3); border-color: #3b82f6; z-index: 100; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+  
+  footer { margin-top: 50px; text-align: center; color: #64748b; font-size: 12px; padding-bottom: 20px; }
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>IDENTIFICAÇÃO TÉCNICA CTO</h1>
+  <h1>Identificação Técnica CTO</h1>
 
   <div class="form-grid">
-    <div class="form-group">
-      <label>OLT</label>
-      <input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA">
-    </div>
-
-    <div class="form-group">
-      <label>Slot / PON</label>
-      <input id="pon" type="text" placeholder="Ex: 0-0-13-6">
-    </div>
-
-    <div class="form-group">
-      <label>Técnico de Campo</label>
-      <input id="tecnico" type="text" placeholder="Nome do técnico">
-    </div>
-
-    <div class="form-group">
-      <label>Suporte Responsável</label>
-      <input id="suporte" type="text" placeholder="Seu nome">
-    </div>
+    <div class="form-group"><label>OLT</label><input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA"></div>
+    <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0-0-13-6"></div>
+    <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do técnico"></div>
+    <div class="form-group"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu nome"></div>
 
     <div class="form-group full-width">
       <label>Foto do Serviço (Opcional)</label>
-      <input type="file" id="inputFoto" accept="image/*" style="display:none" onchange="prepararFoto()">
-      <div class="btn-foto" onclick="document.getElementById('inputFoto').click()">
-        📷 Clique aqui para anexar a foto
+      <div class="file-upload-wrapper">
+        <span class="file-upload-text">📸 Clique aqui para anexar a foto</span>
+        <input type="file" id="inputFoto" accept="image/*" onchange="processarFoto()">
       </div>
       <div id="statusFoto"></div>
     </div>
 
-    <div class="form-group full-width">
-      <label>Observações</label>
-      <textarea id="obs" placeholder="Descreva o serviço, sinal ou testes realizados..."></textarea>
-    </div>
+    <div class="form-group full-width"><label>Observações</label><textarea id="obs" placeholder="Descreva o serviço realizado..."></textarea></div>
   </div>
 
   <div class="output-area">
-    <label style="color: #3b82f6; font-weight: bold;">Texto Gerado para Copiar</label>
+    <label style="color:#3b82f6">Texto Gerado</label>
     <textarea id="saida" readonly></textarea>
-    
     <div class="action-buttons">
-      <button class="btn-copy" onclick="copiarTexto()">Copiar Texto</button>
-      <button class="btn-save" id="btnSalvar" onclick="enviarDados()">Salvar no Histórico</button>
+      <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
+      <button class="btn-save" id="btnSalvar" onclick="salvar()">Salvar no Histórico</button>
     </div>
   </div>
 
-  <h2>Histórico de Atendimentos (Rondônia - GMT-4)</h2>
+  <h2>Histórico de Atendimentos (Rondônia GMT-4)</h2>
   <div class="table-wrapper">
     <table>
       <thead>
@@ -141,53 +106,47 @@
         </tr>
       </thead>
       <tbody id="listaHistorico">
-        <tr><td colspan="7" style="text-align:center; padding: 25px; color: #94a3b8;">Carregando registros...</td></tr>
+        <tr><td colspan="7" style="text-align:center; padding:20px;">Carregando histórico...</td></tr>
       </tbody>
     </table>
   </div>
-
-  <footer>Sistema de Apoio N2/N3 - Desenvolvido by Juander</footer>
+  
+  <footer>Desenvolvido by Juander</footer>
 </div>
 
 <script>
-// --- SEU LINK DO GOOGLE APPS SCRIPT ---
+// SEU LINK DO GOOGLE APPS SCRIPT
 const API_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
-
 let imagemBase64 = "";
 
-// Gera o texto automaticamente ao digitar
-const ids = ["olt", "pon", "tecnico", "suporte", "obs"];
-ids.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
+// GERA O TEXTO
+const ids = ["olt","pon","tecnico","suporte","obs"];
+ids.forEach(id => document.getElementById(id).addEventListener("input", () => {
+  const v = (i) => document.getElementById(i).value || "...";
+  document.getElementById("saida").value = `Identificação Técnica\n\nOLT: ${v('olt')}\nSLOT/PON: ${v('pon')}\nTÉCNICO: ${v('tecnico')}\nSUPORTE: ${v('suporte')}\nOBS: ${v('obs')}`;
+}));
 
-function gerarTexto() {
-  const v = (id) => document.getElementById(id).value || "...";
-  const texto = `Identificação Técnica\n\nOLT: ${v('olt')}\nSLOT / PON: ${v('pon')}\nTÉCNICO DE CAMPO: ${v('tecnico')}\nSUPORTE RESPONSÁVEL: ${v('suporte')}\nOBSERVAÇÕES: ${v('obs')}`;
-  document.getElementById("saida").value = texto;
-}
-
-function copiarTexto() {
-  const area = document.getElementById("saida");
-  area.select();
+function copiar() {
+  document.getElementById("saida").select();
   document.execCommand("copy");
   alert("Texto copiado!");
 }
 
-function prepararFoto() {
-  const arquivo = document.getElementById('inputFoto').files[0];
-  if (arquivo) {
-    const leitor = new FileReader();
-    leitor.onloadend = function() {
-      imagemBase64 = leitor.result;
-      document.getElementById('statusFoto').innerText = "✅ Imagem selecionada: " + arquivo.name;
-    }
-    leitor.readAsDataURL(arquivo);
+function processarFoto() {
+  const file = document.getElementById('inputFoto').files[0];
+  if(file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      imagemBase64 = reader.result;
+      document.getElementById('statusFoto').innerText = "✅ Foto pronta: " + file.name;
+    };
+    reader.readAsDataURL(file);
   }
 }
 
-async function enviarDados() {
+async function salvar() {
   const btn = document.getElementById("btnSalvar");
-  
-  const payload = {
+  const dados = {
     olt: document.getElementById("olt").value,
     pon: document.getElementById("pon").value,
     tecnico: document.getElementById("tecnico").value,
@@ -196,76 +155,59 @@ async function enviarDados() {
     imagem: imagemBase64
   };
 
-  if (!payload.olt || !payload.tecnico) {
-    alert("Erro: Preencha pelo menos a OLT e o Técnico.");
-    return;
-  }
+  if(!dados.olt || !dados.tecnico) return alert("Preencha OLT e Técnico!");
 
   btn.innerText = "Enviando...";
   btn.disabled = true;
 
   try {
-    // Envia os dados para a planilha
-    await fetch(API_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(payload)
-    });
-    
+    await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
     alert("Salvo com sucesso!");
-    location.reload(); // Recarrega para mostrar a foto nova na tabela
-  } catch (erro) {
-    console.error(erro);
-    alert("Erro ao salvar. Verifique sua conexão.");
+    location.reload();
+  } catch (e) {
+    alert("Erro ao salvar: " + e);
     btn.disabled = false;
     btn.innerText = "Salvar no Histórico";
   }
 }
 
-async function carregarTabela() {
-  const tabela = document.getElementById("listaHistorico");
-  
+async function carregar() {
+  const tbody = document.getElementById("listaHistorico");
   try {
-    const resposta = await fetch(API_URL);
-    const dados = await resposta.json();
+    const res = await fetch(API_URL);
+    const dados = await res.json();
+    tbody.innerHTML = "";
     
-    tabela.innerHTML = ""; // Limpa o carregando
-    
-    // Inverte a ordem para mostrar os mais recentes primeiro
-    dados.reverse().forEach(linha => {
-      // Mapeia as colunas conforme a ordem que definimos no Script do Google
-      // [0]Data, [1]OLT, [2]PON, [3]Técnico, [4]Suporte, [5]Obs, [6]Foto
+    dados.reverse().forEach(row => {
+      // Remove a trava (') para exibir o texto limpo
+      const dataFormatada = row[0].toString().replace(/^'/, "");
+      const ponFormatada = row[2].toString().replace(/^'/, "");
       
-      const linkFoto = linha[6];
-      let celulaFoto = '<span style="color:#64748b; font-size:11px;">Sem foto</span>';
+      const linkFoto = row[6];
+      let imgHtml = '<span style="color:#64748b;font-size:11px">Sem foto</span>';
       
-      // Se tiver link de foto válido, cria a miniatura
-      if (linkFoto && linkFoto.includes("http")) {
-        celulaFoto = `<a href="${linkFoto}" target="_blank"><img src="${linkFoto}" class="thumb-img" title="Clique para ampliar"></a>`;
+      if(linkFoto && linkFoto.includes("http")) {
+        imgHtml = `<a href="${linkFoto}" target="_blank"><img src="${linkFoto}" class="thumb-img" title="Ver foto"></a>`;
       }
 
-      const htmlLinha = `
+      tbody.innerHTML += `
         <tr>
-          <td>${linha[0]}</td>
-          <td>${linha[1]}</td>
-          <td>${linha[2]}</td>
-          <td>${linha[3]}</td>
-          <td>${linha[4]}</td>
-          <td style="text-align:center">${celulaFoto}</td>
-          <td>${linha[5]}</td>
+          <td>${dataFormatada}</td>
+          <td>${row[1]}</td>
+          <td>${ponFormatada}</td>
+          <td>${row[3]}</td>
+          <td>${row[4]}</td>
+          <td style="text-align:center">${imgHtml}</td>
+          <td style="white-space:normal; max-width:300px;">${row[5]}</td>
         </tr>
       `;
-      tabela.innerHTML += htmlLinha;
     });
-    
-  } catch (erro) {
-    tabela.innerHTML = `<tr><td colspan="7" style="text-align:center; color: #ef4444;">Nenhum registro encontrado ou erro na conexão.</td></tr>`;
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:red">Erro ao carregar tabela.</td></tr>`;
   }
 }
 
-// Inicia o carregamento assim que abrir a página
-window.onload = carregarTabela;
+window.onload = carregar;
 </script>
-
 </body>
 </html>
