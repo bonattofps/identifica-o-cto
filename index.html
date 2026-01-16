@@ -61,16 +61,15 @@
     font-size: 14px;
   }
 
+  #linkFoto {
+    background: #172033;
+    border: 1px solid #3b82f6;
+  }
+
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
     border-color: #3b82f6;
-  }
-  
-  /* Destaque para o campo de link obrigatório */
-  #linkFoto {
-    border-color: #3b82f6;
-    background: #1e293b;
   }
 
   .form-group textarea {
@@ -81,58 +80,38 @@
   .full {
     grid-column: span 2;
   }
-  
-  .required-asterisk {
+
+  .required {
     color: #ef4444;
-    font-weight: bold;
+    font-size: 11px;
     margin-left: 5px;
   }
 
-  .output {
+  /* Área do Botão Salvar - Centralizado e Grande */
+  .action-area {
     margin-top: 30px;
-    padding-bottom: 20px;
-  }
-
-  .output label {
-    font-size: 14px;
-    color: #3b82f6;
-  }
-
-  .output textarea {
-    width: 100%;
-    min-height: 160px;
-    margin-top: 8px;
-    background: #020617;
-    border: 1px solid #1f2933;
-    border-radius: 6px;
-    padding: 12px;
-    color: #e5e7eb;
-    white-space: pre-wrap;
-  }
-
-  .button-group {
     display: flex;
-    gap: 10px;
-    margin-top: 14px;
+    justify-content: center;
   }
 
   button {
-    padding: 10px 22px;
+    padding: 12px 40px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
+    background: #3b82f6; 
+    color: #ffffff;
+    width: 100%;
+    max-width: 300px;
   }
 
-  .btn-copy { background: #22c55e; color: #052e14; }
-  .btn-copy:hover { background: #16a34a; }
+  button:hover { background: #2563eb; }
+  button:disabled { background: #4b5563; cursor: not-allowed; }
 
-  .btn-save { background: #3b82f6; color: #ffffff; }
-  .btn-save:hover { background: #2563eb; }
-  .btn-save:disabled { background: #4b5563; cursor: not-allowed; }
-
+  /* Tabela */
   .table-container {
     overflow-x: auto;
     margin-top: 20px;
@@ -153,16 +132,29 @@
     color: #3b82f6;
     padding: 12px;
     border-bottom: 2px solid #1f2933;
+    white-space: nowrap;
   }
 
   td {
     padding: 12px;
     border-bottom: 1px solid #1f2933;
     vertical-align: top;
+    color: #d1d5db;
+  }
+
+  td a.link-foto {
+    color: #60a5fa;
+    text-decoration: none;
+    background: #1e293b;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
   }
   
-  td a { color: #3b82f6; text-decoration: none; }
-  td a:hover { text-decoration: underline; }
+  td a.link-foto:hover {
+    background: #3b82f6;
+    color: white;
+  }
 
   tr:hover { background: #1e293b; }
 
@@ -202,8 +194,8 @@
     </div>
     
     <div class="form-group full">
-      <label>Link da Foto da Identificação <span class="required-asterisk">* Obrigatório</span></label>
-      <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem (Drive, Imgur, Sistema Interno...)">
+      <label>Link da Foto <span class="required">* Obrigatório</span></label>
+      <input id="linkFoto" type="url" placeholder="Cole o link da imagem aqui">
     </div>
 
     <div class="form-group full">
@@ -212,13 +204,8 @@
     </div>
   </div>
 
-  <div class="output">
-    <label>Texto Gerado</label>
-    <textarea id="saida" readonly></textarea>
-    <div class="button-group">
-        <button class="btn-copy" onclick="copiar()">Copiar Texto</button>
-        <button class="btn-save" id="btnSalvar" onclick="salvarNoBanco()">Salvar no Histórico</button>
-    </div>
+  <div class="action-area">
+      <button id="btnSalvar" onclick="salvarNoBanco()">Salvar no Histórico</button>
   </div>
 
   <div class="history-section">
@@ -246,25 +233,116 @@
 </div>
 
 <script>
-// MANTENHA A URL DO SEU SCRIPT AQUI
+// URL DO SEU SCRIPT (Certifique-se de que é a versão 'exec' atualizada)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
-// Gera o texto automaticamente ao digitar
-campos.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
-
-function gerarTexto() {
+async function salvarNoBanco() {
+  const btn = document.getElementById("btnSalvar");
+  
   const olt = document.getElementById("olt").value;
-  const pon = document.getElementById("pon").value;
   const tecnico = document.getElementById("tecnico").value;
-  const suporte = document.getElementById("suporte").value;
   const linkFoto = document.getElementById("linkFoto").value;
-  const obs = document.getElementById("obs").value;
 
-  // Inclui o link da foto no texto gerado também
-  document.getElementById("saida").value =
-`Identificação Técnica
+  // Validação simples
+  if(!olt || !tecnico || !linkFoto) {
+    alert("ERRO: Preencha a OLT, o Técnico e o Link da Foto!");
+    return;
+  }
 
-OLT: ${olt}
-SLOT / PON: ${pon}
-TÉCNICO DE CAMPO: ${
+  // Monta os dados
+  const dados = {
+    data: new Date().toLocaleString('pt-BR', { timeZone: 'America/Porto_Velho' }),
+    olt: olt,
+    pon: document.getElementById("pon").value,
+    tecnico: tecnico,
+    suporte: document.getElementById("suporte").value,
+    linkFoto: linkFoto,
+    obs: document.getElementById("obs").value
+  };
+
+  btn.innerText = "Enviando...";
+  btn.disabled = true;
+
+  try {
+    // Envia para o Google Sheets
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(dados)
+    });
+
+    alert("Salvo com sucesso!");
+    
+    // Adiciona na tabela visualmente
+    adicionarLinhaTabela(dados, true);
+    
+    // Limpa os campos
+    campos.forEach(id => document.getElementById(id).value = "");
+    
+  } catch (error) {
+    console.error("Erro no fetch:", error);
+    alert("Houve um erro ao tentar salvar. Verifique o console.");
+  } finally {
+    btn.innerText = "Salvar no Histórico";
+    btn.disabled = false;
+  }
+}
+
+async function carregarHistorico() {
+  const corpo = document.getElementById("corpoHistorico");
+  corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>Carregando...</td></tr>";
+
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const registros = await response.json();
+    
+    corpo.innerHTML = "";
+    
+    // Inverte a ordem para ver os mais novos primeiro
+    registros.reverse().forEach(reg => {
+      const d = {
+        data: reg[0],
+        olt: reg[1],
+        pon: reg[2],
+        tecnico: reg[3],
+        suporte: reg[4],
+        obs: reg[5],
+        linkFoto: reg[6]
+      };
+      adicionarLinhaTabela(d, false);
+    });
+  } catch (error) {
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>Sem registros ou erro de conexão.</td></tr>";
+  }
+}
+
+function adicionarLinhaTabela(d, noTopo) {
+  const corpo = document.getElementById("corpoHistorico");
+  
+  const linkDisplay = d.linkFoto && d.linkFoto.startsWith('http') 
+    ? `<a href="${d.linkFoto}" target="_blank" class="link-foto">Abrir Foto</a>` 
+    : '-';
+
+  const row = `<tr>
+    <td>${d.data}</td>
+    <td>${d.olt}</td>
+    <td>${d.pon}</td>
+    <td>${d.tecnico}</td>
+    <td>${d.suporte}</td>
+    <td>${linkDisplay}</td>
+    <td>${d.obs}</td>
+  </tr>`;
+  
+  if(noTopo) {
+    corpo.innerHTML = row + corpo.innerHTML;
+  } else {
+    corpo.innerHTML += row;
+  }
+}
+
+window.onload = carregarHistorico;
+</script>
+
+</body>
+</html>
