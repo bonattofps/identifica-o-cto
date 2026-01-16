@@ -58,9 +58,9 @@
     gap: 10px;
   }
 
-  /* Container Principal - Mais largo para monitores */
+  /* Container Principal */
   .main-wrapper {
-    max-width: 1200px; /* Bem mais largo que antes */
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
@@ -74,7 +74,7 @@
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
 
   .card-header {
@@ -89,7 +89,7 @@
   /* Grid do Formulário */
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 Colunas em telas grandes */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 
@@ -112,7 +112,7 @@
     letter-spacing: 0.05em;
   }
 
-  input, textarea, select {
+  input, textarea {
     background: #020617;
     border: 1px solid var(--border-color);
     color: var(--text-primary);
@@ -129,7 +129,7 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   }
 
-  /* Input de Link com destaque */
+  /* Destaque para o campo de Link */
   #linkFoto {
     background: #0f172a;
     border-left: 4px solid var(--accent-color);
@@ -161,9 +161,15 @@
     box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
     transform: translateY(-2px);
   }
-
+  
   .btn-save:active { transform: translateY(0); }
-  .btn-save:disabled { background: var(--border-color); cursor: not-allowed; transform: none; box-shadow: none;}
+  
+  .btn-save:disabled { 
+    background: var(--border-color); 
+    cursor: not-allowed; 
+    transform: none; 
+    box-shadow: none;
+  }
 
   /* Tabela Moderna */
   .table-responsive {
@@ -195,11 +201,11 @@
     vertical-align: middle;
   }
 
-  /* Efeito Zebra e Hover */
+  /* Zebra e Hover */
   tbody tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
   tbody tr:hover { background-color: rgba(59, 130, 246, 0.05); }
 
-  /* Tags e Badges na tabela */
+  /* Badges */
   .badge-link {
     display: inline-flex;
     align-items: center;
@@ -226,7 +232,7 @@
     opacity: 0.6;
   }
 
-  /* Responsividade para telas menores */
+  /* Responsividade */
   @media (max-width: 768px) {
     .form-grid { grid-template-columns: 1fr; }
     .col-1, .col-2, .col-4 { grid-column: span 1; }
@@ -282,7 +288,7 @@
       </div>
 
       <div class="form-group col-4">
-        <label>Link da Evidência (Foto) <span class="required-star">*</span></label>
+        <label>Link da Evidência (Foto) <span class="required-star">* Obrigatório</span></label>
         <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem (Drive, Imgur, Sistema...)">
       </div>
 
@@ -295,7 +301,7 @@
   <div class="card">
     <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
       <span>Últimos Registros</span>
-      <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Mostrando recentes</span>
+      <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Sincronizado via Google Sheets</span>
     </div>
     
     <div class="table-responsive">
@@ -307,7 +313,7 @@
             <th width="10%">PON</th>
             <th width="15%">Técnico</th>
             <th width="15%">Suporte</th>
-            <th width="10%" style="text-align:center;">Foto</th>
+            <th width="10%" style="text-align:center;">Evidência</th>
             <th width="25%">Obs</th>
           </tr>
         </thead>
@@ -328,6 +334,29 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
+// --- FUNÇÃO PARA LIMPAR DATAS FEIAS (ISO) ---
+// Essa função conserta as datas antigas que estão salvas erradas no Google
+function formatarDataRondonia(dataCrua) {
+  if (!dataCrua) return "-";
+  
+  // Se já for uma data bonita tipo "16/01/2026", retorna ela mesma
+  if (typeof dataCrua === 'string' && dataCrua.includes('/')) {
+    return dataCrua;
+  }
+
+  // Se for aquele formato feio (2026-01-16T11...), tenta converter
+  try {
+    const dataObj = new Date(dataCrua);
+    return dataObj.toLocaleString('pt-BR', { 
+      timeZone: 'America/Porto_Velho',
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+  } catch (e) {
+    return dataCrua;
+  }
+}
+
 // --- FUNÇÃO SALVAR ---
 async function salvarNoBanco() {
   const btn = document.getElementById("btnSalvar");
@@ -338,16 +367,20 @@ async function salvarNoBanco() {
 
   // Validação
   if(!olt || !tecnico || !linkFoto) {
-    alert("⚠️ Faltam dados!\nPor favor, preencha a OLT, o Técnico e o Link da Foto.");
+    alert("⚠️ ATENÇÃO: Preencha a OLT, o Técnico e o Link da Foto.");
     if(!linkFoto) document.getElementById("linkFoto").focus();
     return;
   }
 
-  // Data do Sistema
-  const dataHoraSistema = new Date().toLocaleString('pt-BR');
+  // --- O SEGREDO DO HORÁRIO ESTÁ AQUI ---
+  // Criamos uma STRING de texto fixa com o horário de Rondônia.
+  // Assim o Google Sheets não tenta converter o fuso horário.
+  const dataFormatada = new Date().toLocaleString('pt-BR', { 
+    timeZone: 'America/Porto_Velho'
+  });
 
   const dados = {
-    data: dataHoraSistema,
+    data: dataFormatada, // Envia "16/01/2026 09:30:00"
     olt: olt,
     pon: document.getElementById("pon").value,
     tecnico: tecnico,
@@ -356,7 +389,7 @@ async function salvarNoBanco() {
     obs: document.getElementById("obs").value
   };
 
-  // Feedback Visual
+  // Efeito Visual no Botão
   const textoOriginal = btn.innerText;
   btn.innerText = "Enviando...";
   btn.disabled = true;
@@ -369,9 +402,6 @@ async function salvarNoBanco() {
       body: JSON.stringify(dados)
     });
 
-    // Sucesso
-    // alert("✅ Registro salvo com sucesso!"); -> Opcional, removi para ficar mais fluido
-    
     // Adiciona na tabela instantaneamente
     adicionarLinhaTabela(dados, true);
     
@@ -388,7 +418,7 @@ async function salvarNoBanco() {
   }
 }
 
-// --- FUNÇÃO CARREGAR ---
+// --- FUNÇÃO CARREGAR HISTÓRICO ---
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
   corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px; color:#94a3b8'>Carregando dados...</td></tr>";
@@ -399,13 +429,13 @@ async function carregarHistorico() {
     
     corpo.innerHTML = "";
     
-    if(registros.length === 0) {
+    if(!registros || registros.length === 0) {
       corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Nenhum registro encontrado.</td></tr>";
       return;
     }
 
     registros.reverse().forEach(reg => {
-      // Proteção contra linhas vazias ou incompletas na planilha
+      // Proteção contra linhas vazias
       if(reg.length > 0) {
         const d = {
           data: reg[0],
@@ -427,6 +457,9 @@ async function carregarHistorico() {
 function adicionarLinhaTabela(d, noTopo) {
   const corpo = document.getElementById("corpoHistorico");
   
+  // Aplica a correção na data visualmente
+  const dataExibicao = formatarDataRondonia(d.data);
+
   // Ícone de link ou traço
   const linkDisplay = d.linkFoto && d.linkFoto.toString().startsWith('http') 
     ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` 
@@ -436,7 +469,7 @@ function adicionarLinhaTabela(d, noTopo) {
   const obsDisplay = d.obs ? d.obs : '<span class="text-muted">Sem obs</span>';
 
   const row = `<tr>
-    <td style="color:#94a3b8; font-size:0.85rem;">${d.data}</td>
+    <td style="color:#e2e8f0; font-size:0.85rem; font-weight:500;">${dataExibicao}</td>
     <td style="font-weight:500; color:#e2e8f0;">${d.olt}</td>
     <td>${d.pon}</td>
     <td>${d.tecnico}</td>
@@ -446,13 +479,10 @@ function adicionarLinhaTabela(d, noTopo) {
   </tr>`;
   
   if(noTopo) {
-    // Animação simples para nova linha
     const tempDiv = document.createElement('tr');
-    tempDiv.innerHTML = row; // Truque para criar elemento
+    tempDiv.innerHTML = row;
     tempDiv.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
     corpo.insertBefore(tempDiv, corpo.firstChild);
-    
-    // Remove o destaque após 1 segundo
     setTimeout(() => { tempDiv.style.backgroundColor = "transparent"; }, 1000);
   } else {
     corpo.innerHTML += row;
