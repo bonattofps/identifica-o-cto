@@ -3,68 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Identificação Técnica - CTO | N2/N3</title>
+<title>Identificação Técnica CTO</title>
 <style>
-  /* --- VISUAL ORIGINAL (DARK BLUE) --- */
-  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #0f172a; color: #e5e7eb; }
-  .container { max-width: 1100px; margin: 40px auto; padding: 20px; }
-  h1 { text-align: center; color: #3b82f6; margin-bottom: 30px; font-weight: 600; text-transform: uppercase; }
-  
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .form-group { display: flex; flex-direction: column; }
-  .form-group label { font-size: 13px; margin-bottom: 6px; color: #9ca3af; }
-  
-  /* Inputs Escuros */
-  .form-group input, .form-group textarea {
-    background: #111827; color: #e5e7eb; border: 1px solid #1f2933;
-    border-radius: 6px; padding: 12px; font-size: 14px;
+  /* --- TEMA DARK NAVY (VISUAL APROVADO) --- */
+  :root {
+    --bg-color: #0b1120;       /* Fundo muito escuro */
+    --card-bg: #151e32;        /* Card azul navy */
+    --input-bg: #1e293b;       /* Inputs */
+    --accent: #3b82f6;         /* Azul destaque */
+    --accent-hover: #2563eb;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: #334155;
   }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; }
-  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-color); color: var(--text-main); }
+  .container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+
+  /* Título */
+  h1 { 
+    text-align: center; color: var(--accent); margin-bottom: 30px; 
+    font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 10px;
+  }
+  .header-center { text-align: center; width: 100%; }
+
+  /* Grid e Inputs */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; }
   .full { grid-column: span 2; }
   
-  /* Botão de Anexo (Estilo Original) */
-  .custom-file-upload {
-    border: 2px dashed #334155; background: #1e293b; color: #9ca3af;
-    padding: 20px; text-align: center; border-radius: 6px; cursor: pointer;
-    font-size: 14px; transition: 0.2s; display: block;
-  }
-  .custom-file-upload:hover { border-color: #3b82f6; color: #3b82f6; background: #172033; }
-  input[type="file"] { display: none; }
+  label { font-size: 13px; margin-bottom: 8px; color: var(--text-muted); font-weight: 600; }
   
+  input, textarea {
+    background: var(--input-bg); color: white; border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; font-size: 14px; outline: none; transition: 0.2s;
+  }
+  input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+  textarea { resize: vertical; min-height: 100px; }
+
+  /* Botão de Foto Especial */
+  .upload-area {
+    border: 2px dashed var(--border); background: rgba(30, 41, 59, 0.5);
+    padding: 25px; text-align: center; border-radius: 8px; cursor: pointer;
+    transition: 0.2s; position: relative;
+  }
+  .upload-area:hover { border-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+  .upload-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .upload-text { font-weight: 600; color: var(--text-muted); }
+  .upload-area:hover .upload-text { color: var(--accent); }
+  #inputFoto { display: none; }
+  #previewStatus { margin-top: 10px; font-size: 13px; font-weight: bold; color: #22c55e; min-height: 20px; text-align: center;}
+
   /* Área de Texto Gerado */
-  .output { margin-top: 30px; }
-  .output label { font-size: 14px; color: #3b82f6; font-weight: bold; }
-  .output textarea {
-    width: 100%; min-height: 150px; margin-top: 8px; background: #020617;
-    border: 1px solid #1f2933; border-radius: 6px; padding: 12px; color: #e5e7eb;
-    box-sizing: border-box; font-family: monospace;
+  .output-box {
+    margin-top: 30px; background: #020617; border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px;
   }
-  
-  /* Botões Coloridos */
-  .btn-group { display: flex; gap: 12px; margin-top: 14px; }
+  .output-textarea {
+    width: 100%; min-height: 120px; background: transparent; border: none;
+    color: #e2e8f0; font-family: monospace; resize: none; outline: none;
+  }
+
+  /* Botões */
+  .btn-group { display: flex; gap: 15px; margin-top: 15px; }
   button {
-    padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; flex: 1; color: white; font-size: 14px;
+    padding: 14px; border: none; border-radius: 6px; font-weight: 700; 
+    cursor: pointer; flex: 1; color: white; text-transform: uppercase; font-size: 14px;
+    transition: 0.2s;
   }
-  .btn-copy { background: #22c55e; color: #052e14; } /* Verde */
-  .btn-copy:hover { background: #16a34a; }
-  .btn-save { background: #3b82f6; } /* Azul */
-  .btn-save:hover { background: #2563eb; }
-  .btn-save:disabled { background: #475569; cursor: not-allowed; opacity: 0.7; }
+  .btn-copy { background: #10b981; color: #022c22; }
+  .btn-copy:hover { background: #059669; color: white; }
+  
+  .btn-save { background: var(--accent); }
+  .btn-save:hover { background: var(--accent-hover); }
+  .btn-save:disabled { background: #475569; cursor: wait; opacity: 0.7; }
 
   /* Tabela */
-  h2 { color: #3b82f6; margin-top: 50px; border-bottom: 1px solid #1f2933; padding-bottom: 10px; font-size: 18px; }
-  .table-responsive { overflow-x: auto; margin-top: 20px; border-radius: 8px; border: 1px solid #1f2933; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; background: #111827; }
-  th { text-align: left; color: #3b82f6; padding: 12px; border-bottom: 2px solid #1f2933; background: #0f172a; }
-  td { padding: 12px; border-bottom: 1px solid #1f2933; color: #cbd5e1; }
-  tr:hover { background: #1f2937; }
+  h2 { color: var(--accent); margin-top: 50px; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 18px; }
+  .table-responsive { overflow-x: auto; margin-top: 20px; border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card-bg); white-space: nowrap; }
   
-  /* Miniatura da Foto */
-  .thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #475569; cursor: pointer; background: #000; }
-  .thumb:hover { transform: scale(3); position: relative; z-index: 100; border-color: #3b82f6; }
+  th { text-align: left; color: var(--accent); padding: 15px; border-bottom: 2px solid var(--border); background: #0f172a; }
+  td { padding: 12px 15px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: middle; }
+  tr:hover { background: #1e293b; }
 
-  footer { margin-top: 40px; text-align: center; font-size: 12px; color: #64748b; margin-bottom: 20px; }
+  .thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #64748b; cursor: pointer; background: #000; }
+  .thumb:hover { transform: scale(3.5); position: relative; z-index: 100; border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+  
+  footer { margin-top: 50px; text-align: center; color: #64748b; font-size: 12px; padding-bottom: 30px; }
 
   @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .full { grid-column: span 1; } .btn-group { flex-direction: column; } }
 </style>
@@ -72,58 +99,61 @@
 <body>
 
 <div class="container">
-  <h1>IDENTIFICAÇÃO TÉCNICA CTO</h1>
+  <div class="header-center"><h1>IDENTIFICAÇÃO TÉCNICA CTO</h1></div>
 
   <div class="form-grid">
     <div class="form-group"><label>OLT</label><input id="olt" type="text" placeholder="Ex: GIGA-JAW-LIB-COA"></div>
-    <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0/1/2"></div>
-    <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do técnico"></div>
-    <div class="form-group"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu nome"></div>
+    <div class="form-group"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0-0-13-6"></div>
+    <div class="form-group"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do Técnico"></div>
+    <div class="form-group"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu Nome"></div>
 
-    <div class="form-group full">
-      <label>Foto do Serviço (Opcional)</label>
-      <label class="custom-file-upload">
-        📷 TOQUE PARA ESCOLHER A FOTO
-        <input type="file" id="inputFoto" accept="image/*" onchange="comprimirImagem()">
+    <div class="full">
+      <label>Foto do Serviço (Obrigatório / Opcional)</label>
+      <label class="upload-area">
+        <span class="upload-icon">📷</span>
+        <span class="upload-text">Toque aqui para anexar a foto</span>
+        <input type="file" id="inputFoto" accept="image/*" onchange="processarFoto()">
       </label>
-      <div id="statusFoto" style="font-size:13px; color:#22c55e; margin-top:8px; text-align:center; font-weight:bold;"></div>
+      <div id="previewStatus"></div>
     </div>
 
-    <div class="form-group full"><label>Observações</label><textarea id="obs" placeholder="Detalhes do serviço..."></textarea></div>
+    <div class="full"><label>Observações</label><textarea id="obs" placeholder="Descreva o serviço realizado..."></textarea></div>
   </div>
 
-  <div class="output">
-    <label>Texto Gerado</label>
-    <textarea id="saida" readonly></textarea>
+  <div class="output-box">
+    <label style="color:#3b82f6; font-size:13px; font-weight:bold; margin-bottom:10px; display:block;">TEXTO GERADO (WhatsApp/Sistema)</label>
+    <textarea id="saida" class="output-textarea" readonly></textarea>
     <div class="btn-group">
       <button class="btn-copy" onclick="copiar()">COPIAR TEXTO</button>
       <button class="btn-save" id="btnSalvar" onclick="salvar()">SALVAR NO HISTÓRICO</button>
     </div>
   </div>
 
-  <h2>Histórico Recente (Rondônia GMT-4)</h2>
+  <h2>Histórico de Atendimentos (Rondônia GMT-4)</h2>
   <div class="table-responsive">
     <table id="tabelaHistorico">
       <thead><tr><th>Data/Hora</th><th>OLT</th><th>PON</th><th>Técnico</th><th>Suporte</th><th>Foto</th><th>Obs</th></tr></thead>
-      <tbody><tr><td colspan="7" style="text-align:center; padding: 20px;">Carregando...</td></tr></tbody>
+      <tbody id="listaHistorico"><tr><td colspan="7" style="text-align:center; padding:20px;">Carregando histórico...</td></tr></tbody>
     </table>
   </div>
   
-  <footer>Desenvolvido by Juander</footer>
+  <footer>Sistema de Apoio N2/N3 - Desenvolvido by Juander</footer>
 </div>
 
 <script>
-// SEU LINK JÁ CONFIGURADO AQUI:
+// ==============================================================
+// COLE SUA URL NOVA DO APPS SCRIPT AQUI DENTRO DAS ASPAS:
 const API_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
+// ==============================================================
 
 let imagemBase64 = "";
 
-// Geração de Texto em Tempo Real
+// GERA O TEXTO AUTOMATICAMENTE
 const ids = ["olt","pon","tecnico","suporte","obs"];
 ids.forEach(id => document.getElementById(id).addEventListener("input", gerarTexto));
 
 function gerarTexto() {
-  const v = id => document.getElementById(id).value;
+  const v = (id) => document.getElementById(id).value || "...";
   document.getElementById("saida").value = 
 `Identificação Técnica
 
@@ -134,12 +164,12 @@ SUPORTE: ${v('suporte')}
 OBS: ${v('obs')}`;
 }
 
-// --- COMPRESSOR DE IMAGEM (ESSENCIAL PARA FUNCIONAR) ---
-function comprimirImagem() {
+// 1. COMPRESSOR DE FOTO (IMPEDE QUE A FOTO SEJA PESADA DEMAIS)
+function processarFoto() {
   const file = document.getElementById('inputFoto').files[0];
   if(!file) return;
 
-  document.getElementById('statusFoto').innerText = "⏳ Processando imagem...";
+  document.getElementById('previewStatus').innerText = "⏳ Preparando imagem...";
   
   const reader = new FileReader();
   reader.readAsDataURL(file);
@@ -147,9 +177,8 @@ function comprimirImagem() {
     const img = new Image();
     img.src = event.target.result;
     img.onload = function() {
-      // Reduz a imagem para max 800px (Leve e rápido)
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 800;
+      const MAX_WIDTH = 800; // Largura máxima segura
       const scaleSize = MAX_WIDTH / img.width;
       canvas.width = MAX_WIDTH;
       canvas.height = img.height * scaleSize;
@@ -157,15 +186,16 @@ function comprimirImagem() {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       
-      // Converte para JPG leve (Qualidade 0.7)
+      // Converte para JPG leve (0.7 qualidade)
       imagemBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      document.getElementById('statusFoto').innerText = "✅ Foto pronta: " + file.name;
+      document.getElementById('previewStatus').innerText = "✅ Foto pronta: " + file.name;
     }
   }
 }
 
 function copiar() {
-  navigator.clipboard.writeText(document.getElementById("saida").value);
+  document.getElementById("saida").select();
+  document.execCommand("copy");
   alert("Texto copiado!");
 }
 
@@ -174,7 +204,13 @@ async function salvar() {
   const olt = document.getElementById("olt").value;
   const tecnico = document.getElementById("tecnico").value;
 
-  if(!olt || !tecnico) return alert("Preencha OLT e Técnico!");
+  if(!olt || !tecnico) return alert("Erro: Preencha OLT e Técnico!");
+  
+  // Impede envio se a foto foi selecionada mas ainda não processou
+  const fileInput = document.getElementById('inputFoto');
+  if(fileInput.files.length > 0 && imagemBase64 === "") {
+    return alert("Aguarde o processamento da foto...");
+  }
 
   btn.innerText = "ENVIANDO...";
   btn.disabled = true;
@@ -185,7 +221,7 @@ async function salvar() {
     tecnico: tecnico,
     suporte: document.getElementById("suporte").value,
     obs: document.getElementById("obs").value,
-    imagem: imagemBase64 // Envia a imagem já reduzida
+    imagem: imagemBase64 // Envia a versão leve
   };
 
   try {
@@ -197,54 +233,59 @@ async function salvar() {
     alert("Salvo com sucesso!");
     location.reload();
   } catch (error) {
-    alert("Erro ao salvar (Verifique internet).");
+    alert("Erro ao salvar: " + error);
     btn.disabled = false;
     btn.innerText = "SALVAR NO HISTÓRICO";
   }
 }
 
-// Carrega a tabela e evita Cache
-async function carregarHistorico() {
+// 2. CARREGAR TABELA (COM CORREÇÃO DE DATA ISO)
+async function carregar() {
+  const tbody = document.getElementById("listaHistorico");
   try {
-    const urlNoCache = API_URL + "?t=" + new Date().getTime();
-    const response = await fetch(urlNoCache);
+    // ?t= força atualização imediata
+    const response = await fetch(API_URL + "?t=" + new Date().getTime());
     const dados = await response.json();
-    const tbody = document.querySelector("#tabelaHistorico tbody");
     tbody.innerHTML = "";
-    
+
     if (dados.length === 0) {
-       tbody.innerHTML = "<tr><td colspan='7' style='text-align:center'>Nenhum registro.</td></tr>";
-       return;
+      tbody.innerHTML = "<tr><td colspan='7' style='text-align:center'>Nenhum registro.</td></tr>";
+      return;
     }
 
     dados.reverse().forEach(row => {
-      // Remove o ' de proteção da data e PON
-      const dataF = row[0] ? row[0].toString().replace(/^'/, "") : "";
-      const ponF = row[2] ? row[2].toString().replace(/^'/, "") : "";
+      // Remove o ' e converte data ISO estranha para legível se necessário
+      let dataF = row[0] ? row[0].toString().replace(/^'/, "") : "-";
       
-      // Link da Foto
+      // Se ainda vier como ISO (2026-01...), tenta limpar visualmente
+      if(dataF.includes("T")) {
+         dataF = dataF.split("T")[0].split("-").reverse().join("/") + " " + dataF.split("T")[1].slice(0,5);
+      }
+
+      const ponF = row[2] ? row[2].toString().replace(/^'/, "") : "-";
+      
       let linkHtml = '<span style="color:#64748b">-</span>';
       if (row[5] && row[5].includes("http")) {
         linkHtml = `<a href="${row[5]}" target="_blank"><img src="${row[5]}" class="thumb" title="Ver foto"></a>`;
       }
 
-      let tr = `<tr>
+      tbody.innerHTML += `<tr>
         <td>${dataF}</td>
         <td>${row[1]}</td>
         <td>${ponF}</td>
         <td>${row[3]}</td>
         <td>${row[4]}</td>
         <td style="text-align:center">${linkHtml}</td>
-        <td style="white-space:normal; max-width:200px;">${row[6]}</td>
+        <td style="white-space:normal; max-width:250px;">${row[6]}</td>
       </tr>`;
-      tbody.innerHTML += tr;
     });
   } catch (e) {
-    document.querySelector("#tabelaHistorico tbody").innerHTML = "<tr><td colspan='7' style='text-align:center; color:red'>Erro ao carregar tabela.</td></tr>";
+    console.error(e);
+    tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:#ef4444'>Erro ao carregar tabela.</td></tr>";
   }
 }
 
-window.onload = carregarHistorico;
+window.onload = carregar;
 </script>
 </body>
 </html>
