@@ -48,6 +48,40 @@
   .badge-link:hover { background: rgba(59, 130, 246, 0.3); color: white; }
   .text-muted { color: var(--text-secondary); font-style: italic; }
   .required-star { color: var(--danger-color); }
+  
+  /* ESTILOS DA PAGINAÇÃO */
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+  }
+  .btn-page {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  .btn-page:hover:not(:disabled) {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+  .btn-page:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  #pageInfo {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
   footer { text-align: center; margin-top: 40px; color: var(--text-secondary); font-size: 0.8rem; opacity: 0.6; }
   @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .col-1, .col-2, .col-4 { grid-column: span 1; } .header-content { flex-direction: column; gap: 10px; } }
 </style>
@@ -84,13 +118,14 @@
       <span>Últimos Registros</span>
       <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Sincronizado</span>
     </div>
+    
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
             <th width="15%">Horário</th>
             <th width="10%">OLT</th>
-            <th width="10%">PON</th>
+            <th width="10%">Slot/PON</th>
             <th width="15%">Técnico</th>
             <th width="15%">Suporte</th>
             <th width="10%" style="text-align:center;">Evidência</th>
@@ -100,6 +135,13 @@
         <tbody id="corpoHistorico"></tbody>
       </table>
     </div>
+
+    <div class="pagination-container" id="paginationControls" style="display:none;">
+      <button class="btn-page" id="btnPrev" onclick="mudarPagina(-1)">❮ Anterior</button>
+      <span id="pageInfo">Página 1</span>
+      <button class="btn-page" id="btnNext" onclick="mudarPagina(1)">Próxima ❯</button>
+    </div>
+
   </div>
   <footer>Desenvolvido by Juander &copy; 2026</footer>
 </div>
@@ -109,7 +151,12 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
-// Formata datas antigas ou feias para o padrão BR
+// Variáveis Globais para Paginação
+let todosRegistros = []; // Armazena tudo que vem do banco
+let paginaAtual = 1;
+const itensPorPagina = 6; // Limite solicitado
+
+// Formata datas para padrão BR
 function formatarDataSimples(dataCrua) {
   if (!dataCrua) return "-";
   if (typeof dataCrua === 'string' && dataCrua.includes('/')) return dataCrua;
@@ -130,8 +177,7 @@ async function salvarNoBanco() {
     return;
   }
 
-  // --- HORÁRIO DO SISTEMA/COMPUTADOR ---
-  // Não faz nenhum cálculo, apenas lê o relógio do seu PC/Celular.
+  // --- HORÁRIO DO SISTEMA (COMPUTADOR) ---
   const dataFormatada = new Date().toLocaleString('pt-BR');
 
   const dados = {
@@ -144,6 +190,7 @@ async function salvarNoBanco() {
     obs: document.getElementById("obs").value
   };
 
+  // Feedback Visual
   const textoOriginal = btn.innerText;
   btn.innerText = "Enviando...";
   btn.disabled = true;
@@ -155,8 +202,18 @@ async function salvarNoBanco() {
       mode: 'no-cors',
       body: JSON.stringify(dados)
     });
-    adicionarLinhaTabela(dados, true);
+
+    // Adiciona o novo registro no TOPO da lista local e volta para a página 1
+    const novoRegistroArray = [
+      dados.data, dados.olt, dados.pon, dados.tecnico, dados.suporte, dados.obs, dados.linkFoto
+    ];
+    todosRegistros.unshift(novoRegistroArray);
+    
+    paginaAtual = 1; // Volta para a primeira página para ver o novo registro
+    renderizarTabela();
+    
     campos.forEach(id => document.getElementById(id).value = "");
+    
   } catch (error) {
     console.error("Erro:", error);
     alert("❌ Erro de conexão.");
@@ -170,47 +227,93 @@ async function salvarNoBanco() {
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
   corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px; color:#94a3b8'>Carregando dados...</td></tr>";
+  
   try {
     const response = await fetch(SCRIPT_URL);
     const registros = await response.json();
-    corpo.innerHTML = "";
-    if(!registros || registros.length === 0) {
-      corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Sem registros.</td></tr>";
-      return;
-    }
-    registros.reverse().forEach(reg => {
-      if(reg.length > 0) {
-        const d = { data: reg[0], olt: reg[1], pon: reg[2], tecnico: reg[3], suporte: reg[4], obs: reg[5], linkFoto: reg[6] };
-        adicionarLinhaTabela(d, false);
-      }
-    });
-  } catch (error) { corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#ef4444'>Erro de conexão.</td></tr>"; }
+    
+    // Salva na variável global e inverte para o mais recente ficar primeiro
+    todosRegistros = registros.reverse();
+    
+    paginaAtual = 1;
+    renderizarTabela();
+
+  } catch (error) { 
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#ef4444'>Erro de conexão.</td></tr>"; 
+  }
 }
 
-function adicionarLinhaTabela(d, noTopo) {
+// --- LÓGICA DE PAGINAÇÃO ---
+function renderizarTabela() {
   const corpo = document.getElementById("corpoHistorico");
-  const dataExibicao = formatarDataSimples(d.data);
-  const linkDisplay = d.linkFoto && d.linkFoto.toString().startsWith('http') 
-    ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` : '<span class="text-muted">-</span>';
-  const obsDisplay = d.obs ? d.obs : '<span class="text-muted">Sem obs</span>';
+  const divPaginacao = document.getElementById("paginationControls");
   
-  const row = `<tr>
-    <td style="color:#e2e8f0; font-size:0.85rem; font-weight:500;">${dataExibicao}</td>
-    <td style="font-weight:500; color:#e2e8f0;">${d.olt}</td>
-    <td>${d.pon}</td>
-    <td>${d.tecnico}</td>
-    <td>${d.suporte}</td>
-    <td style="text-align:center;">${linkDisplay}</td>
-    <td style="font-size:0.85rem; color:#cbd5e1;">${obsDisplay}</td>
-  </tr>`;
+  if(!todosRegistros || todosRegistros.length === 0) {
+    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Sem registros.</td></tr>";
+    divPaginacao.style.display = "none";
+    return;
+  }
+
+  // Mostra os controles de paginação
+  divPaginacao.style.display = "flex";
+
+  // Cálculos de fatiamento (Slice)
+  const inicio = (paginaAtual - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
+  const registrosDaPagina = todosRegistros.slice(inicio, fim);
+
+  corpo.innerHTML = ""; // Limpa a tabela
+
+  registrosDaPagina.forEach(reg => {
+    if(reg.length > 0) {
+      const d = { 
+        data: reg[0], olt: reg[1], pon: reg[2], 
+        tecnico: reg[3], suporte: reg[4], obs: reg[5], linkFoto: reg[6] 
+      };
+      
+      const dataExibicao = formatarDataSimples(d.data);
+      const linkDisplay = d.linkFoto && d.linkFoto.toString().startsWith('http') 
+        ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` 
+        : '<span class="text-muted">-</span>';
+      const obsDisplay = d.obs ? d.obs : '<span class="text-muted">Sem obs</span>';
+
+      const row = `<tr>
+        <td style="color:#e2e8f0; font-size:0.85rem; font-weight:500;">${dataExibicao}</td>
+        <td style="font-weight:500; color:#e2e8f0;">${d.olt}</td>
+        <td>${d.pon}</td>
+        <td>${d.tecnico}</td>
+        <td>${d.suporte}</td>
+        <td style="text-align:center;">${linkDisplay}</td>
+        <td style="font-size:0.85rem; color:#cbd5e1;">${obsDisplay}</td>
+      </tr>`;
+      corpo.innerHTML += row;
+    }
+  });
+
+  atualizarBotoesPaginacao();
+}
+
+function mudarPagina(delta) {
+  const totalPaginas = Math.ceil(todosRegistros.length / itensPorPagina);
+  const novaPagina = paginaAtual + delta;
+
+  if (novaPagina >= 1 && novaPagina <= totalPaginas) {
+    paginaAtual = novaPagina;
+    renderizarTabela();
+  }
+}
+
+function atualizarBotoesPaginacao() {
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const pageInfo = document.getElementById("pageInfo");
   
-  if(noTopo) {
-    const tempDiv = document.createElement('tr');
-    tempDiv.innerHTML = row;
-    tempDiv.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
-    corpo.insertBefore(tempDiv, corpo.firstChild);
-    setTimeout(() => { tempDiv.style.backgroundColor = "transparent"; }, 1000);
-  } else { corpo.innerHTML += row; }
+  const totalPaginas = Math.ceil(todosRegistros.length / itensPorPagina);
+
+  pageInfo.innerText = `Página ${paginaAtual} de ${totalPaginas}`;
+  
+  btnPrev.disabled = (paginaAtual === 1);
+  btnNext.disabled = (paginaAtual === totalPaginas || totalPaginas === 0);
 }
 
 window.onload = carregarHistorico;
