@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Técnico CTO | Uni Internet</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -18,229 +17,41 @@
     --accent-hover: #2563eb;
     --danger-color: #ef4444;
   }
-
   * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-    padding-bottom: 40px;
-  }
-
-  /* Cabeçalho Superior */
-  header {
-    background: var(--card-bg);
-    border-bottom: 1px solid var(--border-color);
-    padding: 20px 0;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-
-  .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* Container Principal */
-  .main-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  /* Cards (Blocos de conteúdo) */
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-header {
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  /* Grid do Formulário */
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Classes para ocupar colunas */
+  body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); padding-bottom: 40px; }
+  header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 20px 0; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+  .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent-color); margin: 0; display: flex; align-items: center; gap: 10px; }
+  .main-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 30px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+  .card-header { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
+  .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .form-group { display: flex; flex-direction: column; }
   .col-1 { grid-column: span 1; }
   .col-2 { grid-column: span 2; }
   .col-4 { grid-column: span 4; }
-
-  label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  input, textarea {
-    background: #020617;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    transition: all 0.2s;
-  }
-
-  input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-  }
-
-  /* Destaque para o campo de Link */
-  #linkFoto {
-    background: #0f172a;
-    border-left: 4px solid var(--accent-color);
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  /* Botão */
-  .btn-save {
-    background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
-    color: white;
-    border: none;
-    padding: 14px 30px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.2s;
-    width: 100%;
-    margin-top: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .btn-save:hover {
-    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
-    transform: translateY(-2px);
-  }
-  
-  .btn-save:active { transform: translateY(0); }
-  
-  .btn-save:disabled { 
-    background: var(--border-color); 
-    cursor: not-allowed; 
-    transform: none; 
-    box-shadow: none;
-  }
-
-  /* Tabela Moderna */
-  .table-responsive {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-  }
-
-  th {
-    background: #0f172a;
-    color: var(--accent-color);
-    font-weight: 600;
-    text-align: left;
-    padding: 16px;
-    white-space: nowrap;
-    border-bottom: 2px solid var(--border-color);
-  }
-
-  td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border-color);
-    color: #cbd5e1;
-    vertical-align: middle;
-  }
-
-  /* Zebra e Hover */
+  label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  input, textarea { background: #020617; border: 1px solid var(--border-color); color: var(--text-primary); padding: 12px 16px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: all 0.2s; }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+  #linkFoto { background: #0f172a; border-left: 4px solid var(--accent-color); }
+  textarea { resize: vertical; min-height: 80px; }
+  .btn-save { background: linear-gradient(to right, var(--accent-color), var(--accent-hover)); color: white; border: none; padding: 14px 30px; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; width: 100%; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .btn-save:hover { box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4); transform: translateY(-2px); }
+  .btn-save:disabled { background: var(--border-color); cursor: not-allowed; transform: none; box-shadow: none; }
+  .table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: #0f172a; color: var(--accent-color); font-weight: 600; text-align: left; padding: 16px; white-space: nowrap; border-bottom: 2px solid var(--border-color); }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: #cbd5e1; vertical-align: middle; }
   tbody tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
   tbody tr:hover { background-color: rgba(59, 130, 246, 0.05); }
-
-  /* Badges */
-  .badge-link {
-    display: inline-flex;
-    align-items: center;
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    padding: 6px 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.8rem;
-    transition: background 0.2s;
-  }
+  .badge-link { display: inline-flex; align-items: center; background: rgba(59, 130, 246, 0.15); color: #60a5fa; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-weight: 500; font-size: 0.8rem; transition: background 0.2s; }
   .badge-link:hover { background: rgba(59, 130, 246, 0.3); color: white; }
-
   .text-muted { color: var(--text-secondary); font-style: italic; }
   .required-star { color: var(--danger-color); }
-
-  /* Rodapé */
-  footer {
-    text-align: center;
-    margin-top: 40px;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-    opacity: 0.6;
-  }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .col-1, .col-2, .col-4 { grid-column: span 1; }
-    .header-content { flex-direction: column; gap: 10px; }
-  }
+  footer { text-align: center; margin-top: 40px; color: var(--text-secondary); font-size: 0.8rem; opacity: 0.6; }
+  @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .col-1, .col-2, .col-4 { grid-column: span 1; } .header-content { flex-direction: column; gap: 10px; } }
 </style>
 </head>
-
 <body>
 
 <header>
@@ -254,56 +65,25 @@
 </header>
 
 <div class="main-wrapper">
-
   <div class="card">
     <div class="card-header">Novo Registro</div>
-    
     <div class="form-grid">
-      <div class="form-group col-1">
-        <label>OLT</label>
-        <input id="olt" type="text" placeholder="Ex: OLT-01">
-      </div>
-
-      <div class="form-group col-1">
-        <label>Slot / PON</label>
-        <input id="pon" type="text" placeholder="Ex: 0/1/2">
-      </div>
-
-      <div class="form-group col-2">
-        <label>Técnico de Campo</label>
-        <input id="tecnico" type="text" placeholder="Nome do técnico">
-      </div>
-
-      <div class="form-group col-2">
-        <label>Suporte Responsável</label>
-        <input id="suporte" type="text" placeholder="Seu nome">
-      </div>
-
-      <div class="form-group col-2">
-        </div>
-
-      <div class="form-group col-4">
-        <label>Observações Técnicas</label>
-        <textarea id="obs" placeholder="Descreva os detalhes do atendimento, sinal óptico, etc..."></textarea>
-      </div>
-
-      <div class="form-group col-4">
-        <label>Link da Evidência (Foto) <span class="required-star">* Obrigatório</span></label>
-        <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem (Drive, Imgur, Sistema...)">
-      </div>
-
-      <div class="form-group col-4">
-        <button id="btnSalvar" class="btn-save" onclick="salvarNoBanco()">Salvar Registro</button>
-      </div>
+      <div class="form-group col-1"><label>OLT</label><input id="olt" type="text" placeholder="Ex: OLT-01"></div>
+      <div class="form-group col-1"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0/1/2"></div>
+      <div class="form-group col-2"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do técnico"></div>
+      <div class="form-group col-2"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu nome"></div>
+      <div class="form-group col-2"></div>
+      <div class="form-group col-4"><label>Observações Técnicas</label><textarea id="obs" placeholder="Descreva os detalhes..."></textarea></div>
+      <div class="form-group col-4"><label>Link da Evidência (Foto) <span class="required-star">* Obrigatório</span></label><input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem"></div>
+      <div class="form-group col-4"><button id="btnSalvar" class="btn-save" onclick="salvarNoBanco()">Salvar Registro</button></div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
       <span>Últimos Registros</span>
-      <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Sincronizado via Google Sheets</span>
+      <span style="font-size:0.8rem; font-weight:400; color:#64748b;">Sincronizado</span>
     </div>
-    
     <div class="table-responsive">
       <table>
         <thead>
@@ -317,16 +97,11 @@
             <th width="25%">Obs</th>
           </tr>
         </thead>
-        <tbody id="corpoHistorico">
-          </tbody>
+        <tbody id="corpoHistorico"></tbody>
       </table>
     </div>
   </div>
-
-  <footer>
-    Desenvolvido by Juander &copy; 2026
-  </footer>
-
+  <footer>Desenvolvido by Juander &copy; 2026</footer>
 </div>
 
 <script>
@@ -334,53 +109,33 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXfwkb331T9w1z5viqhqUjjPQhrLmykHmUrSd7rbhWTUV-6lQuha5qC1Y8XZx2uSaA4A/exec";
 const campos = ["olt","pon","tecnico","suporte","obs","linkFoto"];
 
-// --- FUNÇÃO PARA LIMPAR DATAS FEIAS (ISO) ---
-// Essa função conserta as datas antigas que estão salvas erradas no Google
-function formatarDataRondonia(dataCrua) {
+// Formata datas antigas ou feias para o padrão BR
+function formatarDataSimples(dataCrua) {
   if (!dataCrua) return "-";
-  
-  // Se já for uma data bonita tipo "16/01/2026", retorna ela mesma
-  if (typeof dataCrua === 'string' && dataCrua.includes('/')) {
-    return dataCrua;
-  }
-
-  // Se for aquele formato feio (2026-01-16T11...), tenta converter
+  if (typeof dataCrua === 'string' && dataCrua.includes('/')) return dataCrua;
   try {
-    const dataObj = new Date(dataCrua);
-    return dataObj.toLocaleString('pt-BR', { 
-      timeZone: 'America/Porto_Velho',
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
-  } catch (e) {
-    return dataCrua;
-  }
+    return new Date(dataCrua).toLocaleString('pt-BR');
+  } catch (e) { return dataCrua; }
 }
 
-// --- FUNÇÃO SALVAR ---
 async function salvarNoBanco() {
   const btn = document.getElementById("btnSalvar");
-  
   const olt = document.getElementById("olt").value;
   const tecnico = document.getElementById("tecnico").value;
   const linkFoto = document.getElementById("linkFoto").value;
 
-  // Validação
   if(!olt || !tecnico || !linkFoto) {
-    alert("⚠️ ATENÇÃO: Preencha a OLT, o Técnico e o Link da Foto.");
+    alert("⚠️ Preencha OLT, Técnico e Link da Foto.");
     if(!linkFoto) document.getElementById("linkFoto").focus();
     return;
   }
 
-  // --- O SEGREDO DO HORÁRIO ESTÁ AQUI ---
-  // Criamos uma STRING de texto fixa com o horário de Rondônia.
-  // Assim o Google Sheets não tenta converter o fuso horário.
-  const dataFormatada = new Date().toLocaleString('pt-BR', { 
-    timeZone: 'America/Porto_Velho'
-  });
+  // --- HORÁRIO DO SISTEMA/COMPUTADOR ---
+  // Não faz nenhum cálculo, apenas lê o relógio do seu PC/Celular.
+  const dataFormatada = new Date().toLocaleString('pt-BR');
 
   const dados = {
-    data: dataFormatada, // Envia "16/01/2026 09:30:00"
+    data: dataFormatada, 
     olt: olt,
     pon: document.getElementById("pon").value,
     tecnico: tecnico,
@@ -389,7 +144,6 @@ async function salvarNoBanco() {
     obs: document.getElementById("obs").value
   };
 
-  // Efeito Visual no Botão
   const textoOriginal = btn.innerText;
   btn.innerText = "Enviando...";
   btn.disabled = true;
@@ -401,16 +155,11 @@ async function salvarNoBanco() {
       mode: 'no-cors',
       body: JSON.stringify(dados)
     });
-
-    // Adiciona na tabela instantaneamente
     adicionarLinhaTabela(dados, true);
-    
-    // Limpa campos
     campos.forEach(id => document.getElementById(id).value = "");
-    
   } catch (error) {
     console.error("Erro:", error);
-    alert("❌ Erro de conexão ao salvar.");
+    alert("❌ Erro de conexão.");
   } finally {
     btn.innerText = textoOriginal;
     btn.disabled = false;
@@ -418,56 +167,33 @@ async function salvarNoBanco() {
   }
 }
 
-// --- FUNÇÃO CARREGAR HISTÓRICO ---
 async function carregarHistorico() {
   const corpo = document.getElementById("corpoHistorico");
   corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px; color:#94a3b8'>Carregando dados...</td></tr>";
-
   try {
     const response = await fetch(SCRIPT_URL);
     const registros = await response.json();
-    
     corpo.innerHTML = "";
-    
     if(!registros || registros.length === 0) {
-      corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Nenhum registro encontrado.</td></tr>";
+      corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:30px;'>Sem registros.</td></tr>";
       return;
     }
-
     registros.reverse().forEach(reg => {
-      // Proteção contra linhas vazias
       if(reg.length > 0) {
-        const d = {
-          data: reg[0],
-          olt: reg[1],
-          pon: reg[2],
-          tecnico: reg[3],
-          suporte: reg[4],
-          obs: reg[5],
-          linkFoto: reg[6]
-        };
+        const d = { data: reg[0], olt: reg[1], pon: reg[2], tecnico: reg[3], suporte: reg[4], obs: reg[5], linkFoto: reg[6] };
         adicionarLinhaTabela(d, false);
       }
     });
-  } catch (error) {
-    corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#ef4444'>Erro ao conectar com o banco de dados.</td></tr>";
-  }
+  } catch (error) { corpo.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px; color:#ef4444'>Erro de conexão.</td></tr>"; }
 }
 
 function adicionarLinhaTabela(d, noTopo) {
   const corpo = document.getElementById("corpoHistorico");
-  
-  // Aplica a correção na data visualmente
-  const dataExibicao = formatarDataRondonia(d.data);
-
-  // Ícone de link ou traço
+  const dataExibicao = formatarDataSimples(d.data);
   const linkDisplay = d.linkFoto && d.linkFoto.toString().startsWith('http') 
-    ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` 
-    : '<span class="text-muted">-</span>';
-
-  // Formatação de texto vazio
+    ? `<a href="${d.linkFoto}" target="_blank" class="badge-link"> Abrir ↗</a>` : '<span class="text-muted">-</span>';
   const obsDisplay = d.obs ? d.obs : '<span class="text-muted">Sem obs</span>';
-
+  
   const row = `<tr>
     <td style="color:#e2e8f0; font-size:0.85rem; font-weight:500;">${dataExibicao}</td>
     <td style="font-weight:500; color:#e2e8f0;">${d.olt}</td>
@@ -484,13 +210,10 @@ function adicionarLinhaTabela(d, noTopo) {
     tempDiv.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
     corpo.insertBefore(tempDiv, corpo.firstChild);
     setTimeout(() => { tempDiv.style.backgroundColor = "transparent"; }, 1000);
-  } else {
-    corpo.innerHTML += row;
-  }
+  } else { corpo.innerHTML += row; }
 }
 
 window.onload = carregarHistorico;
 </script>
-
 </body>
 </html>
