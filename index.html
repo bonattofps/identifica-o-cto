@@ -102,14 +102,41 @@
   <div class="card">
     <div class="card-header">Novo Registro</div>
     <div class="form-grid">
-      <div class="form-group col-1"><label>OLT</label><input id="olt" type="text" placeholder="Ex: OLT-01"></div>
-      <div class="form-group col-1"><label>Slot / PON</label><input id="pon" type="text" placeholder="Ex: 0/1/2"></div>
-      <div class="form-group col-2"><label>Técnico de Campo</label><input id="tecnico" type="text" placeholder="Nome do técnico"></div>
-      <div class="form-group col-2"><label>Suporte Responsável</label><input id="suporte" type="text" placeholder="Seu nome"></div>
+      <div class="form-group col-1">
+        <label>OLT</label>
+        <input id="olt" type="text" placeholder="Ex: OLT-01">
+      </div>
+      <div class="form-group col-1">
+        <label>Slot / PON</label>
+        <input id="pon" type="text" placeholder="Ex: 0/1/2">
+      </div>
+      <div class="form-group col-2">
+        <label>Técnico de Campo</label>
+        <input id="tecnico" type="text" placeholder="Nome do técnico">
+      </div>
+      <div class="form-group col-2">
+        <label>Suporte Responsável</label>
+        <input id="suporte" type="text" placeholder="Seu nome">
+      </div>
       <div class="form-group col-2"></div>
-      <div class="form-group col-4"><label>Observações Técnicas</label><textarea id="obs" placeholder="Descreva os detalhes..."></textarea></div>
-      <div class="form-group col-4"><label>Link da Evidência (Foto) <span class="required-star">* Obrigatório</span></label><input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem"></div>
-      <div class="form-group col-4"><button id="btnSalvar" class="btn-save" onclick="salvarNoBanco()">Salvar Registro</button></div>
+      <div class="form-group col-4">
+        <label>Observações Técnicas</label>
+        <textarea id="obs" placeholder="Descreva os detalhes..."></textarea>
+      </div>
+
+      <div class="form-group col-4">
+        <label>Link da Evidência (Foto) <span class="required-star">* Obrigatório</span></label>
+        <input id="linkFoto" type="url" placeholder="Cole aqui o link da imagem">
+      </div>
+
+      <div class="form-group col-4">
+        <label>RESUMO DE IDENTIFICAÇÃO DE CTO</label>
+        <textarea id="resumoSistema" readonly placeholder="O resumo será gerado automaticamente após salvar o registro." style="min-height: 120px;"></textarea>
+      </div>
+
+      <div class="form-group col-4">
+        <button id="btnSalvar" class="btn-save" onclick="salvarNoBanco()">Salvar Registro</button>
+      </div>
     </div>
   </div>
 
@@ -156,6 +183,20 @@ let todosRegistros = []; // Armazena tudo que vem do banco
 let paginaAtual = 1;
 const itensPorPagina = 6; // Limite solicitado
 
+// Função para gerar resumo (um abaixo do outro)
+function gerarResumoSistema(dados) {
+  const linhas = [];
+
+  if (dados.olt) linhas.push(`OLT: ${dados.olt}`);
+  if (dados.pon) linhas.push(`PON: ${dados.pon}`);
+  if (dados.tecnico) linhas.push(`Técnico campo: ${dados.tecnico}`);
+  if (dados.suporte) linhas.push(`Suporte: ${dados.suporte}`);
+  if (dados.obs) linhas.push(`Obs: ${dados.obs}`);
+  if (dados.linkFoto) linhas.push(`Evidência: ${dados.linkFoto}`);
+
+  return linhas.join("\n");
+}
+
 // Formata datas para padrão BR
 function formatarDataSimples(dataCrua) {
   if (!dataCrua) return "-";
@@ -189,6 +230,15 @@ async function salvarNoBanco() {
     linkFoto: linkFoto,
     obs: document.getElementById("obs").value
   };
+
+  // Gera resumo para o sistema (um abaixo do outro)
+  const resumo = gerarResumoSistema(dados);
+  const campoResumo = document.getElementById("resumoSistema");
+  if (campoResumo) {
+    campoResumo.value = resumo;
+    campoResumo.focus();
+    campoResumo.select();
+  }
 
   // Feedback Visual
   const textoOriginal = btn.innerText;
