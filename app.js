@@ -4,7 +4,7 @@ let dados = [];
 let paginaAtual = 1;
 const itensPorPagina = 5;
 
-// ===== ELEMENTOS =====
+// ===== ELEMENTOS PRINCIPAIS =====
 const olt = document.getElementById("olt");
 const pon = document.getElementById("pon");
 const tecnico = document.getElementById("tecnico");
@@ -18,6 +18,12 @@ const olts = document.getElementById("olts");
 const tecnicos = document.getElementById("tecnicos");
 const tabela = document.getElementById("tabela");
 const paginaInfo = document.getElementById("paginaInfo");
+
+// ===== FILTROS =====
+const filtroTecnico = document.getElementById("filtroTecnico");
+const filtroOLT = document.getElementById("filtroOLT");
+const filtroSuporte = document.getElementById("filtroSuporte");
+const filtroPON = document.getElementById("filtroPON");
 
 // ===== FORMATAR DATA =====
 function formatarData(dataISO){
@@ -50,7 +56,7 @@ Suporte: ${suporte.value}
 Evidência: ${link.value}`;
 }
 
-// Atualiza automaticamente
+// atualização automática do resumo
 [olt, pon, tecnico, suporte, link].forEach(el => {
   el.addEventListener("input", gerarResumo);
 });
@@ -103,14 +109,44 @@ async function carregar(){
 }
 
 //
+// 🔎 FILTROS AVANÇADOS
+//
+function aplicarFiltros(){
+
+  const tecnicoF = filtroTecnico.value.toLowerCase();
+  const oltF = filtroOLT.value.toLowerCase();
+  const suporteF = filtroSuporte.value.toLowerCase();
+  const ponF = filtroPON.value.toLowerCase();
+
+  return dados.filter(d => {
+
+    const data = {
+      olt: (d[1] || "").toLowerCase(),
+      pon: (d[2] || "").toLowerCase(),
+      tecnico: (d[3] || "").toLowerCase(),
+      suporte: (d[4] || "").toLowerCase()
+    };
+
+    return (
+      (!tecnicoF || data.tecnico.includes(tecnicoF)) &&
+      (!oltF || data.olt.includes(oltF)) &&
+      (!suporteF || data.suporte.includes(suporteF)) &&
+      (!ponF || data.pon.includes(ponF))
+    );
+  });
+}
+
+//
 // 📊 TABELA
 //
 function renderTabela(){
 
+  const filtrado = aplicarFiltros();
+
   const inicio = (paginaAtual - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
 
-  const paginaDados = dados.slice(inicio, fim);
+  const paginaDados = filtrado.slice(inicio, fim);
 
   tabela.innerHTML = "";
 
@@ -128,14 +164,16 @@ function renderTabela(){
     </tr>`;
   });
 
-  paginaInfo.innerText = `Página ${paginaAtual}`;
+  paginaInfo.innerText = `Página ${paginaAtual} - ${filtrado.length} registros`;
 }
 
 //
 // ⬅➡ PAGINAÇÃO
 //
 function proxima(){
-  if((paginaAtual * itensPorPagina) < dados.length){
+  const filtrado = aplicarFiltros();
+
+  if((paginaAtual * itensPorPagina) < filtrado.length){
     paginaAtual++;
     renderTabela();
   }
@@ -149,28 +187,14 @@ function anterior(){
 }
 
 //
-// 🔎 BUSCA
+// 🔄 FILTROS EM TEMPO REAL
 //
-function buscar(txt){
-  const filtrado = dados.filter(d =>
-    d.join(" ").toLowerCase().includes(txt.toLowerCase())
-  );
-
-  tabela.innerHTML = "";
-
-  filtrado.forEach(r => {
-    tabela.innerHTML += `
-    <tr>
-      <td>${formatarData(r[0])}</td>
-      <td>${r[1]}</td>
-      <td>${r[2]}</td>
-      <td>${r[3]}</td>
-      <td>${r[4]}</td>
-      <td>${r[5]}</td>
-      <td><a href="${formatarLink(r[6])}" target="_blank">🔗 Abrir</a></td>
-    </tr>`;
+[filtroTecnico, filtroOLT, filtroSuporte, filtroPON].forEach(el => {
+  el.addEventListener("input", () => {
+    paginaAtual = 1;
+    renderTabela();
   });
-}
+});
 
 //
 // 🧹 LIMPAR
