@@ -5,115 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CTO Dashboard</title>
 
-<style>
-:root {
-  --bg:#0B0F1A;
-  --card:#111827;
-  --primary:#6C2BD9;
-  --secondary:#3B82F6;
-}
-
-body {
-  margin:0;
-  font-family:'Segoe UI';
-  background:var(--bg);
-  color:#fff;
-  display:flex;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width:240px;
-  background:#0f172a;
-  padding:20px;
-}
-
-.sidebar h2 { margin-bottom:20px; }
-
-.sidebar button {
-  width:100%;
-  margin:6px 0;
-  padding:12px;
-  background:#1f2937;
-  border:none;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-/* MAIN */
-.main { flex:1; padding:25px; }
-
-/* CARDS */
-.cards {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.card {
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  padding:20px;
-  border-radius:12px;
-}
-
-/* FORM */
-.form-card {
-  background:var(--card);
-  padding:20px;
-  border-radius:12px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:10px;
-}
-
-input, textarea {
-  width:100%;
-  padding:12px;
-  border-radius:8px;
-  border:none;
-  margin-top:5px;
-  background:#1f2937;
-  color:#fff;
-}
-
-textarea { min-height:100px; }
-
-button.primary {
-  margin-top:10px;
-  padding:14px;
-  width:100%;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  border:none;
-  color:#fff;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-/* TABLE */
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-}
-
-td, th {
-  padding:10px;
-  border-bottom:1px solid #333;
-}
-
-th { background:#1f2937; }
-
-.badge {
-  background:#22c55e;
-  padding:4px 8px;
-  border-radius:6px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -131,12 +23,12 @@ th { background:#1f2937; }
 <h1>📊 Dashboard</h1>
 
 <div class="cards">
-  <div class="card"><h2 id="total">0</h2>Total</div>
-  <div class="card"><h2 id="olts">0</h2>OLTs</div>
-  <div class="card"><h2 id="tecnicos">0</h2>Técnicos</div>
+  <div class="card"><h2 id="total">0</h2><p>Total</p></div>
+  <div class="card"><h2 id="olts">0</h2><p>OLTs</p></div>
+  <div class="card"><h2 id="tecnicos">0</h2><p>Técnicos</p></div>
 </div>
 
-<input placeholder="Buscar..." oninput="buscar(this.value)">
+<input class="search" placeholder="Buscar..." oninput="buscar(this.value)">
 
 <table>
 <thead>
@@ -164,23 +56,20 @@ th { background:#1f2937; }
 <div class="form-card">
 
 <div class="grid">
-<div><label>OLT</label><input id="olt"></div>
-<div><label>SLOT/PON</label><input id="pon"></div>
-<div><label>Técnico</label><input id="tecnico"></div>
-<div><label>Suporte</label><input id="suporte"></div>
+<input id="olt" placeholder="OLT">
+<input id="pon" placeholder="SLOT/PON">
+<input id="tecnico" placeholder="Técnico">
+<input id="suporte" placeholder="Suporte">
 </div>
 
-<label>🔧 Observações Técnicas</label>
-<textarea id="obs"></textarea>
+<textarea id="obs" placeholder="Observações Técnicas"></textarea>
 
-<label>🔗 Link da Evidência</label>
-<input id="link">
+<input id="link" placeholder="Link da Evidência (ex: https://...)">
 
-<label>📄 Resumo Automático</label>
 <textarea id="resumo" readonly></textarea>
 
-<button onclick="copiar()" class="primary">📋 Copiar Resumo</button>
-<button onclick="salvar()" class="primary">Salvar Registro</button>
+<button onclick="copiar()">📋 Copiar Resumo</button>
+<button onclick="salvar()">Salvar Registro</button>
 
 </div>
 
@@ -188,109 +77,6 @@ th { background:#1f2937; }
 
 </div>
 
-<script>
-
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0RCzaQ8sv19KcItBrYJUKNIO2HxZlql9ZV2S5VVSlcexyav1t/exec";
-
-let dados = [];
-
-// ===== RESUMO AUTOMÁTICO =====
-function gerarResumo(){
-  resumo.value =
-  `OLT: ${olt.value} | SLOT/PON: ${pon.value} | Técnico: ${tecnico.value} | Suporte: ${suporte.value} | Evidência: ${link.value}`;
-}
-
-document.querySelectorAll("#olt,#pon,#tecnico,#suporte,#link")
-.forEach(e=>e.addEventListener("input", gerarResumo));
-
-// ===== COPIAR =====
-function copiar(){
-  navigator.clipboard.writeText(resumo.value);
-  alert("Resumo copiado!");
-}
-
-// ===== SALVAR =====
-async function salvar(){
-
-  const url =
-    SCRIPT_URL +
-    "?acao=salvar" +
-    "&olt=" + encodeURIComponent(olt.value) +
-    "&pon=" + encodeURIComponent(pon.value) +
-    "&tecnico=" + encodeURIComponent(tecnico.value) +
-    "&suporte=" + encodeURIComponent(suporte.value) +
-    "&obs=" + encodeURIComponent(obs.value) +
-    "&link=" + encodeURIComponent(link.value) +
-    "&resumo=" + encodeURIComponent(resumo.value);
-
-  await fetch(url);
-
-  alert("Salvo com sucesso");
-  limpar();
-  carregar();
-}
-
-// ===== CARREGAR =====
-async function carregar(){
-
-  const res = await fetch(SCRIPT_URL);
-  dados = await res.json();
-
-  atualizarTabela(dados);
-
-  total.innerText = dados.length;
-  olts.innerText = new Set(dados.map(d=>d[1])).size;
-  tecnicos.innerText = new Set(dados.map(d=>d[3])).size;
-}
-
-// ===== TABELA =====
-function atualizarTabela(lista){
-
-  tabela.innerHTML = "";
-
-  lista.reverse().forEach(r => {
-    tabela.innerHTML += `
-    <tr>
-      <td>${r[0]}</td>
-      <td>${r[1]}</td>
-      <td>${r[2]}</td>
-      <td>${r[3]}</td>
-      <td>${r[4]}</td>
-      <td>${r[5]}</td>
-      <td><a href="${r[6]}" target="_blank" class="badge">Abrir</a></td>
-      <td>${r[7]}</td>
-    </tr>`;
-  });
-}
-
-// ===== BUSCA =====
-function buscar(txt){
-  const filtrado = dados.filter(d =>
-    d.join(" ").toLowerCase().includes(txt.toLowerCase())
-  );
-  atualizarTabela(filtrado);
-}
-
-// ===== LIMPAR =====
-function limpar(){
-  olt.value="";
-  pon.value="";
-  tecnico.value="";
-  suporte.value="";
-  obs.value="";
-  link.value="";
-  resumo.value="";
-}
-
-// ===== NAV =====
-function show(id){
-  document.querySelectorAll("section").forEach(s=>s.style.display="none");
-  document.getElementById(id).style.display="block";
-}
-
-carregar();
-
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
