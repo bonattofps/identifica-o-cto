@@ -2,18 +2,27 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0R
 
 let dados = [];
 
-// ===== RESUMO AUTOMÁTICO =====
+// ===== FORMATA LINK =====
+function formatarLink(url){
+  if(!url) return "#";
+  if(!url.startsWith("http")){
+    return "https://" + url;
+  }
+  return url;
+}
+
+// ===== RESUMO =====
 function gerarResumo(){
-  const texto = `OLT: ${olt.value} | SLOT/PON: ${pon.value} | Técnico: ${tecnico.value} | Suporte: ${suporte.value} | Evidência: ${link.value}`;
-  resumoAuto.value = texto;
+  resumo.value =
+  `OLT: ${olt.value} | SLOT/PON: ${pon.value} | Técnico: ${tecnico.value} | Suporte: ${suporte.value} | Evidência: ${link.value}`;
 }
 
 document.querySelectorAll("#olt,#pon,#tecnico,#suporte,#link")
-.forEach(el => el.addEventListener("input", gerarResumo));
+.forEach(e=>e.addEventListener("input", gerarResumo));
 
 // ===== COPIAR =====
-function copiarResumo(){
-  navigator.clipboard.writeText(resumoAuto.value);
+function copiar(){
+  navigator.clipboard.writeText(resumo.value);
   alert("Resumo copiado!");
 }
 
@@ -27,13 +36,18 @@ async function salvar(){
     "&pon=" + encodeURIComponent(pon.value) +
     "&tecnico=" + encodeURIComponent(tecnico.value) +
     "&suporte=" + encodeURIComponent(suporte.value) +
+    "&obs=" + encodeURIComponent(obs.value) +
     "&link=" + encodeURIComponent(link.value) +
-    "&resumo=" + encodeURIComponent(resumoAuto.value);
+    "&resumo=" + encodeURIComponent(resumo.value);
 
-  await fetch(url);
+  const res = await fetch(url);
+  const json = await res.json();
 
-  alert("Salvo!");
-  carregar();
+  if(json.status === "sucesso"){
+    alert("Salvo!");
+    limpar();
+    carregar();
+  }
 }
 
 // ===== CARREGAR =====
@@ -43,73 +57,54 @@ async function carregar(){
   dados = await res.json();
 
   atualizarTabela(dados);
-  atualizarDashboard(dados);
+
+  total.innerText = dados.length;
+  olts.innerText = new Set(dados.map(d=>d[1])).size;
+  tecnicos.innerText = new Set(dados.map(d=>d[3])).size;
 }
 
 // ===== TABELA =====
 function atualizarTabela(lista){
 
-  const tabela = document.getElementById("tabela");
   tabela.innerHTML = "";
 
   lista.reverse().forEach(r => {
+
     tabela.innerHTML += `
-      <tr>
-        <td>${r[0]}</td>
-        <td>${r[1]}</td>
-        <td>${r[2]}</td>
-        <td>${r[3]}</td>
-        <td>${r[4]}</td>
-        <td><a href="${r[7]}" target="_blank">Abrir</a></td>
-        <td>${r[8]}</td>
-      </tr>
-    `;
+    <tr>
+      <td>${r[0]}</td>
+      <td>${r[1]}</td>
+      <td>${r[2]}</td>
+      <td>${r[3]}</td>
+      <td>${r[4]}</td>
+      <td>${r[5]}</td>
+      <td><a href="${formatarLink(r[6])}" target="_blank">🔗 Abrir</a></td>
+      <td>${r[7]}</td>
+    </tr>`;
   });
 }
 
-// ===== DASHBOARD =====
-function atualizarDashboard(data){
-
-  document.getElementById("total").innerText = data.length;
-
-  const olts = new Set(data.map(d => d[1]));
-  const tec = new Set(data.map(d => d[3]));
-
-  document.getElementById("oltCount").innerText = olts.size;
-  document.getElementById("tecCount").innerText = tec.size;
-}
-
 // ===== BUSCA =====
-function buscar(texto){
+function buscar(txt){
   const filtrado = dados.filter(d =>
-    d.join(" ").toLowerCase().includes(texto.toLowerCase())
+    d.join(" ").toLowerCase().includes(txt.toLowerCase())
   );
   atualizarTabela(filtrado);
 }
 
-// ===== EXCEL =====
-function importarExcel(e){
-
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function(evt){
-    const wb = XLSX.read(evt.target.result, {type:"binary"});
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const json = XLSX.utils.sheet_to_json(ws);
-
-    json.forEach(row => {
-      console.log(row);
-    });
-
-    alert("Importado!");
-  };
-
-  reader.readAsBinaryString(file);
+// ===== LIMPAR =====
+function limpar(){
+  olt.value="";
+  pon.value="";
+  tecnico.value="";
+  suporte.value="";
+  obs.value="";
+  link.value="";
+  resumo.value="";
 }
 
 // ===== NAV =====
-function mostrar(id){
+function show(id){
   document.querySelectorAll("section").forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="block";
 }
