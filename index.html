@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard CTO</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h2>CTO</h2>
+  <button onclick="mostrar('dashboard')">Dashboard</button>
+  <button onclick="mostrar('cadastro')">Cadastro</button>
+</div>
+
+<div class="main">
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+  <h1>📊 Dashboard</h1>
+
+  <div class="cards">
+    <div class="card"><h3 id="total">0</h3><p>Total</p></div>
+    <div class="card"><h3 id="oltCount">0</h3><p>OLTs</p></div>
+    <div class="card"><h3 id="tecCount">0</h3><p>Técnicos</p></div>
+  </div>
+
+  <input placeholder="Buscar..." oninput="buscar(this.value)">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th><th>OLT</th><th>PON</th><th>Técnico</th>
+        <th>Suporte</th><th>Evidência</th><th>Resumo</th>
+      </tr>
+    </thead>
+    <tbody id="tabela"></tbody>
+  </table>
+</section>
+
+<!-- CADASTRO -->
+<section id="cadastro" style="display:none">
+  <h1>📥 Cadastro</h1>
+
+  <input id="olt" placeholder="OLT">
+  <input id="pon" placeholder="SLOT/PON">
+  <input id="tecnico" placeholder="Técnico">
+  <input id="suporte" placeholder="Suporte">
+  <input id="link" placeholder="Link da Evidência">
+
+  <textarea id="resumoAuto" readonly></textarea>
+
+  <button onclick="copiarResumo()">📋 Copiar Resumo</button>
+  <button onclick="salvar()">Salvar</button>
+
+  <input type="file" onchange="importarExcel(event)">
+</section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+body {
+  margin:0;
+  font-family:Segoe UI;
+  display:flex;
+  background:#0f172a;
+  color:#fff;
+}
+
+.sidebar {
+  width:220px;
+  background:#111827;
+  padding:20px;
+}
+
+.sidebar button {
+  width:100%;
+  margin:5px 0;
+  padding:10px;
+  background:#1f2937;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+
+.main {
+  flex:1;
+  padding:20px;
+}
+
+.cards {
+  display:flex;
+  gap:10px;
+}
+
+.card {
+  flex:1;
+  background:linear-gradient(135deg,#6C2BD9,#3B82F6);
+  padding:20px;
+  border-radius:10px;
+}
+
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border:none;
+  border-radius:6px;
+}
+
+table {
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+td, th {
+  padding:10px;
+  border-bottom:1px solid #333;
+}
