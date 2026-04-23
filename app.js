@@ -21,7 +21,34 @@ function formatarLink(url){
   return url;
 }
 
-// ===== SALVAR =====
+//
+// 🔥 RESUMO AUTOMÁTICO
+//
+function gerarResumo(){
+  resumo.value =
+  `📡 CTO IDENTIFICAÇÃO
+OLT: ${olt.value}
+PON: ${pon.value}
+Técnico: ${tecnico.value}
+Suporte: ${suporte.value}
+Evidência: ${link.value}`;
+}
+
+// atualiza automaticamente
+document.querySelectorAll("#olt,#pon,#tecnico,#suporte,#link")
+.forEach(e => e.addEventListener("input", gerarResumo));
+
+//
+// 📋 COPIAR RESUMO
+//
+function copiarResumo(){
+  navigator.clipboard.writeText(resumo.value);
+  alert("Resumo copiado!");
+}
+
+//
+// 💾 SALVAR
+//
 async function salvar(){
 
   const url =
@@ -40,7 +67,9 @@ async function salvar(){
   carregar();
 }
 
-// ===== CARREGAR =====
+//
+// 📥 CARREGAR
+//
 async function carregar(){
 
   const res = await fetch(SCRIPT_URL);
@@ -56,7 +85,9 @@ async function carregar(){
   renderTabela();
 }
 
-// ===== TABELA PAGINADA =====
+//
+// 📊 TABELA COM PAGINAÇÃO
+//
 function renderTabela(){
 
   const inicio = (paginaAtual - 1) * itensPorPagina;
@@ -67,6 +98,7 @@ function renderTabela(){
   tabela.innerHTML = "";
 
   paginaDados.forEach(r => {
+
     tabela.innerHTML += `
     <tr>
       <td>${formatarData(r[0])}</td>
@@ -82,7 +114,9 @@ function renderTabela(){
   paginaInfo.innerText = `Página ${paginaAtual}`;
 }
 
-// ===== PAGINAÇÃO =====
+//
+// ⬅➡ PAGINAÇÃO
+//
 function proxima(){
   if((paginaAtual * itensPorPagina) < dados.length){
     paginaAtual++;
@@ -97,11 +131,14 @@ function anterior(){
   }
 }
 
-// ===== BUSCA =====
+//
+// 🔎 BUSCA
+//
 function buscar(txt){
   const filtrado = dados.filter(d =>
     d.join(" ").toLowerCase().includes(txt.toLowerCase())
   );
+
   tabela.innerHTML = "";
 
   filtrado.forEach(r => {
@@ -118,7 +155,9 @@ function buscar(txt){
   });
 }
 
-// ===== LIMPAR =====
+//
+// 🧹 LIMPAR
+//
 function limpar(){
   olt.value="";
   pon.value="";
@@ -126,6 +165,7 @@ function limpar(){
   suporte.value="";
   obs.value="";
   link.value="";
+  resumo.value="";
 }
 
 carregar();
