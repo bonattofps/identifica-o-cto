@@ -3,30 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTO Dashboard</title>
+<title>Identificação de CTO</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h2>🚀 CTO</h2>
-  <button onclick="show('dashboard')">Dashboard</button>
-  <button onclick="show('cadastro')">Cadastro</button>
-</div>
-
 <div class="main">
 
-<!-- DASHBOARD -->
-<section id="dashboard">
-<h1>📊 Dashboard</h1>
+<h1>🚀 Identificação de CTO</h1>
 
+<!-- CARDS -->
 <div class="cards">
-  <div class="card"><h2 id="total">0</h2><p>Total</p></div>
+  <div class="card"><h2 id="total">0</h2><p>Total Registros</p></div>
   <div class="card"><h2 id="olts">0</h2><p>OLTs</p></div>
   <div class="card"><h2 id="tecnicos">0</h2><p>Técnicos</p></div>
 </div>
+
+<!-- FORM -->
+<div class="form-card">
+
+<h2>📥 Cadastro</h2>
+
+<div class="grid">
+<input id="olt" placeholder="OLT">
+<input id="pon" placeholder="SLOT/PON">
+<input id="tecnico" placeholder="Técnico de Campo">
+<input id="suporte" placeholder="Suporte Responsável">
+</div>
+
+<textarea id="obs" placeholder="Observações Técnicas"></textarea>
+<input id="link" placeholder="Link da Evidência">
+
+<button onclick="salvar()">Salvar Registro</button>
+
+</div>
+
+<!-- HISTÓRICO -->
+<div class="form-card">
+
+<h2>📊 Histórico</h2>
 
 <input class="search" placeholder="Buscar..." oninput="buscar(this.value)">
 
@@ -40,40 +57,20 @@
 <th>Suporte</th>
 <th>Obs</th>
 <th>Evidência</th>
-<th>Resumo</th>
 </tr>
 </thead>
+
 <tbody id="tabela"></tbody>
 </table>
 
-</section>
-
-<!-- CADASTRO -->
-<section id="cadastro" style="display:none">
-
-<h1>📥 Novo Registro</h1>
-
-<div class="form-card">
-
-<div class="grid">
-<input id="olt" placeholder="OLT">
-<input id="pon" placeholder="SLOT/PON">
-<input id="tecnico" placeholder="Técnico">
-<input id="suporte" placeholder="Suporte">
+<!-- PAGINAÇÃO -->
+<div class="paginacao">
+<button onclick="anterior()">⬅</button>
+<span id="paginaInfo"></span>
+<button onclick="proxima()">➡</button>
 </div>
 
-<textarea id="obs" placeholder="Observações Técnicas"></textarea>
-
-<input id="link" placeholder="Link da Evidência (ex: https://...)">
-
-<textarea id="resumo" readonly></textarea>
-
-<button onclick="copiar()">📋 Copiar Resumo</button>
-<button onclick="salvar()">Salvar Registro</button>
-
 </div>
-
-</section>
 
 </div>
 
