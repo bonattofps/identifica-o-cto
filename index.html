@@ -2,93 +2,165 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Operacional</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard CTO</title>
 
 <style>
-body {
-  font-family: 'Segoe UI';
-  background: #0b0f1a;
-  color: #fff;
-  margin:0;
+:root {
+  --primary: #2563eb;
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --border: #e2e8f0;
 }
 
-.header {
-  padding:20px;
-  background: linear-gradient(135deg,#6C2BD9,#3B82F6);
-  font-size:20px;
-  text-align:center;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .container {
-  padding:20px;
-  max-width:1200px;
-  margin:auto;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
 }
 
 .card {
-  background:#111827;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
 }
 
-input, textarea {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border:none;
-  border-radius:6px;
-}
-
-button {
-  width:100%;
-  padding:12px;
-  background:linear-gradient(135deg,#6C2BD9,#3B82F6);
-  border:none;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
+h1, h2 {
+  margin-top: 0;
 }
 
 .grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 15px;
 }
 
-.item {
-  background:#1f2937;
-  padding:15px;
-  border-radius:10px;
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-top: 5px;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.status {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #e0f2fe;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: #f1f5f9;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">🚀 Dashboard Operacional</div>
-
 <div class="container">
 
 <div class="card">
-<h3>Novo Registro</h3>
+<h1>📡 Identificação de CTO</h1>
 
-<input id="titulo" placeholder="Título">
-<textarea id="descricao" placeholder="Descrição"></textarea>
-<input id="responsavel" placeholder="Responsável">
-<input id="link" placeholder="Link da Evidência">
+<div class="grid">
+<div>
+<label>OLT</label>
+<input id="olt">
+</div>
 
-<button onclick="salvar()">Salvar</button>
+<div>
+<label>Slot / PON</label>
+<input id="pon">
+</div>
+
+<div>
+<label>Técnico de Campo</label>
+<input id="tecnico">
+</div>
+
+<div>
+<label>Suporte Responsável</label>
+<input id="suporte">
+</div>
+
+<div>
+<label>Seu Nome</label>
+<input id="nome">
+</div>
+</div>
+
+<label>Observações Técnicas</label>
+<textarea id="obs"></textarea>
+
+<label>Link da Evidência</label>
+<input id="link">
+
+<label>Resumo CTO</label>
+<textarea id="resumo"></textarea>
+
+<button onclick="salvar()">Salvar Registro</button>
+
+<div id="msg" class="status" style="display:none"></div>
+
 </div>
 
 <div class="card">
-<h3>📎 Resumo de Anexos</h3>
-<div id="resumo" class="grid"></div>
-</div>
+<h2>📜 Histórico</h2>
 
-<div class="card">
-<h3>📜 Histórico Completo</h3>
-<div id="historico"></div>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>OLT</th>
+<th>PON</th>
+<th>Técnico</th>
+<th>Suporte</th>
+<th>Nome</th>
+<th>Obs</th>
+<th>Evidência</th>
+<th>Resumo</th>
+</tr>
+</thead>
+<tbody id="tabela"></tbody>
+</table>
+
 </div>
 
 </div>
@@ -100,28 +172,31 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0R
 // ===== SALVAR =====
 async function salvar(){
 
-  if(!titulo.value || !link.value){
-    alert("Preencha Título e Link");
-    return;
-  }
-
   const url =
     SCRIPT_URL +
     "?acao=salvar" +
-    "&titulo=" + encodeURIComponent(titulo.value) +
-    "&descricao=" + encodeURIComponent(descricao.value) +
-    "&responsavel=" + encodeURIComponent(responsavel.value) +
-    "&link=" + encodeURIComponent(link.value);
+    "&olt=" + encodeURIComponent(olt.value) +
+    "&pon=" + encodeURIComponent(pon.value) +
+    "&tecnico=" + encodeURIComponent(tecnico.value) +
+    "&suporte=" + encodeURIComponent(suporte.value) +
+    "&nome=" + encodeURIComponent(nome.value) +
+    "&obs=" + encodeURIComponent(obs.value) +
+    "&link=" + encodeURIComponent(link.value) +
+    "&resumo=" + encodeURIComponent(resumo.value);
 
   const res = await fetch(url);
   const json = await res.json();
 
+  const msg = document.getElementById("msg");
+
   if(json.status === "sucesso"){
-    alert("Salvo com sucesso");
+    msg.style.display = "block";
+    msg.innerHTML = "✅ Registro salvo com sucesso";
     limpar();
     carregar();
   } else {
-    alert("Erro ao salvar");
+    msg.style.display = "block";
+    msg.innerHTML = "❌ Erro ao salvar";
   }
 }
 
@@ -131,39 +206,37 @@ async function carregar(){
   const res = await fetch(SCRIPT_URL);
   const data = await res.json();
 
-  const resumo = document.getElementById("resumo");
-  const historico = document.getElementById("historico");
-
-  resumo.innerHTML = "";
-  historico.innerHTML = "";
+  const tabela = document.getElementById("tabela");
+  tabela.innerHTML = "";
 
   data.reverse().forEach(r => {
 
-    resumo.innerHTML += `
-      <div class="item">
-        <b>${r[1]}</b><br>
-        <a href="${r[4]}" target="_blank">🔗 Abrir Evidência</a>
-      </div>
-    `;
-
-    historico.innerHTML += `
-      <div class="item">
-        <b>${r[1]}</b><br>
-        ${r[2]}<br>
-        👤 ${r[3]}<br>
-        <a href="${r[4]}" target="_blank">Abrir Evidência</a><br>
-        <small>${r[0]}</small>
-      </div>
+    tabela.innerHTML += `
+      <tr>
+        <td>${r[0]}</td>
+        <td>${r[1]}</td>
+        <td>${r[2]}</td>
+        <td>${r[3]}</td>
+        <td>${r[4]}</td>
+        <td>${r[5]}</td>
+        <td>${r[6]}</td>
+        <td><a href="${r[7]}" target="_blank">Abrir</a></td>
+        <td>${r[8]}</td>
+      </tr>
     `;
   });
 }
 
 // ===== LIMPAR =====
 function limpar(){
-  titulo.value="";
-  descricao.value="";
-  responsavel.value="";
+  olt.value="";
+  pon.value="";
+  tecnico.value="";
+  suporte.value="";
+  nome.value="";
+  obs.value="";
   link.value="";
+  resumo.value="";
 }
 
 carregar();
