@@ -4,6 +4,21 @@ let dados = [];
 let paginaAtual = 1;
 const itensPorPagina = 5;
 
+// ===== ELEMENTOS =====
+const olt = document.getElementById("olt");
+const pon = document.getElementById("pon");
+const tecnico = document.getElementById("tecnico");
+const suporte = document.getElementById("suporte");
+const obs = document.getElementById("obs");
+const link = document.getElementById("link");
+const resumo = document.getElementById("resumo");
+
+const total = document.getElementById("total");
+const olts = document.getElementById("olts");
+const tecnicos = document.getElementById("tecnicos");
+const tabela = document.getElementById("tabela");
+const paginaInfo = document.getElementById("paginaInfo");
+
 // ===== FORMATAR DATA =====
 function formatarData(dataISO){
   const d = new Date(dataISO);
@@ -25,8 +40,9 @@ function formatarLink(url){
 // 🔥 RESUMO AUTOMÁTICO
 //
 function gerarResumo(){
+
   resumo.value =
-  `📡 CTO IDENTIFICAÇÃO
+`📡 CTO IDENTIFICAÇÃO
 OLT: ${olt.value}
 PON: ${pon.value}
 Técnico: ${tecnico.value}
@@ -34,9 +50,10 @@ Suporte: ${suporte.value}
 Evidência: ${link.value}`;
 }
 
-// atualiza automaticamente
-document.querySelectorAll("#olt,#pon,#tecnico,#suporte,#link")
-.forEach(e => e.addEventListener("input", gerarResumo));
+// Atualiza automaticamente
+[olt, pon, tecnico, suporte, link].forEach(el => {
+  el.addEventListener("input", gerarResumo);
+});
 
 //
 // 📋 COPIAR RESUMO
@@ -78,15 +95,15 @@ async function carregar(){
   dados.reverse();
 
   total.innerText = dados.length;
-  olts.innerText = new Set(dados.map(d=>d[1])).size;
-  tecnicos.innerText = new Set(dados.map(d=>d[3])).size;
+  olts.innerText = new Set(dados.map(d => d[1])).size;
+  tecnicos.innerText = new Set(dados.map(d => d[3])).size;
 
   paginaAtual = 1;
   renderTabela();
 }
 
 //
-// 📊 TABELA COM PAGINAÇÃO
+// 📊 TABELA
 //
 function renderTabela(){
 
@@ -159,13 +176,13 @@ function buscar(txt){
 // 🧹 LIMPAR
 //
 function limpar(){
-  olt.value="";
-  pon.value="";
-  tecnico.value="";
-  suporte.value="";
-  obs.value="";
-  link.value="";
-  resumo.value="";
+  olt.value = "";
+  pon.value = "";
+  tecnico.value = "";
+  suporte.value = "";
+  obs.value = "";
+  link.value = "";
+  resumo.value = "";
 }
 
 carregar();
