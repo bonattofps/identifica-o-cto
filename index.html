@@ -2,202 +2,168 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard CTO</title>
+<title>Dashboard Operacional</title>
 
 <style>
-:root {
-  --roxo: #6C2BD9;
-  --azul: #3B82F6;
-  --bg: #0B0F1A;
-  --card: #111827;
-}
-
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0B0F1A, #1f2937);
+  font-family: 'Segoe UI';
+  background: #0b0f1a;
   color: #fff;
-  margin: 0;
-  padding: 20px;
+  margin:0;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+.header {
+  padding:20px;
+  background: linear-gradient(135deg,#6C2BD9,#3B82F6);
+  font-size:20px;
+  text-align:center;
 }
 
 .container {
-  max-width: 1200px;
-  margin: auto;
+  padding:20px;
+  max-width:1200px;
+  margin:auto;
 }
 
 .card {
-  background: var(--card);
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.metric {
-  background: linear-gradient(135deg, var(--roxo), var(--azul));
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.metric h2 {
-  margin: 0;
-  font-size: 28px;
+  background:#111827;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
 }
 
 input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 6px;
-  border: none;
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border:none;
+  border-radius:6px;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, var(--roxo), var(--azul));
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  width:100%;
+  padding:12px;
+  background:linear-gradient(135deg,#6C2BD9,#3B82F6);
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
 }
 
-td, th {
-  padding: 10px;
-  border-bottom: 1px solid #333;
+.item {
+  background:#1f2937;
+  padding:15px;
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="header">🚀 Dashboard Operacional</div>
+
 <div class="container">
 
-<h1>🚀 Dashboard Técnico CTO</h1>
+<div class="card">
+<h3>Novo Registro</h3>
 
-<!-- METRICAS -->
-<div class="grid">
-  <div class="metric"><h2 id="total">0</h2><p>Total Registros</p></div>
-  <div class="metric"><h2 id="tecnicos">0</h2><p>Técnicos</p></div>
-  <div class="metric"><h2 id="olts">0</h2><p>OLTs</p></div>
+<input id="titulo" placeholder="Título">
+<textarea id="descricao" placeholder="Descrição"></textarea>
+<input id="responsavel" placeholder="Responsável">
+<input id="link" placeholder="Link da Evidência">
+
+<button onclick="salvar()">Salvar</button>
 </div>
 
-<!-- FORM -->
 <div class="card">
-<h2>Novo Registro</h2>
-
-<input id="olt" placeholder="OLT">
-<input id="pon" placeholder="PON">
-<input id="tecnico" placeholder="Técnico">
-<input id="suporte" placeholder="Suporte">
-<textarea id="obs" placeholder="Observações"></textarea>
-<input id="linkFoto" placeholder="Link da Foto">
-
-<button onclick="salvar()">Salvar Registro</button>
+<h3>📎 Resumo de Anexos</h3>
+<div id="resumo" class="grid"></div>
 </div>
 
-<!-- RELATORIO -->
 <div class="card">
-<h2>📊 Relatório</h2>
-<p id="relatorio">Nenhum dado ainda...</p>
-</div>
-
-<!-- TABELA -->
-<div class="card">
-<h2>Histórico</h2>
-<table>
-<thead>
-<tr>
-<th>Data</th><th>OLT</th><th>Técnico</th><th>Obs</th>
-</tr>
-</thead>
-<tbody id="tabela"></tbody>
-</table>
+<h3>📜 Histórico Completo</h3>
+<div id="historico"></div>
 </div>
 
 </div>
 
 <script>
 
-const SCRIPT_URL = "COLE_SUA_URL_AQUI";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0RCzaQ8sv19KcItBrYJUKNIO2HxZlql9ZV2S5VVSlcexyav1t/exec";
 
-async function salvar() {
+// ===== SALVAR =====
+async function salvar(){
 
-  const dados = {
-    olt: olt.value,
-    pon: pon.value,
-    tecnico: tecnico.value,
-    suporte: suporte.value,
-    obs: obs.value,
-    linkFoto: linkFoto.value
-  };
+  if(!titulo.value || !link.value){
+    alert("Preencha Título e Link");
+    return;
+  }
 
-  const url = SCRIPT_URL +
+  const url =
+    SCRIPT_URL +
     "?acao=salvar" +
-    "&olt=" + encodeURIComponent(dados.olt) +
-    "&pon=" + encodeURIComponent(dados.pon) +
-    "&tecnico=" + encodeURIComponent(dados.tecnico) +
-    "&suporte=" + encodeURIComponent(dados.suporte) +
-    "&obs=" + encodeURIComponent(dados.obs) +
-    "&linkFoto=" + encodeURIComponent(dados.linkFoto);
+    "&titulo=" + encodeURIComponent(titulo.value) +
+    "&descricao=" + encodeURIComponent(descricao.value) +
+    "&responsavel=" + encodeURIComponent(responsavel.value) +
+    "&link=" + encodeURIComponent(link.value);
 
-  await fetch(url);
+  const res = await fetch(url);
+  const json = await res.json();
 
-  gerarRelatorio(dados);
-  carregar();
+  if(json.status === "sucesso"){
+    alert("Salvo com sucesso");
+    limpar();
+    carregar();
+  } else {
+    alert("Erro ao salvar");
+  }
 }
 
-function gerarRelatorio(d) {
-  document.getElementById("relatorio").innerHTML =
-    `Registro realizado com sucesso.<br>
-     Técnico: <b>${d.tecnico}</b><br>
-     OLT: <b>${d.olt}</b><br>
-     Data: ${new Date().toLocaleString("pt-BR")}`;
-}
-
-async function carregar() {
+// ===== CARREGAR =====
+async function carregar(){
 
   const res = await fetch(SCRIPT_URL);
   const data = await res.json();
 
-  document.getElementById("total").innerText = data.length;
+  const resumo = document.getElementById("resumo");
+  const historico = document.getElementById("historico");
 
-  const tecnicos = new Set(data.map(d => d[3]));
-  document.getElementById("tecnicos").innerText = tecnicos.size;
-
-  const olts = new Set(data.map(d => d[1]));
-  document.getElementById("olts").innerText = olts.size;
-
-  const tabela = document.getElementById("tabela");
-  tabela.innerHTML = "";
+  resumo.innerHTML = "";
+  historico.innerHTML = "";
 
   data.reverse().forEach(r => {
-    tabela.innerHTML += `
-      <tr>
-        <td>${r[0]}</td>
-        <td>${r[1]}</td>
-        <td>${r[3]}</td>
-        <td>${r[5]}</td>
-      </tr>`;
+
+    resumo.innerHTML += `
+      <div class="item">
+        <b>${r[1]}</b><br>
+        <a href="${r[4]}" target="_blank">🔗 Abrir Evidência</a>
+      </div>
+    `;
+
+    historico.innerHTML += `
+      <div class="item">
+        <b>${r[1]}</b><br>
+        ${r[2]}<br>
+        👤 ${r[3]}<br>
+        <a href="${r[4]}" target="_blank">Abrir Evidência</a><br>
+        <small>${r[0]}</small>
+      </div>
+    `;
   });
+}
+
+// ===== LIMPAR =====
+function limpar(){
+  titulo.value="";
+  descricao.value="";
+  responsavel.value="";
+  link.value="";
 }
 
 carregar();
