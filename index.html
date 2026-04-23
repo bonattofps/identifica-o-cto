@@ -3,50 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Técnico CTO</title>
+<title>Dashboard CTO</title>
 
 <style>
+:root {
+  --roxo: #6C2BD9;
+  --azul: #3B82F6;
+  --bg: #0B0F1A;
+  --card: #111827;
+}
+
 body {
-  font-family: Arial;
-  background:#0f172a;
-  color:#fff;
-  padding:20px;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0B0F1A, #1f2937);
+  color: #fff;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.metric {
+  background: linear-gradient(135deg, var(--roxo), var(--azul));
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.metric h2 {
+  margin: 0;
+  font-size: 28px;
 }
 
 input, textarea {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border:none;
-  border-radius:5px;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  border: none;
 }
 
 button {
-  padding:12px;
-  width:100%;
-  background:#3b82f6;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  border-radius:5px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--roxo), var(--azul));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 table {
-  width:100%;
-  margin-top:20px;
-  border-collapse:collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 td, th {
-  padding:10px;
-  border-bottom:1px solid #333;
+  padding: 10px;
+  border-bottom: 1px solid #333;
 }
 </style>
 </head>
 
 <body>
 
-<h2>Cadastro Técnico</h2>
+<div class="container">
+
+<h1>🚀 Dashboard Técnico CTO</h1>
+
+<!-- METRICAS -->
+<div class="grid">
+  <div class="metric"><h2 id="total">0</h2><p>Total Registros</p></div>
+  <div class="metric"><h2 id="tecnicos">0</h2><p>Técnicos</p></div>
+  <div class="metric"><h2 id="olts">0</h2><p>OLTs</p></div>
+</div>
+
+<!-- FORM -->
+<div class="card">
+<h2>Novo Registro</h2>
 
 <input id="olt" placeholder="OLT">
 <input id="pon" placeholder="PON">
@@ -55,114 +111,96 @@ td, th {
 <textarea id="obs" placeholder="Observações"></textarea>
 <input id="linkFoto" placeholder="Link da Foto">
 
-<button onclick="salvar()">Salvar</button>
+<button onclick="salvar()">Salvar Registro</button>
+</div>
 
-<h2>Registros</h2>
+<!-- RELATORIO -->
+<div class="card">
+<h2>📊 Relatório</h2>
+<p id="relatorio">Nenhum dado ainda...</p>
+</div>
 
+<!-- TABELA -->
+<div class="card">
+<h2>Histórico</h2>
 <table>
 <thead>
 <tr>
-<th>Data</th>
-<th>OLT</th>
-<th>PON</th>
-<th>Técnico</th>
-<th>Suporte</th>
-<th>Obs</th>
-<th>Foto</th>
+<th>Data</th><th>OLT</th><th>Técnico</th><th>Obs</th>
 </tr>
 </thead>
 <tbody id="tabela"></tbody>
 </table>
+</div>
+
+</div>
 
 <script>
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0RCzaQ8sv19KcItBrYJUKNIO2HxZlql9ZV2S5VVSlcexyav1t/exec";
+const SCRIPT_URL = "COLE_SUA_URL_AQUI";
 
-// ================= SALVAR =================
 async function salvar() {
 
   const dados = {
-    olt: document.getElementById("olt").value,
-    pon: document.getElementById("pon").value,
-    tecnico: document.getElementById("tecnico").value,
-    suporte: document.getElementById("suporte").value,
-    obs: document.getElementById("obs").value,
-    linkFoto: document.getElementById("linkFoto").value
+    olt: olt.value,
+    pon: pon.value,
+    tecnico: tecnico.value,
+    suporte: suporte.value,
+    obs: obs.value,
+    linkFoto: linkFoto.value
   };
 
-  if (!dados.olt || !dados.tecnico || !dados.linkFoto) {
-    alert("Preencha OLT, Técnico e Link da Foto");
-    return;
-  }
+  const url = SCRIPT_URL +
+    "?acao=salvar" +
+    "&olt=" + encodeURIComponent(dados.olt) +
+    "&pon=" + encodeURIComponent(dados.pon) +
+    "&tecnico=" + encodeURIComponent(dados.tecnico) +
+    "&suporte=" + encodeURIComponent(dados.suporte) +
+    "&obs=" + encodeURIComponent(dados.obs) +
+    "&linkFoto=" + encodeURIComponent(dados.linkFoto);
 
-  try {
+  await fetch(url);
 
-    const url =
-      SCRIPT_URL +
-      "?acao=salvar" +
-      "&olt=" + encodeURIComponent(dados.olt) +
-      "&pon=" + encodeURIComponent(dados.pon) +
-      "&tecnico=" + encodeURIComponent(dados.tecnico) +
-      "&suporte=" + encodeURIComponent(dados.suporte) +
-      "&obs=" + encodeURIComponent(dados.obs) +
-      "&linkFoto=" + encodeURIComponent(dados.linkFoto);
-
-    await fetch(url);
-
-    alert("✅ Salvo com sucesso");
-
-    limparCampos();
-    carregarHistorico();
-
-  } catch (e) {
-    alert("❌ Erro: " + e.message);
-  }
+  gerarRelatorio(dados);
+  carregar();
 }
 
-// ================= CARREGAR =================
-async function carregarHistorico() {
+function gerarRelatorio(d) {
+  document.getElementById("relatorio").innerHTML =
+    `Registro realizado com sucesso.<br>
+     Técnico: <b>${d.tecnico}</b><br>
+     OLT: <b>${d.olt}</b><br>
+     Data: ${new Date().toLocaleString("pt-BR")}`;
+}
+
+async function carregar() {
+
+  const res = await fetch(SCRIPT_URL);
+  const data = await res.json();
+
+  document.getElementById("total").innerText = data.length;
+
+  const tecnicos = new Set(data.map(d => d[3]));
+  document.getElementById("tecnicos").innerText = tecnicos.size;
+
+  const olts = new Set(data.map(d => d[1]));
+  document.getElementById("olts").innerText = olts.size;
 
   const tabela = document.getElementById("tabela");
-  tabela.innerHTML = "<tr><td colspan='7'>Carregando...</td></tr>";
+  tabela.innerHTML = "";
 
-  try {
-
-    const response = await fetch(SCRIPT_URL);
-    const dados = await response.json();
-
-    tabela.innerHTML = "";
-
-    dados.reverse().forEach(reg => {
-      tabela.innerHTML += `
-        <tr>
-          <td>${reg[0]}</td>
-          <td>${reg[1]}</td>
-          <td>${reg[2]}</td>
-          <td>${reg[3]}</td>
-          <td>${reg[4]}</td>
-          <td>${reg[5]}</td>
-          <td><a href="${reg[6]}" target="_blank">Abrir</a></td>
-        </tr>
-      `;
-    });
-
-  } catch (erro) {
-    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
-  }
+  data.reverse().forEach(r => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${r[0]}</td>
+        <td>${r[1]}</td>
+        <td>${r[3]}</td>
+        <td>${r[5]}</td>
+      </tr>`;
+  });
 }
 
-// ================= LIMPAR =================
-function limparCampos() {
-  document.getElementById("olt").value = "";
-  document.getElementById("pon").value = "";
-  document.getElementById("tecnico").value = "";
-  document.getElementById("suporte").value = "";
-  document.getElementById("obs").value = "";
-  document.getElementById("linkFoto").value = "";
-}
-
-// ================= INIT =================
-carregarHistorico();
+carregar();
 
 </script>
 
