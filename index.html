@@ -3,65 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard CTO</title>
+<title>CTO Dashboard</title>
 
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<style>
+:root {
+  --bg: #0b0f1a;
+  --card: #111827;
+  --primary: #6C2BD9;
+  --secondary: #3B82F6;
+}
+
+body {
+  margin:0;
+  font-family: 'Segoe UI';
+  display:flex;
+  background: var(--bg);
+  color:#fff;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width:240px;
+  background:#0f172a;
+  padding:20px;
+}
+
+.sidebar h2 {
+  margin-bottom:20px;
+}
+
+.sidebar button {
+  width:100%;
+  margin:6px 0;
+  padding:12px;
+  background:#1f2937;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+/* MAIN */
+.main {
+  flex:1;
+  padding:25px;
+}
+
+/* CARDS */
+.cards {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.card {
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  padding:20px;
+  border-radius:12px;
+}
+
+/* FORM */
+.form-card {
+  background: var(--card);
+  padding:20px;
+  border-radius:12px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+}
+
+input, textarea {
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  margin-top:5px;
+  background:#1f2937;
+  color:#fff;
+}
+
+textarea {
+  min-height:100px;
+}
+
+button.primary {
+  margin-top:15px;
+  padding:14px;
+  width:100%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border:none;
+  color:#fff;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+/* TABELA */
+table {
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+td, th {
+  padding:10px;
+  border-bottom:1px solid #333;
+}
+
+th {
+  background:#1f2937;
+}
+
+/* BADGE */
+.badge {
+  padding:4px 8px;
+  background:#22c55e;
+  border-radius:6px;
+  font-size:12px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="sidebar">
-  <h2>CTO</h2>
-  <button onclick="mostrar('dashboard')">Dashboard</button>
-  <button onclick="mostrar('cadastro')">Cadastro</button>
+  <h2>🚀 CTO</h2>
+  <button onclick="show('dashboard')">Dashboard</button>
+  <button onclick="show('cadastro')">Cadastro</button>
 </div>
 
 <div class="main">
 
 <!-- DASHBOARD -->
 <section id="dashboard">
-  <h1>📊 Dashboard</h1>
+<h1>📊 Visão Geral</h1>
 
-  <div class="cards">
-    <div class="card"><h3 id="total">0</h3><p>Total</p></div>
-    <div class="card"><h3 id="oltCount">0</h3><p>OLTs</p></div>
-    <div class="card"><h3 id="tecCount">0</h3><p>Técnicos</p></div>
-  </div>
+<div class="cards">
+  <div class="card"><h2 id="total">0</h2>Total</div>
+  <div class="card"><h2 id="olts">0</h2>OLTs</div>
+  <div class="card"><h2 id="tecnicos">0</h2>Técnicos</div>
+</div>
 
-  <input placeholder="Buscar..." oninput="buscar(this.value)">
+<input placeholder="Buscar..." oninput="buscar(this.value)">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Data</th><th>OLT</th><th>PON</th><th>Técnico</th>
-        <th>Suporte</th><th>Evidência</th><th>Resumo</th>
-      </tr>
-    </thead>
-    <tbody id="tabela"></tbody>
-  </table>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>OLT</th>
+<th>PON</th>
+<th>Técnico</th>
+<th>Suporte</th>
+<th>Evidência</th>
+<th>Resumo</th>
+</tr>
+</thead>
+<tbody id="tabela"></tbody>
+</table>
+
 </section>
 
 <!-- CADASTRO -->
 <section id="cadastro" style="display:none">
-  <h1>📥 Cadastro</h1>
 
-  <input id="olt" placeholder="OLT">
-  <input id="pon" placeholder="SLOT/PON">
-  <input id="tecnico" placeholder="Técnico">
-  <input id="suporte" placeholder="Suporte">
-  <input id="link" placeholder="Link da Evidência">
+<h1>📥 Novo Registro</h1>
 
-  <textarea id="resumoAuto" readonly></textarea>
+<div class="form-card">
 
-  <button onclick="copiarResumo()">📋 Copiar Resumo</button>
-  <button onclick="salvar()">Salvar</button>
+<div class="grid">
+<div><label>OLT</label><input id="olt"></div>
+<div><label>SLOT/PON</label><input id="pon"></div>
+<div><label>Técnico</label><input id="tecnico"></div>
+<div><label>Suporte</label><input id="suporte"></div>
+</div>
 
-  <input type="file" onchange="importarExcel(event)">
+<label>🔧 Observações Técnicas</label>
+<textarea id="obs"></textarea>
+
+<label>🔗 Link da Evidência</label>
+<input id="link">
+
+<label>📄 Resumo Automático</label>
+<textarea id="resumo" readonly></textarea>
+
+<button onclick="copiar()" class="primary">📋 Copiar Resumo</button>
+<button onclick="salvar()" class="primary">Salvar Registro</button>
+
+</div>
+
 </section>
 
 </div>
 
-<script src="app.js"></script>
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0RCzaQ8sv19KcItBrYJUKNIO2HxZlql9ZV2S5VVSlcexyav1t/exec";
+
+let dados = [];
+
+// ===== RESUMO AUTOMÁTICO =====
+function gerarResumo(){
+  resumo.value =
+  `OLT: ${olt.value} | PON: ${pon.value} | Técnico: ${tecnico.value} | Suporte: ${suporte.value} | Evidência: ${link.value}`;
+}
+
+document.querySelectorAll("#olt,#pon,#tecnico,#suporte,#link")
+.forEach(e=>e.addEventListener("input", gerarResumo));
+
+// ===== COPIAR =====
+function copiar(){
+  navigator.clipboard.writeText(resumo.value);
+  alert("Copiado!");
+}
+
+// ===== SALVAR =====
+async function salvar(){
+
+  const url =
+    SCRIPT_URL +
+    "?acao=salvar" +
+    "&olt=" + encodeURIComponent(olt.value) +
+    "&pon=" + encodeURIComponent(pon.value) +
+    "&tecnico=" + encodeURIComponent(tecnico.value) +
+    "&suporte=" + encodeURIComponent(suporte.value) +
+    "&obs=" + encodeURIComponent(obs.value) +
+    "&link=" + encodeURIComponent(link.value) +
+    "&resumo=" + encodeURIComponent(resumo.value);
+
+  await fetch(url);
+
+  alert("Salvo com sucesso");
+  carregar();
+}
+
+// ===== CARREGAR =====
+async function carregar(){
+
+  const res = await fetch(SCRIPT_URL);
+  dados = await res.json();
+
+  atualizarTabela(dados);
+
+  document.getElementById("total").innerText = dados.length;
+  document.getElementById("olts").innerText = new Set(dados.map(d=>d[1])).size;
+  document.getElementById("tecnicos").innerText = new Set(dados.map(d=>d[3])).size;
+}
+
+// ===== TABELA =====
+function atualizarTabela(lista){
+
+  const tabela = document.getElementById("tabela");
+  tabela.innerHTML = "";
+
+  lista.reverse().forEach(r => {
+
+    tabela.innerHTML += `
+    <tr>
+      <td>${r[0]}</td>
+      <td>${r[1]}</td>
+      <td>${r[2]}</td>
+      <td>${r[3]}</td>
+      <td>${r[4]}</td>
+      <td><a href="${r[7]}" target="_blank" class="badge">Abrir</a></td>
+      <td>${r[8]}</td>
+    </tr>`;
+  });
+}
+
+// ===== BUSCA =====
+function buscar(txt){
+  const filtrado = dados.filter(d =>
+    d.join(" ").toLowerCase().includes(txt.toLowerCase())
+  );
+  atualizarTabela(filtrado);
+}
+
+// ===== NAV =====
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+carregar();
+
+</script>
+
 </body>
 </html>
