@@ -18,6 +18,7 @@ input, textarea {
   padding:10px;
   margin:5px 0;
   border:none;
+  border-radius:5px;
 }
 
 button {
@@ -27,6 +28,7 @@ button {
   color:#fff;
   border:none;
   cursor:pointer;
+  border-radius:5px;
 }
 
 table {
@@ -74,7 +76,7 @@ td, th {
 
 <script>
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz40yerzLcYsbRSwGD0RCzaQ8sv19KcItBrYJUKNIO2HxZlql9ZV2S5VVSlcexyav1t/exec";
+const SCRIPT_URL = "COLE_AQUI_SUA_URL_NOVA";
 
 // ================= SALVAR =================
 async function salvar() {
@@ -95,14 +97,15 @@ async function salvar() {
 
   try {
 
-    // 🔥 ENVIO VIA GET (SEM CORS)
-    const url = `${SCRIPT_URL}?acao=salvar
-      &olt=${encodeURIComponent(dados.olt)}
-      &pon=${encodeURIComponent(dados.pon)}
-      &tecnico=${encodeURIComponent(dados.tecnico)}
-      &suporte=${encodeURIComponent(dados.suporte)}
-      &obs=${encodeURIComponent(dados.obs)}
-      &linkFoto=${encodeURIComponent(dados.linkFoto)}`;
+    const url =
+      SCRIPT_URL +
+      "?acao=salvar" +
+      "&olt=" + encodeURIComponent(dados.olt) +
+      "&pon=" + encodeURIComponent(dados.pon) +
+      "&tecnico=" + encodeURIComponent(dados.tecnico) +
+      "&suporte=" + encodeURIComponent(dados.suporte) +
+      "&obs=" + encodeURIComponent(dados.obs) +
+      "&linkFoto=" + encodeURIComponent(dados.linkFoto);
 
     await fetch(url);
 
