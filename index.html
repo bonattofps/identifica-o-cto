@@ -34,8 +34,14 @@
 </div>
 
 <textarea id="obs" placeholder="Observações Técnicas"></textarea>
-<input id="link" placeholder="Link da Evidência">
 
+<input id="link" placeholder="Link da Evidência (ex: https://...)">
+
+<!-- 🔥 RESUMO -->
+<label>📄 Resumo Automático</label>
+<textarea id="resumo" readonly placeholder="Resumo será gerado automaticamente"></textarea>
+
+<button onclick="copiarResumo()">📋 Copiar Resumo</button>
 <button onclick="salvar()">Salvar Registro</button>
 
 </div>
@@ -63,7 +69,6 @@
 <tbody id="tabela"></tbody>
 </table>
 
-<!-- PAGINAÇÃO -->
 <div class="paginacao">
 <button onclick="anterior()">⬅</button>
 <span id="paginaInfo"></span>
