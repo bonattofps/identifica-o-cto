@@ -4,7 +4,7 @@ let dados = [];
 let paginaAtual = 1;
 const itensPorPagina = 5;
 
-// ===== ELEMENTOS PRINCIPAIS =====
+// ===== ELEMENTOS =====
 const olt = document.getElementById("olt");
 const pon = document.getElementById("pon");
 const tecnico = document.getElementById("tecnico");
@@ -19,7 +19,7 @@ const tecnicos = document.getElementById("tecnicos");
 const tabela = document.getElementById("tabela");
 const paginaInfo = document.getElementById("paginaInfo");
 
-// ===== FILTROS =====
+// ===== FILTROS (PODEM NÃO EXISTIR NO HTML - SAFE MODE) =====
 const filtroTecnico = document.getElementById("filtroTecnico");
 const filtroOLT = document.getElementById("filtroOLT");
 const filtroSuporte = document.getElementById("filtroSuporte");
@@ -56,16 +56,18 @@ Suporte: ${suporte.value}
 Evidência: ${link.value}`;
 }
 
-// atualização automática do resumo
+// eventos do resumo
 [olt, pon, tecnico, suporte, link].forEach(el => {
-  el.addEventListener("input", gerarResumo);
+  if(el){
+    el.addEventListener("input", gerarResumo);
+  }
 });
 
 //
 // 📋 COPIAR RESUMO
 //
 function copiarResumo(){
-  navigator.clipboard.writeText(resumo.value);
+  navigator.clipboard.writeText(resumo.value || "");
   alert("Resumo copiado!");
 }
 
@@ -91,32 +93,40 @@ async function salvar(){
 }
 
 //
-// 📥 CARREGAR
+// 📥 CARREGAR HISTÓRICO
 //
 async function carregar(){
 
-  const res = await fetch(SCRIPT_URL);
-  dados = await res.json();
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const text = await res.text();
 
-  dados.reverse();
+    dados = JSON.parse(text || "[]");
 
-  total.innerText = dados.length;
-  olts.innerText = new Set(dados.map(d => d[1])).size;
-  tecnicos.innerText = new Set(dados.map(d => d[3])).size;
+    dados.reverse();
 
-  paginaAtual = 1;
-  renderTabela();
+    total.innerText = dados.length;
+    olts.innerText = new Set(dados.map(d => d[1])).size;
+    tecnicos.innerText = new Set(dados.map(d => d[3])).size;
+
+    paginaAtual = 1;
+    renderTabela();
+
+  } catch (err) {
+    console.error("Erro ao carregar histórico:", err);
+    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+  }
 }
 
 //
-// 🔎 FILTROS AVANÇADOS
+// 🔎 FILTROS (SAFE - NÃO QUEBRA SE INPUT NÃO EXISTIR)
 //
 function aplicarFiltros(){
 
-  const tecnicoF = filtroTecnico.value.toLowerCase();
-  const oltF = filtroOLT.value.toLowerCase();
-  const suporteF = filtroSuporte.value.toLowerCase();
-  const ponF = filtroPON.value.toLowerCase();
+  const tecnicoF = (filtroTecnico?.value || "").toLowerCase();
+  const oltF = (filtroOLT?.value || "").toLowerCase();
+  const suporteF = (filtroSuporte?.value || "").toLowerCase();
+  const ponF = (filtroPON?.value || "").toLowerCase();
 
   return dados.filter(d => {
 
@@ -140,6 +150,11 @@ function aplicarFiltros(){
 // 📊 TABELA
 //
 function renderTabela(){
+
+  if(!dados || dados.length === 0){
+    tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
+    return;
+  }
 
   const filtrado = aplicarFiltros();
 
@@ -187,13 +202,15 @@ function anterior(){
 }
 
 //
-// 🔄 FILTROS EM TEMPO REAL
+// 🔄 FILTROS EM TEMPO REAL (SAFE)
 //
 [filtroTecnico, filtroOLT, filtroSuporte, filtroPON].forEach(el => {
-  el.addEventListener("input", () => {
-    paginaAtual = 1;
-    renderTabela();
-  });
+  if(el){
+    el.addEventListener("input", () => {
+      paginaAtual = 1;
+      renderTabela();
+    });
+  }
 });
 
 //
