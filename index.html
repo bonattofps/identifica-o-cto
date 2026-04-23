@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Técnico CTO | Uni Internet</title>
+
+<style>
+body { font-family: Arial; background:#0f172a; color:#fff; margin:0; }
+.container { max-width:1200px; margin:auto; padding:20px; }
+input, textarea { width:100%; padding:10px; margin:5px 0; }
+button { padding:12px; width:100%; background:#3b82f6; color:#fff; border:none; cursor:pointer; }
+table { width:100%; margin-top:20px; border-collapse:collapse; }
+td, th { padding:10px; border-bottom:1px solid #333; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Cadastro Técnico</h2>
+
+<input id="olt" placeholder="OLT">
+<input id="pon" placeholder="PON">
+<input id="tecnico" placeholder="Técnico">
+<input id="suporte" placeholder="Suporte">
+<textarea id="obs" placeholder="Observações"></textarea>
+<input id="linkFoto" placeholder="Link da Foto">
+
+<button onclick="salvarNoBanco()" id="btnSalvar">Salvar</button>
+
+<h2>Registros</h2>
+
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>OLT</th>
+<th>PON</th>
+<th>Técnico</th>
+<th>Suporte</th>
+<th>Obs</th>
+<th>Foto</th>
+</tr>
+</thead>
+<tbody id="corpoHistorico"></tbody>
+</table>
+
+</div>
+
+<script>
+
+// SUA URL DO APPS SCRIPT
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_yzrcMCaMQfdycUJcD6RKLdFthcTXuCrXzWHCLTg__VaVP4tpdnH7o2ux65Gjst2zWw/exec";
+
+let todosRegistros = [];
+
+// ================= SALVAR =================
+async function salvarNoBanco() {
+
+  const btn = document.getElementById("btnSalvar");
+
+  const dados = {
+    data: new Date().toLocaleString("pt-BR"),
+    olt: document.getElementById("olt").value,
+    pon: document.getElementById("pon").value,
+    tecnico: document.getElementById("tecnico").value,
+    suporte: document.getElementById("suporte").value,
+    obs: document.getElementById("obs").value,
+    linkFoto: document.getElementById("linkFoto").value
+  };
+
+  // validação
+  if (!dados.olt || !dados.tecnico || !dados.linkFoto) {
+    alert("Preencha OLT, Técnico e Link da Foto");
+    return;
+  }
+
+  btn.innerText = "Salvando...";
+  btn.disabled = true;
+
+  try {
+
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados)
+    });
+
+    const result = await response.json();
+
+    if (result.status !== "sucesso") {
+      throw new Error(result.mensagem);
+    }
+
+    alert("✅ Salvo com sucesso!");
+
+    limparCampos();
+    carregarHistorico();
+
+  } catch (error) {
+    alert("❌ Erro: " + error.message);
+  }
+
+  btn.innerText = "Salvar";
+  btn.disabled = false;
+}
+
+// ================= CARREGAR =================
+async function carregarHistorico() {
+
+  const corpo = document.getElementById("corpoHistorico");
+
+  corpo.innerHTML = "<tr><td colspan='7'>Carregando...</td></tr>";
+
+  try {
+
+    const response = await fetch(SCRIPT_URL);
+    const registros = await response.json();
+
+    if (!Array.isArray(registros)) {
+      throw new Error("Erro ao carregar dados");
+    }
+
+    todosRegistros = registros.reverse();
+
+    renderTabela();
+
+  } catch (error) {
+    corpo.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+  }
+}
+
+// ================= RENDER =================
+function renderTabela() {
+
+  const corpo = document.getElementById("corpoHistorico");
+  corpo.innerHTML = "";
+
+  todosRegistros.forEach(reg => {
+
+    const row = `
+      <tr>
+        <td>${reg[0]}</td>
+        <td>${reg[1]}</td>
+        <td>${reg[2]}</td>
+        <td>${reg[3]}</td>
+        <td>${reg[4]}</td>
+        <td>${reg[5]}</td>
+        <td><a href="${reg[6]}" target="_blank">Abrir</a></td>
+      </tr>
+    `;
+
+    corpo.innerHTML += row;
+
+  });
+}
+
+// ================= LIMPAR =================
+function limparCampos() {
+  document.getElementById("olt").value = "";
+  document.getElementById("pon").value = "";
+  document.getElementById("tecnico").value = "";
+  document.getElementById("suporte").value = "";
+  document.getElementById("obs").value = "";
+  document.getElementById("linkFoto").value = "";
+}
+
+// ================= INIT =================
+window.onload = carregarHistorico;
+
+</script>
+
+</body>
+</html>
