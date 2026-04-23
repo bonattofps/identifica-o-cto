@@ -2,12 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Técnico CTO | Uni Internet</title>
+<title>Painel CTO</title>
 
 <style>
-body { font-family: Arial; background:#0f172a; color:#fff; margin:0; }
-.container { max-width:1200px; margin:auto; padding:20px; }
+body { font-family: Arial; background:#0f172a; color:#fff; padding:20px; }
 input, textarea { width:100%; padding:10px; margin:5px 0; }
 button { padding:12px; width:100%; background:#3b82f6; color:#fff; border:none; cursor:pointer; }
 table { width:100%; margin-top:20px; border-collapse:collapse; }
@@ -16,8 +14,6 @@ td, th { padding:10px; border-bottom:1px solid #333; }
 </head>
 
 <body>
-
-<div class="container">
 
 <h2>Cadastro Técnico</h2>
 
@@ -28,149 +24,102 @@ td, th { padding:10px; border-bottom:1px solid #333; }
 <textarea id="obs" placeholder="Observações"></textarea>
 <input id="linkFoto" placeholder="Link da Foto">
 
-<button onclick="salvarNoBanco()" id="btnSalvar">Salvar</button>
+<button onclick="salvar()">Salvar</button>
 
 <h2>Registros</h2>
 
 <table>
 <thead>
 <tr>
-<th>Data</th>
-<th>OLT</th>
-<th>PON</th>
-<th>Técnico</th>
-<th>Suporte</th>
-<th>Obs</th>
-<th>Foto</th>
+<th>Data</th><th>OLT</th><th>PON</th><th>Técnico</th><th>Suporte</th><th>Obs</th><th>Foto</th>
 </tr>
 </thead>
-<tbody id="corpoHistorico"></tbody>
+<tbody id="tabela"></tbody>
 </table>
-
-</div>
 
 <script>
 
-// SUA URL DO APPS SCRIPT
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_yzrcMCaMQfdycUJcD6RKLdFthcTXuCrXzWHCLTg__VaVP4tpdnH7o2ux65Gjst2zWw/exec";
 
-let todosRegistros = [];
-
 // ================= SALVAR =================
-async function salvarNoBanco() {
-
-  const btn = document.getElementById("btnSalvar");
+async function salvar() {
 
   const dados = {
     data: new Date().toLocaleString("pt-BR"),
-    olt: document.getElementById("olt").value,
-    pon: document.getElementById("pon").value,
-    tecnico: document.getElementById("tecnico").value,
-    suporte: document.getElementById("suporte").value,
-    obs: document.getElementById("obs").value,
-    linkFoto: document.getElementById("linkFoto").value
+    olt: olt.value,
+    pon: pon.value,
+    tecnico: tecnico.value,
+    suporte: suporte.value,
+    obs: obs.value,
+    linkFoto: linkFoto.value
   };
 
-  // validação
   if (!dados.olt || !dados.tecnico || !dados.linkFoto) {
-    alert("Preencha OLT, Técnico e Link da Foto");
+    alert("Preencha os campos obrigatórios");
     return;
   }
 
-  btn.innerText = "Salvando...";
-  btn.disabled = true;
-
   try {
 
-    const response = await fetch(SCRIPT_URL, {
+    // 🔥 FORMDATA (resolve CORS)
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(dados));
+
+    await fetch(SCRIPT_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(dados)
+      body: formData
     });
 
-    const result = await response.json();
+    alert("✅ Salvo com sucesso");
 
-    if (result.status !== "sucesso") {
-      throw new Error(result.mensagem);
-    }
+    limpar();
+    carregar();
 
-    alert("✅ Salvo com sucesso!");
-
-    limparCampos();
-    carregarHistorico();
-
-  } catch (error) {
-    alert("❌ Erro: " + error.message);
+  } catch (e) {
+    alert("❌ Erro: " + e.message);
   }
-
-  btn.innerText = "Salvar";
-  btn.disabled = false;
 }
 
 // ================= CARREGAR =================
-async function carregarHistorico() {
-
-  const corpo = document.getElementById("corpoHistorico");
-
-  corpo.innerHTML = "<tr><td colspan='7'>Carregando...</td></tr>";
+async function carregar() {
 
   try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
 
-    const response = await fetch(SCRIPT_URL);
-    const registros = await response.json();
+    const tabela = document.getElementById("tabela");
+    tabela.innerHTML = "";
 
-    if (!Array.isArray(registros)) {
-      throw new Error("Erro ao carregar dados");
-    }
+    data.reverse().forEach(r => {
+      tabela.innerHTML += `
+        <tr>
+          <td>${r[0]}</td>
+          <td>${r[1]}</td>
+          <td>${r[2]}</td>
+          <td>${r[3]}</td>
+          <td>${r[4]}</td>
+          <td>${r[5]}</td>
+          <td><a href="${r[6]}" target="_blank">Abrir</a></td>
+        </tr>
+      `;
+    });
 
-    todosRegistros = registros.reverse();
-
-    renderTabela();
-
-  } catch (error) {
-    corpo.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+  } catch (e) {
+    console.error(e);
   }
 }
 
-// ================= RENDER =================
-function renderTabela() {
-
-  const corpo = document.getElementById("corpoHistorico");
-  corpo.innerHTML = "";
-
-  todosRegistros.forEach(reg => {
-
-    const row = `
-      <tr>
-        <td>${reg[0]}</td>
-        <td>${reg[1]}</td>
-        <td>${reg[2]}</td>
-        <td>${reg[3]}</td>
-        <td>${reg[4]}</td>
-        <td>${reg[5]}</td>
-        <td><a href="${reg[6]}" target="_blank">Abrir</a></td>
-      </tr>
-    `;
-
-    corpo.innerHTML += row;
-
-  });
-}
-
 // ================= LIMPAR =================
-function limparCampos() {
-  document.getElementById("olt").value = "";
-  document.getElementById("pon").value = "";
-  document.getElementById("tecnico").value = "";
-  document.getElementById("suporte").value = "";
-  document.getElementById("obs").value = "";
-  document.getElementById("linkFoto").value = "";
+function limpar() {
+  olt.value = "";
+  pon.value = "";
+  tecnico.value = "";
+  suporte.value = "";
+  obs.value = "";
+  linkFoto.value = "";
 }
 
-// ================= INIT =================
-window.onload = carregarHistorico;
+carregar();
 
 </script>
 
