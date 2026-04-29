@@ -5,6 +5,7 @@ const CONFIG = {
 };
 
 const state = loadState();
+let loginCountTimer = null;
 
 const els = {
   form: document.querySelector("#registroForm"),
@@ -59,6 +60,7 @@ renderLogins();
 renderHistorico();
 renderStats();
 iniciarMalhaDoMouse();
+sincronizarHistoricoDaPlanilha();
 
 function trocarDashboard(dashboardName) {
   els.navButtons.forEach((button) => {
@@ -76,7 +78,7 @@ function trocarDashboard(dashboardName) {
 }
 
 function loadState() {
-  const fallback = { registros: [], loginsGerados: 0, loginsCopiados: 0, lastGeneratedKey: "" };
+  const fallback = { registros: [], loginsGerados: 0, loginsCopiados: 0, generatedLoginKeys: [] };
   try {
     return { ...fallback, ...JSON.parse(localStorage.getItem(CONFIG.storageKey)) };
   } catch {
@@ -129,11 +131,40 @@ async function salvarRegistro(event) {
     renderHistorico();
     renderStats();
     setStatus("Registro salvo com sucesso.", "success");
+    window.setTimeout(sincronizarHistoricoDaPlanilha, 1200);
   } catch (error) {
     setStatus(error.message, "error");
   } finally {
     els.salvarRegistro.disabled = false;
   }
+}
+
+function sincronizarHistoricoDaPlanilha() {
+  if (!CONFIG.appsScriptUrl) return;
+
+  const callbackName = `receberHistorico_${Date.now()}`;
+  const script = document.createElement("script");
+  const separator = CONFIG.appsScriptUrl.includes("?") ? "&" : "?";
+
+  window[callbackName] = (response) => {
+    if (response && response.ok && Array.isArray(response.registros)) {
+      state.registros = response.registros;
+      persistState();
+      renderHistorico();
+      renderStats();
+    }
+
+    delete window[callbackName];
+    script.remove();
+  };
+
+  script.onerror = () => {
+    delete window[callbackName];
+    script.remove();
+  };
+
+  script.src = `${CONFIG.appsScriptUrl}${separator}callback=${callbackName}&_=${Date.now()}`;
+  document.body.appendChild(script);
 }
 
 async function enviarParaPlanilha(registro) {
@@ -165,12 +196,7 @@ function renderLogins() {
   }
 
   const generatedKey = normalizarNome(nome).join(".");
-  if (generatedKey && state.lastGeneratedKey !== generatedKey) {
-    state.loginsGerados += logins.length;
-    state.lastGeneratedKey = generatedKey;
-    persistState();
-    renderStats();
-  }
+  agendarContagemDeLogin(generatedKey);
 
   logins.forEach((item, index) => {
     const card = document.createElement("article");
@@ -191,6 +217,26 @@ function renderLogins() {
     });
     els.loginList.appendChild(card);
   });
+}
+
+function agendarContagemDeLogin(generatedKey) {
+  window.clearTimeout(loginCountTimer);
+
+  loginCountTimer = window.setTimeout(() => {
+    const currentKey = normalizarNome(els.nomeCompleto.value.trim()).join(".");
+    if (!currentKey || currentKey !== generatedKey) return;
+
+    if (!Array.isArray(state.generatedLoginKeys)) {
+      state.generatedLoginKeys = [];
+    }
+
+    if (state.generatedLoginKeys.includes(generatedKey)) return;
+
+    state.generatedLoginKeys.push(generatedKey);
+    state.loginsGerados += 1;
+    persistState();
+    renderStats();
+  }, 900);
 }
 
 function gerarLogins(nome) {
