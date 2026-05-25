@@ -3,193 +3,193 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Uni Internet Ops</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <title>SGP - Sistema Gestão do Suporte</title>
+    <style>
+      :root {
+        --bg: #f4fbff;
+        --panel: #ffffff;
+        --border: #cfe2ee;
+        --text: #102033;
+        --muted: #567086;
+        --green: #009c67;
+        --blue: #38bdf8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 0%, rgba(32, 199, 123, 0.15), transparent 28%),
+          linear-gradient(135deg, #f4fbff 0%, #ffffff 46%, #eef8f4 100%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1540px, 100%);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 38px 24px;
+        display: grid;
+        align-content: center;
+        gap: 28px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 840px;
+        margin: 0;
+        font-size: clamp(2.2rem, 6vw, 4.6rem);
+        letter-spacing: 0;
+        line-height: 1.03;
+      }
+
+      .subtitle {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        min-height: 230px;
+        padding: 22px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 18px 42px rgba(20, 75, 110, 0.12);
+        display: grid;
+        align-content: space-between;
+        gap: 22px;
+      }
+
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.35rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .button {
+        display: inline-flex;
+        width: fit-content;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        border: 1px solid var(--green);
+        border-radius: 8px;
+        color: #ffffff;
+        background: var(--green);
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .button.secondary {
+        border-color: var(--blue);
+        background: var(--blue);
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 1100px) {
+        .cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        main {
+          align-content: start;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <main class="app-shell">
-      <aside class="sidebar">
-        <div class="brand-lockup">
-          <span class="brand-mark">UNI</span>
-          <div>
-            <strong>Uni Internet</strong>
-            <small>painel operacional</small>
-          </div>
-        </div>
-
-        <nav class="dashboard-nav" aria-label="Dashboards">
-          <button class="nav-button active" type="button" data-dashboard="identificacao">
-            <span>01</span>
-            Identificação CTO
-          </button>
-          <button class="nav-button" type="button" data-dashboard="logins">
-            <span>02</span>
-            Logins PPPoE
-          </button>
-        </nav>
-
-        <div class="sidebar-footer">
-          <span class="online-dot"></span>
-          <div>
-            <strong>Sistema online</strong>
-            <small>Google Sheets integrado</small>
-          </div>
-        </div>
-      </aside>
-
-      <section class="content-shell">
-        <header class="app-header">
-          <div>
-            <p class="eyebrow">Uni Internet · Operação</p>
-            <h1 id="dashboardTitle">Identificacao de CTO</h1>
-            <p id="dashboardSubtitle" class="subtle">Registre CTOs, evidências e suporte técnico em uma experiência simples e conectada.</p>
-          </div>
-          <div class="status-pill">
-            <span></span>
-            <strong>Versão 3.3</strong>
-            <small>Uni Style</small>
-          </div>
-        </header>
-
-        <section id="dashboard-identificacao" class="dashboard-view active" data-title="Identificacao de CTO" data-subtitle="Registre CTOs, evidências e suporte técnico em uma experiência simples e conectada.">
-          <section class="stats-grid" aria-label="Indicadores de identificacao">
-            <article>
-              <strong id="totalRegistros">0</strong>
-              <span>Total Registros</span>
-            </article>
-            <article>
-              <strong id="totalOlts">0</strong>
-              <span>OLTs</span>
-            </article>
-            <article>
-              <strong id="totalTecnicos">0</strong>
-              <span>Tecnicos</span>
-            </article>
-          </section>
-
-          <form id="registroForm" class="panel cadastro-panel">
-            <div class="panel-title">
-              <span class="icon-box">ID</span>
-              <h2>Cadastro técnico</h2>
-            </div>
-
-            <div class="form-grid">
-              <label>
-                <span>OLT</span>
-                <input id="olt" name="olt" placeholder="Ex: OLT-01" required />
-              </label>
-              <label>
-                <span>SLOT/PON</span>
-                <input id="pon" name="pon" placeholder="Ex: 1/8" required />
-              </label>
-              <label>
-                <span>Tecnico de Campo</span>
-                <input id="tecnico" name="tecnico" placeholder="Nome do tecnico" required />
-              </label>
-              <label>
-                <span>Suporte Responsavel</span>
-                <input id="suporte" name="suporte" placeholder="Nome do suporte" />
-              </label>
-            </div>
-
-            <label class="wide-field">
-              <span>Observacoes Tecnicas</span>
-              <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva detalhes da CTO, porta, endereco ou pendencias"></textarea>
-            </label>
-
-            <label class="wide-field">
-              <span>Link da Evidencia</span>
-              <input id="evidencia" name="evidencia" type="url" placeholder="https://..." />
-            </label>
-
-            <label class="wide-field">
-              <span>Resumo Automatico</span>
-              <textarea id="resumo" name="resumo" rows="4" readonly placeholder="Resumo sera gerado automaticamente"></textarea>
-            </label>
-
-            <div class="actions-row">
-              <button type="button" id="copiarResumo">Copiar Resumo</button>
-              <button type="submit" id="salvarRegistro">Salvar Registro</button>
-            </div>
-            <p id="formStatus" class="form-status" role="status"></p>
-          </form>
-
-          <section class="panel history-panel">
-            <div class="panel-title">
-              <span class="icon-box">HS</span>
-              <h2>Historico</h2>
-            </div>
-            <input id="buscaHistorico" class="search-field" placeholder="Buscar..." />
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Data</th>
-                    <th>OLT</th>
-                    <th>PON</th>
-                    <th>Tecnico</th>
-                    <th>Suporte</th>
-                    <th>Obs</th>
-                    <th>Evidencia</th>
-                  </tr>
-                </thead>
-                <tbody id="historicoBody"></tbody>
-              </table>
-            </div>
-          </section>
-        </section>
-
-        <section id="dashboard-logins" class="dashboard-view" data-title="Gerador de Login" data-subtitle="Digite o nome completo e copie variações padronizadas PPPoE com sufixo _UNI.">
-          <section class="metric-row" aria-label="Metricas do gerador">
-            <article>
-              <span class="metric-icon">LG</span>
-              <strong id="loginsGerados">0</strong>
-              <small>Logins Gerados</small>
-            </article>
-            <article>
-              <span class="metric-icon">CP</span>
-              <strong id="loginsCopiados">0</strong>
-              <small>Logins Copiados</small>
-            </article>
-            <article>
-              <span class="metric-icon">US</span>
-              <strong id="totalUsos">0</strong>
-              <small>Total de Usos</small>
-            </article>
-          </section>
-
-          <section class="login-layout">
-            <section class="panel login-panel" aria-labelledby="loginTitle">
-              <div class="panel-title">
-                <span class="icon-box">PP</span>
-                <h2 id="loginTitle">Entrada de dados</h2>
-              </div>
-
-              <label class="login-input">
-                <span>Nome Completo</span>
-                <div class="input-with-suffix">
-                  <input id="nomeCompleto" placeholder="JUANDER BONATO SCARDINE" autocomplete="off" />
-                  <button type="button" id="limparNome" title="Limpar nome">UNI</button>
-                </div>
-              </label>
-            </section>
-
-            <section class="panel generated-panel">
-              <div class="panel-title">
-                <span class="icon-box">OK</span>
-                <h2>Logins gerados</h2>
-              </div>
-              <div id="loginList" class="login-list" aria-live="polite"></div>
-              <p id="loginStatus" class="form-status" role="status"></p>
-            </section>
-          </section>
-        </section>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Dashboard corporativa</p>
+        <h1>SGP - Sistema Gestão do Suporte</h1>
+        <p class="subtitle">
+          Acesse as visões executivas, importe arquivos CSV ou XLSX no navegador e acompanhe indicadores gerais,
+          desempenho N1/N2, metas batidas e pontos de melhoria semanais.
+        </p>
       </section>
-    </main>
 
-    <script src="script.js"></script>
+      <section class="cards" aria-label="Dashboards disponíveis">
+        <article class="card">
+          <div>
+            <p class="eyebrow">Visão executiva</p>
+            <h2>Indicadores Gerais</h2>
+            <p>KPIs, evolução semanal, status de metas e tabela da matriz geral.</p>
+          </div>
+          <a class="button" href="apresentacao.html">Abrir Indicadores Gerais</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <p class="eyebrow">Equipe</p>
+            <h2>Desempenho N1 e N2</h2>
+            <p>Ranking por semana, colaboradores bons, críticos e pontos de melhoria para cobrança semanal.</p>
+          </div>
+          <a class="button secondary" href="colaboradores.html">Abrir Colaboradores</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <p class="eyebrow">Operacional</p>
+            <h2>Reincidência de Clientes</h2>
+            <p>Clientes com mais registros operacionais, suportes reincidentes e detalhamento por cliente.</p>
+          </div>
+          <a class="button" href="operacional.html">Abrir Reincidência</a>
+        </article>
+
+        <article class="card">
+          <div>
+            <p class="eyebrow">Ocorrências</p>
+            <h2>Ocorrências Mensais</h2>
+            <p>Lista mensal de ocorrências, cidade mais crítica, motivos e ranking por cidade.</p>
+          </div>
+          <a class="button secondary" href="ocorrencias.html">Abrir Ocorrências</a>
+        </article>
+      </section>
+
+      <p class="note">Compatível com GitHub Pages. Não usa backend nem banco de dados.</p>
+    </main>
   </body>
 </html>
